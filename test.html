@@ -1,0 +1,619 @@
+--ui-color-primary-50: var(--color-green-50, oklch(98.2% 0.018 155.826));
+--ui-color-primary-100: var(--color-green-100, oklch(96.2% 0.044 156.743));
+--ui-color-primary-200: var(--color-green-200, oklch(92.5% 0.084 155.995));
+--ui-color-primary-300: var(--color-green-300, oklch(87.1% 0.15 154.449));
+--ui-color-primary-400: var(--color-green-400, oklch(79.2% 0.209 151.711));
+--ui-color-primary-500: var(--color-green-500, oklch(72.3% 0.219 149.579));
+--ui-color-primary-600: var(--color-green-600, oklch(62.7% 0.194 149.214));
+--ui-color-primary-700: var(--color-green-700, oklch(52.7% 0.154 150.069));
+--ui-color-primary-800: var(--color-green-800, oklch(44.8% 0.119 151.328));
+--ui-color-primary-900: var(--color-green-900, oklch(39.3% 0.095 152.535));
+--ui-color-primary-950: var(--color-green-950, oklch(26.6% 0.065 152.934));
+--ui-color-secondary-50: var(--color-blue-50, oklch(97% 0.014 254.604));
+--ui-color-secondary-100: var(--color-blue-100, oklch(93.2% 0.032 255.585));
+--ui-color-secondary-200: var(--color-blue-200, oklch(88.2% 0.059 254.128));
+--ui-color-secondary-300: var(--color-blue-300, oklch(80.9% 0.105 251.813));
+--ui-color-secondary-400: var(--color-blue-400, oklch(70.7% 0.165 254.624));
+--ui-color-secondary-500: var(--color-blue-500, oklch(62.3% 0.214 259.815));
+--ui-color-secondary-600: var(--color-blue-600, oklch(54.6% 0.245 262.881));
+--ui-color-secondary-700: var(--color-blue-700, oklch(48.8% 0.243 264.376));
+--ui-color-secondary-800: var(--color-blue-800, oklch(42.4% 0.199 265.638));
+--ui-color-secondary-900: var(--color-blue-900, oklch(37.9% 0.146 265.522));
+--ui-color-secondary-950: var(--color-blue-950, oklch(28.2% 0.091 267.935));
+--ui-color-success-50: var(--color-green-50, oklch(98.2% 0.018 155.826));
+--ui-color-success-100: var(--color-green-100, oklch(96.2% 0.044 156.743));
+--ui-color-success-200: var(--color-green-200, oklch(92.5% 0.084 155.995));
+--ui-color-success-300: var(--color-green-300, oklch(87.1% 0.15 154.449));
+--ui-color-success-400: var(--color-green-400, oklch(79.2% 0.209 151.711));
+--ui-color-success-500: var(--color-green-500, oklch(72.3% 0.219 149.579));
+--ui-color-success-600: var(--color-green-600, oklch(62.7% 0.194 149.214));
+--ui-color-success-700: var(--color-green-700, oklch(52.7% 0.154 150.069));
+--ui-color-success-800: var(--color-green-800, oklch(44.8% 0.119 151.328));
+--ui-color-success-900: var(--color-green-900, oklch(39.3% 0.095 152.535));
+--ui-color-success-950: var(--color-green-950, oklch(26.6% 0.065 152.934));
+--ui-color-info-50: var(--color-blue-50, oklch(97% 0.014 254.604));
+--ui-color-info-100: var(--color-blue-100, oklch(93.2% 0.032 255.585));
+--ui-color-info-200: var(--color-blue-200, oklch(88.2% 0.059 254.128));
+--ui-color-info-300: var(--color-blue-300, oklch(80.9% 0.105 251.813));
+--ui-color-info-400: var(--color-blue-400, oklch(70.7% 0.165 254.624));
+--ui-color-info-500: var(--color-blue-500, oklch(62.3% 0.214 259.815));
+--ui-color-info-600: var(--color-blue-600, oklch(54.6% 0.245 262.881));
+--ui-color-info-700: var(--color-blue-700, oklch(48.8% 0.243 264.376));
+--ui-color-info-800: var(--color-blue-800, oklch(42.4% 0.199 265.638));
+--ui-color-info-900: var(--color-blue-900, oklch(37.9% 0.146 265.522));
+--ui-color-info-950: var(--color-blue-950, oklch(28.2% 0.091 267.935));
+--ui-color-warning-50: var(--color-yellow-50, oklch(98.7% 0.026 102.212));
+--ui-color-warning-100: var(--color-yellow-100, oklch(97.3% 0.071 103.193));
+--ui-color-warning-200: var(--color-yellow-200, oklch(94.5% 0.129 101.54));
+--ui-color-warning-300: var(--color-yellow-300, oklch(90.5% 0.182 98.111));
+--ui-color-warning-400: var(--color-yellow-400, oklch(85.2% 0.199 91.936));
+--ui-color-warning-500: var(--color-yellow-500, oklch(79.5% 0.184 86.047));
+--ui-color-warning-600: var(--color-yellow-600, oklch(68.1% 0.162 75.834));
+--ui-color-warning-700: var(--color-yellow-700, oklch(55.4% 0.135 66.442));
+--ui-color-warning-800: var(--color-yellow-800, oklch(47.6% 0.114 61.907));
+--ui-color-warning-900: var(--color-yellow-900, oklch(42.1% 0.095 57.708));
+--ui-color-warning-950: var(--color-yellow-950, oklch(28.6% 0.066 53.813));
+--ui-color-error-50: var(--color-red-50, oklch(97.1% 0.013 17.38));
+--ui-color-error-100: var(--color-red-100, oklch(93.6% 0.032 17.717));
+--ui-color-error-200: var(--color-red-200, oklch(88.5% 0.062 18.334));
+--ui-color-error-300: var(--color-red-300, oklch(80.8% 0.114 19.571));
+--ui-color-error-400: var(--color-red-400, oklch(70.4% 0.191 22.216));
+--ui-color-error-500: var(--color-red-500, oklch(63.7% 0.237 25.331));
+--ui-color-error-600: var(--color-red-600, oklch(57.7% 0.245 27.325));
+--ui-color-error-700: var(--color-red-700, oklch(50.5% 0.213 27.518));
+--ui-color-error-800: var(--color-red-800, oklch(44.4% 0.177 26.899));
+--ui-color-error-900: var(--color-red-900, oklch(39.6% 0.141 25.723));
+--ui-color-error-950: var(--color-red-950, oklch(25.8% 0.092 26.042));
+--ui-color-neutral-50: var(--color-slate-50, oklch(98.4% 0.003 247.858));
+--ui-color-neutral-100: var(--color-slate-100, oklch(96.8% 0.007 247.896));
+--ui-color-neutral-200: var(--color-slate-200, oklch(92.9% 0.013 255.508));
+--ui-color-neutral-300: var(--color-slate-300, oklch(86.9% 0.022 252.894));
+--ui-color-neutral-400: var(--color-slate-400, oklch(70.4% 0.04 256.788));
+--ui-color-neutral-500: var(--color-slate-500, oklch(55.4% 0.046 257.417));
+--ui-color-neutral-600: var(--color-slate-600, oklch(44.6% 0.043 257.281));
+--ui-color-neutral-700: var(--color-slate-700, oklch(37.2% 0.044 257.287));
+--ui-color-neutral-800: var(--color-slate-800, oklch(27.9% 0.041 260.031));
+--ui-color-neutral-900: var(--color-slate-900, oklch(20.8% 0.042 265.755));
+--ui-color-neutral-950: var(--color-slate-950, oklch(12.9% 0.042 264.695));
+--ui-warning: var(--ui-color-warning-500);
+--font-sans: ui-sans-serif,system-ui,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color
+Emoji";
+--font-mono: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+--color-red-600: oklch(57.7% .245 27.325);
+--color-green-600: oklch(62.7% .194 149.214);
+--color-blue-600: oklch(54.6% .245 262.881);
+--color-gray-200: oklch(92.8% .006 264.531);
+--color-black: #000;
+--color-white: #fff;
+--spacing: .25rem;
+--container-xs: 20rem;
+--container-sm: 24rem;
+--container-md: 28rem;
+--container-lg: 32rem;
+--container-2xl: 42rem;
+--container-3xl: 48rem;
+--text-xs: var(--ts-step--2);
+--text-xs--line-height: 1.33333;
+--text-sm: var(--ts-step--1);
+--text-sm--line-height: 1.42857;
+--text-base: var(--ts-step-0);
+--text-base--line-height: 1.5;
+--text-lg: var(--ts-step-1);
+--text-lg--line-height: 1.55556;
+--text-xl: var(--ts-step-2);
+--text-xl--line-height: 1.4;
+--text-2xl: var(--ts-step-3);
+--text-2xl--line-height: 1.33333;
+--text-3xl: var(--ts-step-4);
+--text-3xl--line-height: 1.2;
+--text-4xl: 2.25rem;
+--text-4xl--line-height: 1.11111;
+--text-5xl: var(--ts-step-5);
+--text-5xl--line-height: 1;
+--text-7xl: 4.5rem;
+--text-7xl--line-height: 1;
+--font-weight-normal: 400;
+--font-weight-medium: 500;
+--font-weight-semibold: 600;
+--font-weight-bold: 700;
+--font-weight-extrabold: 800;
+--tracking-tight: -.025em;
+--radius-4xl: 2rem;
+--ease-in: cubic-bezier(.4,0,1,1);
+--ease-out: cubic-bezier(0,0,.2,1);
+--ease-in-out: cubic-bezier(.4,0,.2,1);
+--animate-spin: spin 1s linear infinite;
+--animate-pulse: pulse 2s cubic-bezier(.4,0,.6,1)infinite;
+--blur-xs: 4px;
+--blur-sm: 8px;
+--default-transition-duration: .15s;
+--default-transition-timing-function: cubic-bezier(.4,0,.2,1);
+--default-font-family: var(--font-sans);
+--default-mono-font-family: var(--font-mono);
+--color-old-neutral-50: oklch(98.5% 0 0);
+--color-old-neutral-100: oklch(97% 0 0);
+--color-old-neutral-200: oklch(92.2% 0 0);
+--color-old-neutral-300: oklch(87% 0 0);
+--color-old-neutral-400: oklch(70.8% 0 0);
+--color-old-neutral-500: oklch(55.6% 0 0);
+--color-old-neutral-600: oklch(43.9% 0 0);
+--color-old-neutral-700: oklch(37.1% 0 0);
+--color-old-neutral-800: oklch(26.9% 0 0);
+--color-old-neutral-900: oklch(20.5% 0 0);
+--color-old-neutral-950: oklch(14.5% 0 0);
+--border-color-muted: var(--ui-border-muted);
+--ui-header-height: calc(var(--spacing)*16);
+--ui-text-muted: var(--ui-color-neutral-500);
+--ui-text-toned: var(--ui-color-neutral-600);
+--ui-text-highlighted: var(--ui-color-neutral-900);
+--ui-text-inverted: #fff;
+--ui-bg: #fff;
+--ui-bg-muted: var(--ui-color-neutral-50);
+--ui-bg-accented: var(--ui-color-neutral-200);
+--ui-bg-inverted: var(--ui-color-neutral-900);
+--ui-border: var(--ui-color-neutral-200);
+--ui-border-muted: var(--ui-color-neutral-200);
+--ui-border-inverted: var(--ui-color-neutral-900);
+--ui-radius: .25rem;
+--ui-container: 80rem;
+-webkit-text-size-adjust: 100%;
+font-feature-settings: var(--default-font-feature-settings,normal);
+font-variation-settings: var(--default-font-variation-settings,normal);
+tab-size: 4;
+-webkit-tap-highlight-color: transparent;
+--ts-step--2: clamp(.7142rem,.70525rem + .0449vw,.76rem);
+--ts-step--1: clamp(.8146rem,.80225rem + .0616vw,.9rem);
+--ts-step-0: clamp(.9375rem,.91575rem + .1087vw,1rem);
+--ts-step-1: clamp(1.05rem,.9804rem + .3478vw,1.25rem);
+--ts-step-2: clamp(1.26rem,1.1548rem + .5261vw,1.5625rem);
+--ts-step-3: clamp(1.512rem,1.3586rem + .7672vw,1.9531rem);
+--ts-step-4: clamp(1.8144rem,1.5963rem + 1.0904vw,2.4414rem);
+--ts-step-5: clamp(2.1773rem,1.8731rem + 1.5208vw,3.0518rem);
+--ts-dark-grey: #191919;
+--ts-mid-grey: #626262;
+--ts-semi-grey: #939393;
+--ts-grey: #c4c4c4;
+--ts-light-grey: #f2f2f2;
+--ts-dark-blue: #051028;
+--ts-deep-blue: #152b5a;
+--ts-strong-blue: #92a1c6;
+--ts-inter-blue: #b1bcd9;
+--ts-mid-blue: #d1dbf0;
+--ts-light-blue: #ebeff9;
+--ts-faint-blue: #f1f3fa;
+--ts-gold: #cfa951;
+--ui-primary: #152b5a;
+--ui-secondary: #cfa951;
+--ui-info: #fff;
+--ui-success: #007820;
+--ui-error: #7f1009;
+--ui-neutral: #191919;
+--ui-text: var(--ui-neutral);
+--ui-bg-elevated: #1a1a1a1a;
+--ui-border-accented: var(--ui-neutral);
+--ui-text-dimmed: var(--ts-dark-grey);
+color-scheme: light;
+color: var(--ts-dark-grey);
+letter-spacing: .5px;
+text-rendering: optimizeLegibility;
+-webkit-font-smoothing: antialiased;
+font-family: Jost,"Jost Fallback: BlinkMacSystemFont","Jost Fallback: Segoe UI","Jost Fallback: Helvetica Neue","Jost
+Fallback: Arial","Jost Fallback: Noto Sans",Inter,-apple-system,BlinkMacSystemFont,Segoe
+UI,Roboto,Oxygen,Ubuntu,Cantarell,Fira Sans,Droid Sans,Helvetica Neue,sans-serif;
+font-size: 16px;
+font-weight: 500;
+border: 0 solid;
+padding: 0;
+box-sizing: border-box;
+line-height: calc(1em + .5rem);
+margin: 0;
+touch-action: manipulation;
+
+
+<main role="main">
+    <div class="header-picture"><video autoplay="" loop="" playsinline="" webkit-playsinline="" class="hero"
+            aria-hidden="true" role="presentation">
+            <source src="https://media.mountaincollection.com/upload/mci.mp4" type="video/mp4">
+        </video>
+        <div class="min-h-[330px] lg:min-h-[350px] flex flex-col justify-end px-4 lg:px-8">
+            <h1
+                class="flex flex-col items-center text-white lg:text-center text-balance max-w-[750px] text-5xl/14 font-semibold mb-4">
+                Vivez l'expérience montagne avec ceux qui la connaissent</h1>
+        </div>
+    </div>
+    <div class="max-lg:pt-36">
+        <div class="md:my-4">
+            <div class="w-full md:[width:768px] lg:[width:1024px] xl:[width:1216px] mx-auto">
+                <div class="max-md:py-2 md:px-8 md:py-4">
+                    <div
+                        class="bg-[var(--ts-light-blue)] text-primary p-4 lg:p-6 md:rounded-lg flex flex-col md:flex-row items-center gap-4">
+                        <div class="flex-grow max-md:text-center">
+                            <h2 class="h2">Vacances de Février</h2>
+                            <div class="text-sm font-semibold">Semaine du 28/02 dès 430€ (au lieu de 670€)</div>
+                        </div>
+                        <div class="flex flex-col md:flex-row justify-center items-center gap-2">
+                            <div class="rounded-md"><a
+                                    href="/fr/search?id=ope_3&amp;date_in=2026-02-28&amp;date_out=2026-03-07&amp;sort=prix:asc"
+                                    class=""><button type="button" alt="J'en profite" data-slot="base"
+                                        class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed transition-colors ring-neutral justify-center px-2.5 py-1.5 text-sm gap-1.5 text-inverted bg-primary hover:bg-primary/75 active:bg-primary/75 disabled:bg-primary aria-disabled:bg-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary disabled:!cursor-not-allowed aria-disabled:!cursor-not-allowed disabled:opacity-50 aria-disabled:opacity-50 not-disabled:cursor-pointer"><!----><span
+                                            data-slot="label" class="truncate font-bold py-1 px-2">J'en
+                                            profite</span><!----></button></a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-v-87ff1138="">
+                <div data-v-87ff1138=""
+                    class="w-full md:[width:768px] lg:[width:1024px] xl:[width:1216px] mx-auto max-md:px-4 max-md:py-4 md:p-4 lg:p-8 max-md:hidden py-0">
+                    <h2 data-v-87ff1138="" class="h2 mb-6">Trouvez vos vacances idéales</h2>
+                    <div data-v-199dd290="" data-v-87ff1138="" class="grid gap-4 grid-cols-4 grid-rows-5">
+                        <div data-v-199dd290="" class="row-span-5 h-[300px] lg:h-[400px] xl:h-[500px] relative"><a
+                                data-v-199dd290="" href="/fr/offres/derniere-minute" class=""><img data-v-199dd290=""
+                                    src="https://media.mountaincollection.com/images/derniere-minute-1.jpg?height=500&amp;fit=cover&amp;v=2"
+                                    alt="Offre dernière minute" height="500"
+                                    class="w-full h-full object-cover rounded-lg">
+                                <div data-v-199dd290=""
+                                    class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                    <h3 data-v-199dd290="" class="h3">Dernières Minutes, jusqu'à -50%</h3>
+                                </div>
+                            </a></div>
+                        <div data-v-199dd290="" class="row-span-5 h-[300px] lg:h-[400px] xl:h-[500px] relative"><a
+                                data-v-199dd290="" href="/fr/search?id=cri_55" class=""><img data-v-199dd290=""
+                                    src="https://media.mountaincollection.com/images/pied-des-pistes-2.png?height=500&amp;fit=cover&amp;v=2"
+                                    alt="Au pied des pistes" height="500" class="w-full h-full object-cover rounded-lg">
+                                <div data-v-199dd290=""
+                                    class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                    <h3 data-v-199dd290="" class="h3">Au pied des pistes</h3>
+                                </div>
+                            </a></div>
+                        <div data-v-199dd290="" class="row-span-3 max-h-[calc(300px-0.5rem)] relative"><a
+                                data-v-199dd290="" href="/fr/offres/court-sejour" class=""><img data-v-199dd290=""
+                                    src="https://media.mountaincollection.com/images/haute-altitude-2.jpg?height=500&amp;fit=cover&amp;v=2"
+                                    alt="Nos courts séjours" height="500" class="w-full h-full object-cover rounded-lg">
+                                <div data-v-199dd290=""
+                                    class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                    <h3 data-v-199dd290="" class="h3">Nos courts séjours</h3>
+                                </div>
+                            </a></div>
+                        <div data-v-199dd290="" class="row-span-5 h-[300px] lg:h-[400px] xl:h-[500px] relative"><a
+                                data-v-199dd290="" href="/fr/search?id=cri_182" class=""><img data-v-199dd290=""
+                                    src="https://media.mountaincollection.com/images/bien-etre-2.png?height=500&amp;fit=cover&amp;v=2"
+                                    alt="Bien-être" height="500" class="w-full h-full object-cover rounded-lg">
+                                <div data-v-199dd290=""
+                                    class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                    <h3 data-v-199dd290="" class="h3">Bien-être</h3>
+                                </div>
+                            </a></div>
+                        <div data-v-199dd290="" class="row-span-2 max-h-[calc(200px-0.5rem)] relative"><a
+                                data-v-199dd290="" href="/fr/search?id=cri_1" class=""><img data-v-199dd290=""
+                                    src="https://media.mountaincollection.com/images/piscine-2.png?height=500&amp;fit=cover&amp;v=2"
+                                    alt="Piscine" height="500" class="w-full h-full object-cover rounded-lg">
+                                <div data-v-199dd290=""
+                                    class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                    <h3 data-v-199dd290="" class="h3">Piscines</h3>
+                                </div>
+                            </a></div>
+                    </div>
+                </div>
+                <div data-v-87ff1138=""
+                    class="w-full md:[width:768px] lg:[width:1024px] xl:[width:1216px] mx-auto max-md:px-4 max-md:py-4 md:p-4 lg:p-8 md:hidden max-sm:px-0">
+                    <h2 data-v-87ff1138="" class="h2 mb-6 px-4">Trouvez vos vacances idéales</h2>
+                    <div data-v-ffe05d5d="" data-v-87ff1138=""><!---->
+                        <div data-v-ffe05d5d=""
+                            class="divslider-grid grid grid-flow-col auto-cols-[95%] grid-cols-[repeat(1, 100%)] gap-4 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&amp;::-webkit-scrollbar]:h-0 [&amp;::-webkit-scrollbar]:w-0 [&amp;::-webkit-scrollbar]:bg-transparent snap-x snap-mandatory [&amp;&gt;*]:snap-start max-md:px-4 max-md:scroll-px-4">
+                            <div data-v-87ff1138="" class="relative"><a data-v-87ff1138=""
+                                    href="/fr/offres/derniere-minute" class=""><img data-v-87ff1138=""
+                                        src="https://media.mountaincollection.com/images/derniere-minute-1.jpg?height=500&amp;fit=cover&amp;v=2"
+                                        alt="Offre dernière minute" class="w-full h-[400px] object-cover rounded-lg">
+                                    <div data-v-87ff1138=""
+                                        class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                        <h3 data-v-87ff1138="" class="h3">Dernières Minutes, jusqu'à -50%</h3>
+                                    </div>
+                                </a></div>
+                            <div data-v-87ff1138="" class="relative"><a data-v-87ff1138="" href="/fr/search?id=cri_55"
+                                    class=""><img data-v-87ff1138=""
+                                        src="https://media.mountaincollection.com/images/pied-des-pistes-2.png?height=500&amp;fit=cover&amp;v=2"
+                                        alt="Au pied des pistes" class="w-full h-[400px] object-cover rounded-lg">
+                                    <div data-v-87ff1138=""
+                                        class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                        <h3 data-v-87ff1138="" class="h3">Au pied des pistes</h3>
+                                    </div>
+                                </a></div>
+                            <div data-v-87ff1138="" class="relative"><a data-v-87ff1138=""
+                                    href="/fr/offres/court-sejour" class=""><img data-v-87ff1138=""
+                                        src="https://media.mountaincollection.com/images/haute-altitude-2.jpg?height=500&amp;fit=cover&amp;v=2"
+                                        alt="Nos courts séjours" class="w-full h-[400px] object-cover rounded-lg">
+                                    <div data-v-87ff1138=""
+                                        class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                        <h3 data-v-87ff1138="" class="h3">Nos courts séjours</h3>
+                                    </div>
+                                </a></div>
+                            <div data-v-87ff1138="" class="relative"><a data-v-87ff1138="" href="/fr/search?id=cri_182"
+                                    class=""><img data-v-87ff1138=""
+                                        src="https://media.mountaincollection.com/images/bien-etre-2.png?height=500&amp;fit=cover&amp;v=2"
+                                        alt="Bien-être" class="w-full h-[400px] object-cover rounded-lg">
+                                    <div data-v-87ff1138=""
+                                        class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                        <h3 data-v-87ff1138="" class="h3">Bien-être</h3>
+                                    </div>
+                                </a></div>
+                            <div data-v-87ff1138="" class="relative"><a data-v-87ff1138="" href="/fr/search?id=cri_1"
+                                    class=""><img data-v-87ff1138=""
+                                        src="https://media.mountaincollection.com/images/piscine-2.png?height=500&amp;fit=cover&amp;v=2"
+                                        alt="Piscine" class="w-full h-[400px] object-cover rounded-lg">
+                                    <div data-v-87ff1138=""
+                                        class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                        <h3 data-v-87ff1138="" class="h3">Piscines</h3>
+                                    </div>
+                                </a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="w-full md:[width:768px] lg:[width:1024px] xl:[width:1216px] mx-auto max-md:px-4 max-md:py-4 md:p-4 lg:p-8">
+                <h2 class="h2 mb-4">Quel type de séjour recherchez-vous ?</h2>
+                <div dir="ltr" data-orientation="horizontal" data-slot="root"
+                    class="flex gap-2 flex-col items-start mb-4">
+                    <div data-slot="list"
+                        class="relative flex p-1 group border-b -mb-px w-auto border-[var(--ts-grey)] px-0" tabindex="0"
+                        data-orientation="horizontal" dir="ltr" role="tablist" aria-orientation="horizontal"
+                        style="outline: none;">
+                        <div data-slot="indicator"
+                            class="absolute transition-[translate,width] duration-200 rounded-full left-0 w-(--reka-tabs-indicator-size) translate-x-(--reka-tabs-indicator-position) -bottom-px bg-primary h-0.5"
+                            style="--reka-tabs-indicator-size: 178px; --reka-tabs-indicator-position: 0px;"></div>
+                        <button data-slot="trigger"
+                            class="group relative inline-flex items-center min-w-0 data-[state=inactive]:text-muted hover:data-[state=inactive]:not-disabled:text-default font-medium rounded-md disabled:cursor-not-allowed disabled:opacity-75 transition-colors focus:outline-none justify-center px-3 py-1.5 text-sm gap-1.5 data-[state=active]:text-primary focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+                            data-reka-collection-item="" tabindex="-1" data-orientation="horizontal" data-active=""
+                            id="reka-tabs-v-0-3-0-trigger-0" role="tab" type="button" aria-selected="true"
+                            aria-controls="reka-tabs-v-0-3-0-content-0" data-state="active"><!----><span
+                                data-slot="label" class="truncate font-bold text-default px-4">Stations
+                                familiales</span><!----></button><button data-slot="trigger"
+                            class="group relative inline-flex items-center min-w-0 data-[state=inactive]:text-muted hover:data-[state=inactive]:not-disabled:text-default font-medium rounded-md disabled:cursor-not-allowed disabled:opacity-75 transition-colors focus:outline-none justify-center px-3 py-1.5 text-sm gap-1.5 data-[state=active]:text-primary focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-primary"
+                            data-reka-collection-item="" tabindex="-1" data-orientation="horizontal"
+                            id="reka-tabs-v-0-3-0-trigger-1" role="tab" type="button" aria-selected="false"
+                            aria-controls="reka-tabs-v-0-3-0-content-1" data-state="inactive"><!----><span
+                                data-slot="label" class="truncate font-bold text-default px-4">Stations de haute
+                                altitude</span><!----></button>
+                    </div><!---->
+                </div>
+            </div>
+            <div data-v-87ff1138="">
+                <div data-v-87ff1138=""
+                    class="w-full md:[width:768px] lg:[width:1024px] xl:[width:1216px] mx-auto max-md:px-4 max-md:py-4 md:p-4 lg:p-8 max-md:hidden py-0 !pt-0">
+                    <!---->
+                    <div data-v-199dd290="" data-v-87ff1138="" class="grid gap-4 grid-cols-4">
+                        <div data-v-199dd290="" class="h-[300px] lg:h-[400px] xl:h-[500px] relative"><a
+                                data-v-199dd290="" href="/fr/station/flaine" class=""><img data-v-199dd290=""
+                                    src="https://media.mountaincollection.com/zone/1576/flaine.jpeg?height=500&amp;fit=cover&amp;v=2"
+                                    alt="Flaine" height="500" class="w-full h-full object-cover rounded-lg">
+                                <div data-v-199dd290=""
+                                    class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                    <h3 data-v-199dd290="" class="h3">Flaine</h3>
+                                </div>
+                            </a></div>
+                        <div data-v-199dd290="" class="h-[300px] lg:h-[400px] xl:h-[500px] relative"><a
+                                data-v-199dd290="" href="/fr/station/serre-chevalier" class=""><img data-v-199dd290=""
+                                    src="https://media.mountaincollection.com/zone/1584/serre-chevalier.jpeg?height=500&amp;fit=cover&amp;v=2"
+                                    alt="Serre Chevalier" height="500" class="w-full h-full object-cover rounded-lg">
+                                <div data-v-199dd290=""
+                                    class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                    <h3 data-v-199dd290="" class="h3">Serre Chevalier</h3>
+                                </div>
+                            </a></div>
+                        <div data-v-199dd290="" class="h-[300px] lg:h-[400px] xl:h-[500px] relative"><a
+                                data-v-199dd290="" href="/fr/station/la-rosiere" class=""><img data-v-199dd290=""
+                                    src="https://media.mountaincollection.com/zone/1546/la-rosiere.jpeg?height=500&amp;fit=cover&amp;v=2"
+                                    alt="La Rosière" height="500" class="w-full h-full object-cover rounded-lg">
+                                <div data-v-199dd290=""
+                                    class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                    <h3 data-v-199dd290="" class="h3">La Rosière</h3>
+                                </div>
+                            </a></div>
+                        <div data-v-199dd290="" class="h-[300px] lg:h-[400px] xl:h-[500px] relative"><a
+                                data-v-199dd290="" href="/fr/station/le-corbier" class=""><img data-v-199dd290=""
+                                    src="https://media.mountaincollection.com/zone/1582/le-corbier-1.jpeg?height=500&amp;fit=cover&amp;v=2"
+                                    alt="Le Corbier" height="500" class="w-full h-full object-cover rounded-lg">
+                                <div data-v-199dd290=""
+                                    class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                    <h3 data-v-199dd290="" class="h3">Le Corbier</h3>
+                                </div>
+                            </a></div>
+                    </div>
+                </div>
+                <div data-v-87ff1138=""
+                    class="w-full md:[width:768px] lg:[width:1024px] xl:[width:1216px] mx-auto max-md:px-4 max-md:py-4 md:p-4 lg:p-8 md:hidden max-sm:px-0">
+                    <!---->
+                    <div data-v-ffe05d5d="" data-v-87ff1138=""><!---->
+                        <div data-v-ffe05d5d=""
+                            class="divslider-grid grid grid-flow-col auto-cols-[95%] grid-cols-[repeat(1, 100%)] gap-4 overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&amp;::-webkit-scrollbar]:h-0 [&amp;::-webkit-scrollbar]:w-0 [&amp;::-webkit-scrollbar]:bg-transparent snap-x snap-mandatory [&amp;&gt;*]:snap-start max-md:px-4 max-md:scroll-px-4">
+                            <div data-v-87ff1138="" class="relative"><a data-v-87ff1138="" href="/fr/station/flaine"
+                                    class=""><img data-v-87ff1138=""
+                                        src="https://media.mountaincollection.com/zone/1576/flaine.jpeg?height=500&amp;fit=cover&amp;v=2"
+                                        alt="Flaine" class="w-full h-[400px] object-cover rounded-lg">
+                                    <div data-v-87ff1138=""
+                                        class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                        <h3 data-v-87ff1138="" class="h3">Flaine</h3>
+                                    </div>
+                                </a></div>
+                            <div data-v-87ff1138="" class="relative"><a data-v-87ff1138=""
+                                    href="/fr/station/serre-chevalier" class=""><img data-v-87ff1138=""
+                                        src="https://media.mountaincollection.com/zone/1584/serre-chevalier.jpeg?height=500&amp;fit=cover&amp;v=2"
+                                        alt="Serre Chevalier" class="w-full h-[400px] object-cover rounded-lg">
+                                    <div data-v-87ff1138=""
+                                        class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                        <h3 data-v-87ff1138="" class="h3">Serre Chevalier</h3>
+                                    </div>
+                                </a></div>
+                            <div data-v-87ff1138="" class="relative"><a data-v-87ff1138="" href="/fr/station/la-rosiere"
+                                    class=""><img data-v-87ff1138=""
+                                        src="https://media.mountaincollection.com/zone/1546/la-rosiere.jpeg?height=500&amp;fit=cover&amp;v=2"
+                                        alt="La Rosière" class="w-full h-[400px] object-cover rounded-lg">
+                                    <div data-v-87ff1138=""
+                                        class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                        <h3 data-v-87ff1138="" class="h3">La Rosière</h3>
+                                    </div>
+                                </a></div>
+                            <div data-v-87ff1138="" class="relative"><a data-v-87ff1138="" href="/fr/station/le-corbier"
+                                    class=""><img data-v-87ff1138=""
+                                        src="https://media.mountaincollection.com/zone/1582/le-corbier-1.jpeg?height=500&amp;fit=cover&amp;v=2"
+                                        alt="Le Corbier" class="w-full h-[400px] object-cover rounded-lg">
+                                    <div data-v-87ff1138=""
+                                        class="absolute bottom-0 left-0 bgfilter text-white rounded-b-lg px-4 py-3 w-full h-[100px] flex items-end">
+                                        <h3 data-v-87ff1138="" class="h3">Le Corbier</h3>
+                                    </div>
+                                </a></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div
+                class="w-full md:[width:768px] lg:[width:1024px] xl:[width:1216px] mx-auto max-md:px-4 max-md:py-4 md:p-4 lg:p-8">
+                <div class="grid grid-cols-1 lg:grid-cols-2 lg:gap-16 max-lg:gap-8 items-center py-4 lg:py-8">
+                    <div>
+                        <h2 class="h2 mb-4">Premier réseau immobilier des Alpes</h2>
+                        <div>
+                            <div>
+                                <div class="lg:line-clamp-8 xl:line-clamp-10">Mountain Collection Immobilier est le
+                                    réseau d’agences immobilières de la Compagnie des Alpes, regroupant 31 agences dans
+                                    14 destinations en stations de ski. Mountain Collection est née de la volonté de
+                                    proposer une expérience de qualité supérieure aux clients, qu'ils soient locataires
+                                    ou propriétaires. Nos agences immobilières sur place, proposent un accompagnement
+                                    personnalisé pour l'achat, la vente ou la location d’hébergements à la montagne.
+                                </div><button type="button" aria-expanded="false" data-slot="base"
+                                    class="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors ring-neutral justify-center px-2.5 py-1.5 text-sm gap-1.5 text-primary hover:bg-primary/10 active:bg-primary/10 focus:outline-none focus-visible:bg-primary/10 disabled:bg-transparent aria-disabled:bg-transparent dark:disabled:bg-transparent dark:aria-disabled:bg-transparent mt-4"><!----><span
+                                        data-slot="label" class="truncate link">Voir plus</span><span
+                                        class="iconify i-lucide:chevron-down shrink-0 size-5" aria-hidden="true"
+                                        data-slot="trailingIcon"></span></button>
+                            </div><!---->
+                        </div>
+                    </div>
+                    <div class="max-lg:order-first max-h-[400px]"><img data-nuxt-img=""
+                            srcset="https://media.mountaincollection.com/images/carte-mountain-collection.svg?v=2 1x, https://media.mountaincollection.com/images/carte-mountain-collection.svg?v=2 2x"
+                            alt="Premier réseau immobilier des Alpes" title="Premier réseau immobilier des Alpes"
+                            class="rounded-lg w-full max-h-[400px]"
+                            src="https://media.mountaincollection.com/images/carte-mountain-collection.svg?v=2"></div>
+                </div>
+            </div>
+            <div class="w-full bg-[var(--ts-light-blue)] py-4 lg:py-8">
+                <div
+                    class="w-full md:[width:768px] lg:[width:1024px] xl:[width:1216px] mx-auto max-md:px-4 max-md:py-4 md:p-4 lg:p-8">
+                    <div class="grid grid-cols-1 lg:grid-cols-[1fr_2fr] lg:gap-8">
+                        <div class="lg:border-r-[var(--ts-mid-blue)] lg:border-r-2 lg:pr-8 flex items-center">
+                            <h2 class="text-2xl font-bold mb-2">Pourquoi nous choisir ?</h2>
+                        </div>
+                        <div class="grid grid-cols-1 xl:grid-cols-2 gap-4">
+                            <div class="flex flex-row xl:flex-col max-xl:items-center">
+                                <div class="min-w-10 max-w-10"><img width="24" height="24" data-nuxt-img=""
+                                        srcset="https://media.mountaincollection.com/images/certificated.svg?width=24&amp;height=24&amp;v=2 1x, https://media.mountaincollection.com/images/certificated.svg?width=48&amp;height=48&amp;v=2 2x"
+                                        alt="check-circle"
+                                        src="https://media.mountaincollection.com/images/certificated.svg?width=24&amp;height=24&amp;v=2">
+                                </div>
+                                <div>
+                                    <h3 class="h3">Locations de vacances vérifiées</h3>
+                                    <p class="text-sm">Nos équipes visitent et sélectionnent chaque location de vacances
+                                        pour garantir la qualité et la sécurité de vos séjours.</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-row xl:flex-col max-xl:items-center">
+                                <div class="min-w-10 max-w-10"><img width="24" height="24" data-nuxt-img=""
+                                        srcset="https://media.mountaincollection.com/images/resort.svg?width=24&amp;height=24&amp;v=2 1x, https://media.mountaincollection.com/images/resort.svg?width=48&amp;height=48&amp;v=2 2x"
+                                        alt="resort"
+                                        src="https://media.mountaincollection.com/images/resort.svg?width=24&amp;height=24&amp;v=2">
+                                </div>
+                                <div>
+                                    <h3 class="h3">Agences locales</h3>
+                                    <p class="text-sm">Des experts présents sur place, pour un accompagnement
+                                        personnalisé.</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-row xl:flex-col max-xl:items-center">
+                                <div class="min-w-10 max-w-10"><img width="24" height="24" data-nuxt-img=""
+                                        srcset="https://media.mountaincollection.com/images/medal.svg?width=24&amp;height=24&amp;v=2 1x, https://media.mountaincollection.com/images/medal.svg?width=48&amp;height=48&amp;v=2 2x"
+                                        alt="medal"
+                                        src="https://media.mountaincollection.com/images/medal.svg?width=24&amp;height=24&amp;v=2">
+                                </div>
+                                <div>
+                                    <h3 class="h3">Premier réseau immobilier des Alpes</h3>
+                                    <p class="text-sm">31 agences implantées dans 12 stations renommées</p>
+                                </div>
+                            </div>
+                            <div class="flex flex-row xl:flex-col max-xl:items-center">
+                                <div class="min-w-10 max-w-10"><img width="24" height="24" data-nuxt-img=""
+                                        srcset="https://media.mountaincollection.com/images/home.svg?width=24&amp;height=24&amp;v=2 1x, https://media.mountaincollection.com/images/home.svg?width=48&amp;height=48&amp;v=2 2x"
+                                        alt="house"
+                                        src="https://media.mountaincollection.com/images/home.svg?width=24&amp;height=24&amp;v=2">
+                                </div>
+                                <div>
+                                    <h3 class="h3">Un large choix de biens</h3>
+                                    <p class="text-sm">Plus de 2 550 hébergements du studio cosy au chalet d'exception
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div data-v-df5a48ba=""
+                class="w-full md:[width:768px] lg:[width:1024px] xl:[width:1216px] mx-auto max-md:px-4 max-md:py-4 md:p-4 lg:p-8">
+                <div data-v-df5a48ba="" class="py-4 lg:py-8">
+                    <h2 data-v-df5a48ba="" class="h2 mb-6">Nous soutenons vos projets</h2>
+                    <div data-v-df5a48ba="" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8">
+                        <div data-v-df5a48ba="" class="flex flex-row xl:flex-col max-xl:items-center xl:space-y-2">
+                            <div data-v-df5a48ba="" class="min-w-10 max-w-10"><img data-v-df5a48ba="" width="24"
+                                    height="24" data-nuxt-img=""
+                                    srcset="https://media.mountaincollection.com/images/slope.svg?width=24&amp;height=24&amp;v=2 1x, https://media.mountaincollection.com/images/slope.svg?width=48&amp;height=48&amp;v=2 2x"
+                                    alt="slope"
+                                    src="https://media.mountaincollection.com/images/slope.svg?width=24&amp;height=24&amp;v=2">
+                            </div>
+                            <div data-v-df5a48ba="" class="item flex-grow">
+                                <h3 data-v-df5a48ba="" class="h3">Séjour à la montagne hiver et été</h3>
+                                <p data-v-df5a48ba="" class="text-sm">Des séjours à la montagne pour toute la famille,
+                                    qu'il s'agisse de ski, de randonnée ou de détente.</p>
+                            </div><!---->
+                        </div>
+                        <div data-v-df5a48ba="" class="flex flex-row xl:flex-col max-xl:items-center xl:space-y-2">
+                            <div data-v-df5a48ba="" class="min-w-10 max-w-10"><img data-v-df5a48ba="" width="24"
+                                    height="24" data-nuxt-img=""
+                                    srcset="https://media.mountaincollection.com/images/key.svg?width=24&amp;height=24&amp;v=2 1x, https://media.mountaincollection.com/images/key.svg?width=48&amp;height=48&amp;v=2 2x"
+                                    alt="key"
+                                    src="https://media.mountaincollection.com/images/key.svg?width=24&amp;height=24&amp;v=2">
+                            </div>
+                            <div data-v-df5a48ba="" class="item flex-grow">
+                                <h3 data-v-df5a48ba="" class="h3">Gestion locative</h3>
+                                <p data-v-df5a48ba="" class="text-sm">Des solutions pour gérer votre bien locatif, qu'il
+                                    s'agisse de louer, de vendre ou de faire gérer.</p>
+                            </div><!---->
+                        </div>
+                        <div data-v-df5a48ba="" class="flex flex-row xl:flex-col max-xl:items-center xl:space-y-2">
+                            <div data-v-df5a48ba="" class="min-w-10 max-w-10"><img data-v-df5a48ba="" width="24"
+                                    height="24" data-nuxt-img=""
+                                    srcset="https://media.mountaincollection.com/images/buy.svg?width=24&amp;height=24&amp;v=2 1x, https://media.mountaincollection.com/images/buy.svg?width=48&amp;height=48&amp;v=2 2x"
+                                    alt="buy"
+                                    src="https://media.mountaincollection.com/images/buy.svg?width=24&amp;height=24&amp;v=2">
+                            </div>
+                            <div data-v-df5a48ba="" class="item flex-grow">
+                                <h3 data-v-df5a48ba="" class="h3">Vente de biens immobiliers</h3>
+                                <p data-v-df5a48ba="" class="text-sm">Estimation, mise en valeur et diffusion de votre
+                                    annonce</p>
+                            </div><!---->
+                        </div>
+                        <div data-v-df5a48ba="" class="flex flex-row xl:flex-col max-xl:items-center xl:space-y-2">
+                            <div data-v-df5a48ba="" class="min-w-10 max-w-10"><img data-v-df5a48ba="" width="24"
+                                    height="24" data-nuxt-img=""
+                                    srcset="https://media.mountaincollection.com/images/build.svg?width=24&amp;height=24&amp;v=2 1x, https://media.mountaincollection.com/images/build.svg?width=48&amp;height=48&amp;v=2 2x"
+                                    alt="building"
+                                    src="https://media.mountaincollection.com/images/build.svg?width=24&amp;height=24&amp;v=2">
+                            </div>
+                            <div data-v-df5a48ba="" class="item flex-grow">
+                                <h3 data-v-df5a48ba="" class="h3">Syndic de copropriété</h3>
+                                <p data-v-df5a48ba="" class="text-sm">Entretien et gestion financière complète de
+                                    copropriété</p>
+                            </div><!---->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
