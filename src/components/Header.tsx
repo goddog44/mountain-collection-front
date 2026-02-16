@@ -2,24 +2,33 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { Search, User, Menu } from "lucide-react";
+import { Menu } from "lucide-react";
+import { usePathname } from "next/navigation";
 import SearchBar from "./SearchBar";
+import UserMenu from "./UserMenu";
+import MainNav from "./MainNav";
 
 export default function Header() {
+  const pathname = usePathname();
+
+  // Show the search bar on all pages except the homepage
+  const showSearchBar = pathname !== "/";
+
   return (
     <header
       role="banner"
-      className="sticky top-0 z-[1001] w-full border-b border-[var(--ts-mid-grey)]/30 bg-white"
+      className="sticky top-0 z-[1001] w-full pb-2 border-b-1 border-black/25 bg-white"
     >
-      <div className="mx-auto flex w-full max-w-[1216px] items-center gap-4 px-4 py-4 md:gap-6 md:px-8 lg:px-8">
-        {/* Logo - far left */}
+      <div className="mx-auto flex w-full max-w-[1216px] items-center gap-6 px-4 py-3 md:px-8">
+
+        {/* Logo */}
         <Link
           href="/"
-          className="flex shrink-0 items-center"
+          className="flex shrink-0 items-center mt-1"
           aria-label="Mountain Collection - Accueil"
         >
           <Image
-            src="/mountain-collection-logo.svg"
+            src="images/mountain-collection-logo.svg"
             alt="Mountain Collection"
             width={144}
             height={48}
@@ -28,12 +37,16 @@ export default function Header() {
           />
         </Link>
 
-        {/* Search bar - center, takes remaining space */}
+        {/* Center: Nav (homepage) or SearchBar (other pages) */}
         <div className="min-w-0 flex-1">
-          <SearchBar />
+          {showSearchBar ? (
+            <SearchBar />
+          ) : (
+            <MainNav />
+          )}
         </div>
 
-        {/* Menu + User - far right */}
+        {/* Right: Menu hamburger + User */}
         <div className="flex shrink-0 items-center gap-2">
           <button
             type="button"
@@ -42,14 +55,9 @@ export default function Header() {
           >
             <Menu className="h-5 w-5" />
           </button>
-          <button
-            type="button"
-            className="flex h-9 w-9 items-center justify-center rounded-full bg-[var(--ts-mid-blue)] text-white transition-colors hover:opacity-90"
-            aria-label="Mon compte"
-          >
-            <User className="h-5 w-5" />
-          </button>
+          <UserMenu />
         </div>
+
       </div>
     </header>
   );

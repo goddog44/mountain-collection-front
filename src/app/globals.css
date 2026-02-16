@@ -23,9 +23,24 @@
   --color-primary: var(--ts-mid-blue);
   --color-primary-dark: var(--ts-mid-blue-dark);
 
-  --font-sans: "Jost", Inter, -apple-system, BlinkMacSystemFont,
-    "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell,
-    "Helvetica Neue", Arial, sans-serif;
+  --font-sans: "Jost",
+      "Jost Fallback: BlinkMacSystemFont",
+      "Jost Fallback: Segoe UI",
+      "Jost Fallback: Helvetica Neue",
+      "Jost Fallback: Arial",
+      "Jost Fallback: Noto Sans",
+      Inter,
+      -apple-system,
+      BlinkMacSystemFont,
+      "Segoe UI",
+      Roboto,
+      Oxygen,
+      Ubuntu,
+      Cantarell,
+      "Fira Sans",
+      "Droid Sans",
+      "Helvetica Neue",
+      sans-serif;
 
   --font-mono: var(--font-geist-mono);
 }

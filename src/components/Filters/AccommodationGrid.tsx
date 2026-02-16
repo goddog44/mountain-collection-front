@@ -103,11 +103,11 @@ function filterAccommodations(
 }
 
 const SORT_OPTIONS: { value: SortOption; label: string }[] = [
-  { value: "rating_desc", label: "Les plus populaires" },
+  { value: "rating_desc", label: "Meilleure note" },
   { value: "price_asc", label: "Prix croissant" },
   { value: "price_desc", label: "Prix décroissant" },
-  // { value: "capacity", label: "Capacité" },
-  // { value: "surface", label: "Superficie" },
+  { value: "capacity", label: "Capacité" },
+  { value: "surface", label: "Superficie" },
 ];
 
 type ViewMode = "liste" | "mosaique";
@@ -129,24 +129,26 @@ export default function AccommodationGrid({
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
         <p className="font-bold flex-grow">
           <span className="font-bold flex-grow">{sorted.length}</span>{" "}
-          résultat{sorted.length !== 1 ? "s" : ""} trouvé
+          hébergement{sorted.length !== 1 ? "s" : ""} trouvé
           {sorted.length !== 1 ? "s" : ""}
         </p>
-        <div className="flex items-center gap-2 ">
+        <div className="flex items-center gap-2">
           <div className="flex items-center gap-2">
-           
+            <label htmlFor="sort" className="text-sm text-[var(--ts-mid-grey)]">
+              Trier par
+            </label>
             <div className="relative">
               <select
                 id="sort"
                 value={sort}
                 onChange={(e) => setSort(e.target.value as SortOption)}
-                className="appearance-none font-semibold rounded-md border border-grey-300 bg-white py-2 pl-3 pr-8 text-sm focus:border-[var(--ts-mid-blue)] focus:outline-none focus:ring-1 focus:ring-[var(--ts-mid-blue)]"
+                className="appearance-none rounded-lg border border-gray-300 bg-white py-2 pl-3 pr-8 text-sm focus:border-[var(--ts-mid-blue)] focus:outline-none focus:ring-1 focus:ring-[var(--ts-mid-blue)]"
               >
                 {SORT_OPTIONS.map((opt) => (
-                  <option key={opt.value} value={opt.value}><span>Trier par : </span>
+                  <option key={opt.value} value={opt.value}>
                     {opt.label}
                   </option>
                 ))}
@@ -155,23 +157,23 @@ export default function AccommodationGrid({
             </div>
           </div>
 
-          <div className="px-0.5 py-0.5 rounded-md bg-[#C5D5E4] border border-gray-300 overflow-hidden">
+          <div className="flex rounded-lg border border-gray-300 overflow-hidden">
             <button
               onClick={() => setViewMode("liste")}
-              className={`px-8 py-2 rounded-md text-sm font-medium transition-colors ${
+              className={`px-4 py-2 text-sm font-medium transition-colors ${
                 viewMode === "liste"
-                 ? "bg-white text-gray-700 hover:bg-gray-50"
-                  : "bg-[#C5D5E4] text-gray-900"
+                  ? "bg-[#C5D5E4] text-gray-900"
+                  : "bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
               Liste
             </button>
             <button
               onClick={() => setViewMode("mosaique")}
-              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors border-l border-gray-300 ${
+              className={`px-4 py-2 text-sm font-medium transition-colors border-l border-gray-300 ${
                 viewMode === "mosaique"
-                ? "bg-white text-gray-700 hover:bg-gray-50"
-                : "bg-[#C5D5E4] text-gray-900"
+                  ? "bg-[#C5D5E4] text-gray-900"
+                  : "bg-white text-gray-700 hover:bg-gray-50"
               }`}
             >
               Mosaïque
@@ -184,11 +186,11 @@ export default function AccommodationGrid({
         className={`grid gap-6 mb-8 ${
           viewMode === "mosaique"
             ? "grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
-            : "grid-cols-1"
+            : "grid-cols-1 xl:grid-cols-2"
         }`}
       >
         {sorted.map((acc) => (
-          <AccommodationCard key={acc.id} accommodation={acc} viewMode={viewMode} />
+          <AccommodationCard key={acc.id} accommodation={acc} />
         ))}
       </div>
 
