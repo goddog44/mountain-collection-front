@@ -34,7 +34,7 @@ function FilterCheckboxRow({
             aria-label={label}
             disabled={disabled}
             onClick={() => !disabled && onChange(!checked)}
-            className={`size-4 overflow-hidden rounded-sm ring-2 ring-inset focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ts-mid-blue)] ${checked ? "bg-[var(--ts-mid-blue)] ring-[var(--ts-mid-blue)]" : "ring-gray-300"} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+            className={`size-4 overflow-hidden rounded-sm ring-1 ring-inset focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ts-mid-dark)] ${checked ? "bg-[var(--ts-mid-blue)] ring-[var(--ts-mid-blue)]" : "ring-[var(--ts-mid-dark)]"} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
           />
         </div>
         <div className="ms-2 w-full text-sm">
@@ -46,7 +46,7 @@ function FilterCheckboxRow({
             {label}
           </label>
           {desc && (
-            <p className="font-medium text-[var(--ts-mid-grey)]">{desc}</p>
+            <p className="font-medium text-[var(--ts-mid-blue-dark)]">{desc}</p>
           )}
         </div>
       </div>

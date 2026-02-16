@@ -74,7 +74,7 @@ export default function AccommodationCard({ accommodation }: AccommodationCardPr
         <ImageCarousel images={images} alt={name} className="overflow-hidden rounded-t-[12px]" />
         <div className="absolute left-2 top-2 flex flex-col gap-1.5">
           {promoBadge && (
-            <span className="inline-flex w-fit items-center gap-1 rounded-full bg-[var(--ts-mid-blue)] px-2.5 py-1 text-xs font-medium text-white">
+            <span className="bg-primary rounded-md px-2 py-1 text-sm text-white mb-1 w-fit flex flex-row space-x-1 items-center">
               Nos Promotions
             </span>
           )}

@@ -127,8 +127,8 @@ export default function AccommodationGrid({
   return (
     <div className="flex flex-1 flex-col">
       <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-[var(--ts-mid-grey)]">
-          <span className="font-semibold text-gray-900">{sorted.length}</span>{" "}
+        <p className="font-bold flex-grow">
+          <span className="font-bold flex-grow">{sorted.length}</span>{" "}
           hébergement{sorted.length !== 1 ? "s" : ""} trouvé
           {sorted.length !== 1 ? "s" : ""}
         </p>
@@ -154,7 +154,7 @@ export default function AccommodationGrid({
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div className="grid gap-6 mb-8 grid-cols-1 lg:grid-cols-2 min-[1216px]:!grid-cols-3">
         {sorted.map((acc) => (
           <AccommodationCard key={acc.id} accommodation={acc} />
         ))}
