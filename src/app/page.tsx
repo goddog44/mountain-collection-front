@@ -3,6 +3,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { accommodations } from "@/data/accommodations";
 import AccommodationGrid from "@/components/AccommodationGrid";
+import SearchBar from "@/components/SearchBar";
 
 export default function Home() {
   const featured = accommodations.slice(0, 6);
@@ -10,34 +11,82 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
+
       <main className="flex-1">
-        <section className="border-b border-gray-200 bg-[var(--ts-light-grey)] py-12">
-          <div className="mx-auto max-w-[1216px] px-4 md:px-8">
-            <h1 className="text-3xl font-bold tracking-tight text-[var(--ts-mid-blue-dark)] md:text-4xl">
-              Hébergements à la montagne
-            </h1>
-            <p className="mt-2 text-lg text-[var(--ts-mid-grey)]">
-              Trouvez votre résidence de vacances dans les plus belles stations
-              des Alpes. Studios, appartements et chalets pour tous les goûts.
-            </p>
-            <Link
-              href="/search"
-              className="mt-6 inline-block rounded-xl bg-[var(--ts-mid-blue)] px-6 py-3 font-medium text-white transition-colors hover:opacity-90"
-            >
-              Voir toutes les offres
-            </Link>
+        {/* HERO SECTION */}
+        <section className="relative h-[80vh] min-h-[600px] overflow-hidden">
+          {/* Vidéo background */}
+          <video
+            className="absolute inset-0 h-full w-full object-cover"
+            autoPlay
+            loop
+            muted
+            playsInline
+          >
+            <source
+              src="/videos/mountain-collection-bg.mp4"
+              type="video/mp4"
+            />
+            Votre navigateur ne supporte pas la vidéo HTML5.
+          </video>
+
+          {/* Overlay sombre */}
+          <div className="absolute  inset-0 bg-black/45" />
+
+          {/* Contenu */}
+          <div className="relative z-10 flex h-full items-center">
+            <div className="mx-auto w-full max-w-[1216px] px-4 md:px-8">
+              <h1 className="max-w-2xl text-4xl font-bold leading-tight text-white md:text-5xl">
+                Vivez l’expérience montagne avec ceux qui la connaissent
+              </h1>
+
+              <p className="mt-4 max-w-xl text-lg text-white/90">
+                Trouvez votre résidence de vacances dans les plus belles
+                stations des Alpes. Studios, appartements et chalets
+                d’exception.
+              </p>
+
+                <SearchBar />
+            </div>
           </div>
         </section>
 
+        {/* PROMO */}
+        <section className="bg-[var(--ts-light-grey)] py-6">
+          <div className="mx-auto max-w-[1216px] px-4 md:px-8">
+            <div className="flex flex-col items-start justify-between gap-4 rounded-2xl bg-white p-6 shadow-sm md:flex-row md:items-center">
+              <div>
+                <h3 className="text-lg font-semibold">
+                  Vacances de Février
+                </h3>
+                <p className="text-sm text-gray-600">
+                  Semaine du 28/02 dès 430€{" "}
+                  <span className="line-through">(au lieu de 670€)</span>
+                </p>
+              </div>
+
+              <Link
+                href="/search"
+                className="rounded-full bg-[var(--ts-mid-blue)] px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
+              >
+                J’en profite
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* HÉBERGEMENTS */}
         <section className="py-12">
           <div className="mx-auto max-w-[1216px] px-4 md:px-8">
             <h2 className="mb-6 text-2xl font-semibold">
-              Une sélection d&apos;hébergements
+              Une sélection d’hébergements
             </h2>
+
             <AccommodationGrid accommodations={featured} />
           </div>
         </section>
       </main>
+
       <Footer />
     </div>
   );
