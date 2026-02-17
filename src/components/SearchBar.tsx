@@ -4,8 +4,6 @@ import { useRouter } from "next/navigation";
 import {
   Search,
   MapPin,
-  Calendar,
-  Users,
   Home,
   X,
   ChevronLeft,
@@ -14,7 +12,7 @@ import {
   Plus,
   Mountain,
 } from "lucide-react";
-import { useState, useRef, useEffect, useCallback, JSX } from "react";
+import { useState, useRef, useEffect, JSX } from "react";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 

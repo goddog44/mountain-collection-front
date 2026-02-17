@@ -12,16 +12,13 @@ import {
   ChevronLeft,
   ChevronRight,
   CheckCircle,
-  Circle,
   XCircle,
   MapPin,
   Shield,
   Building2,
-  Home,
   Tv,
   PawPrint,
   Trees,
-  Phone,
 } from "lucide-react";
 
 // ─── Mock data ────────────────────────────────────────────────────────────────
@@ -29,7 +26,7 @@ import {
 const accommodation = {
   title: "Studio confortable avec balcon · Centre station",
   type: "Studio",
-  station: "Flaine",
+  // station: "Flaine",
   voyageurs: 4,
   surface: 25,
   sallesDeBain: 1,
@@ -410,7 +407,7 @@ export default function AccommodationDetailPage() {
                 {/* Sous-titre */}
                 <div>
                   <h2 className="text-xl font-bold text-gray-900">
-                    {accommodation.type} · {accommodation.station}
+                    {accommodation.type} · {accommodation.station.nom}
                   </h2>
                   <p className="mt-1 text-sm text-gray-500">
                     {accommodation.voyageurs} voyageurs · {accommodation.surface} m² · {accommodation.sallesDeBain} salle de bain
