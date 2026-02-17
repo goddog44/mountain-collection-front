@@ -66,7 +66,6 @@ export default function Footer() {
                         href="https://www.instagram.com/mountaincollection_immobilier/"
                         rel="noopener noreferrer"
                         target="_blank"
-                        alt="Instagram"
                       >
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-7 w-7">
                           <path fillRule="evenodd" clipRule="evenodd" d="M8 5C7.20435 5 6.44129 5.31607 5.87868 5.87868C5.31607 6.44129 5 7.20435 5 8V16C5 16.7956 5.31607 17.5587 5.87868 18.1213C6.44129 18.6839 7.20435 19 8 19H16C16.7956 19 17.5587 18.6839 18.1213 18.1213C18.6839 17.5587 19 16.7956 19 16V8C19 7.20435 18.6839 6.44129 18.1213 5.87868C17.5587 5.31607 16.7956 5 16 5H8ZM4.46447 4.46447C5.40215 3.52678 6.67392 3 8 3H16C17.3261 3 18.5979 3.52678 19.5355 4.46447C20.4732 5.40215 21 6.67392 21 8V16C21 17.3261 20.4732 18.5979 19.5355 19.5355C18.5979 20.4732 17.3261 21 16 21H8C6.67392 21 5.40215 20.4732 4.46447 19.5355C3.52678 18.5979 3 17.3261 3 16V8C3 6.67392 3.52678 5.40215 4.46447 4.46447Z" fill="#191919"/>
@@ -85,7 +84,6 @@ export default function Footer() {
                         href="https://www.facebook.com/mountaincollection.immo"
                         rel="noopener noreferrer"
                         target="_blank"
-                        alt="Facebook"
                       >
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-7 w-7">
                           <path fillRule="evenodd" clipRule="evenodd" d="M10.7574 3.75736C11.8826 2.63214 13.4087 2 15 2H18C18.5523 2 19 2.44772 19 3V7C19 7.55228 18.5523 8 18 8H15V9H18C18.3079 9 18.5987 9.14187 18.7882 9.38459C18.9777 9.6273 19.0448 9.94379 18.9701 10.2425L17.9701 14.2425C17.8589 14.6877 17.4589 15 17 15H15V21C15 21.5523 14.5523 22 14 22H10C9.44772 22 9 21.5523 9 21V15H7C6.44772 15 6 14.5523 6 14V10C6 9.44772 6.44772 9 7 9H9V8C9 6.4087 9.63214 4.88258 10.7574 3.75736ZM15 4C13.9391 4 12.9217 4.42143 12.1716 5.17157C11.4214 5.92172 11 6.93913 11 8V10C11 10.5523 10.5523 11 10 11H8V13H10C10.5523 13 11 13.4477 11 14V20H13V14C13 13.4477 13.4477 13 14 13H16.2192L16.7192 11H14C13.4477 11 13 10.5523 13 10V8C13 7.46957 13.2107 6.96086 13.5858 6.58579C13.9609 6.21071 14.4696 6 15 6H17V4H15Z" fill="#191919"/>
@@ -102,7 +100,6 @@ export default function Footer() {
                         href="https://www.linkedin.com/company/mountain-collection-immobilier/"
                         rel="noopener noreferrer"
                         target="_blank"
-                        alt="LinkedIn"
                       >
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" className="h-7 w-7">
                           <path fillRule="evenodd" clipRule="evenodd" d="M6 5C5.73478 5 5.48043 5.10536 5.29289 5.29289C5.10536 5.48043 5 5.73478 5 6V18C5 18.2652 5.10536 18.5196 5.29289 18.7071C5.48043 18.8946 5.73478 19 6 19H18C18.2652 19 18.5196 18.8946 18.7071 18.7071C18.8946 18.5196 19 18.2652 19 18V6C19 5.73478 18.8946 5.48043 18.7071 5.29289C18.5196 5.10536 18.2652 5 18 5H6ZM3.87868 3.87868C4.44129 3.31607 5.20435 3 6 3H18C18.7956 3 19.5587 3.31607 20.1213 3.87868C20.6839 4.44129 21 5.20435 21 6V18C21 18.7957 20.6839 19.5587 20.1213 20.1213C19.5587 20.6839 18.7957 21 18 21H6C5.20435 21 4.44129 20.6839 3.87868 20.1213C3.31607 19.5587 3 18.7956 3 18V6C3 5.20435 3.31607 4.44129 3.87868 3.87868Z" fill="#191919"/>
@@ -131,7 +128,6 @@ export default function Footer() {
                           href="https://resa.alpes-skiresa.com/mountaincollection/fr-FR/Account/Login?ReturnUrl=~%2Ffr-FR%2FOwner"
                           rel="noopener noreferrer"
                           target="_blank"
-                          alt="Espace propriétaire"
                         >
                           Espace propriétaire
                         </a>
@@ -148,7 +144,6 @@ export default function Footer() {
                           href="https://mountaincollection.monespaceclient.immo/"
                           rel="noopener noreferrer"
                           target="_blank"
-                          alt="Espace Syndic"
                         >
                           Espace Syndic
                         </a>
@@ -165,7 +160,6 @@ export default function Footer() {
                           href="https://resa.alpes-skiresa.com/mountaincollection/fr-FR/Account/Login?ReturnUrl=~%2Ffr-FR%2FTourOperator"
                           rel="noopener noreferrer"
                           target="_blank"
-                          alt="Espace TO"
                         >
                           Espace TO
                         </a>
@@ -189,7 +183,6 @@ export default function Footer() {
                           href="https://compagniedesalpes.softy.pro/offres?subsidiaries%5B%5D=3641&contracts%5B%5D=1"
                           rel="noopener noreferrer"
                           target="_blank"
-                          alt="Recrutement CDI"
                         >
                           Recrutement CDI
                         </a>
@@ -206,7 +199,6 @@ export default function Footer() {
                           href="https://compagniedesalpes.softy.pro/offres?subsidiaries%5B%5D=3641&contracts%5B%5D=2&contracts%5B%5D=4&contracts%5B%5D=5&contracts%5B%5D=6"
                           rel="noopener noreferrer"
                           target="_blank"
-                          alt="Recrutement Saisonniers"
                         >
                           Recrutement Saisonniers
                         </a>
@@ -223,7 +215,6 @@ export default function Footer() {
                           href="https://travelski.com"
                           rel="noopener noreferrer"
                           target="_blank"
-                          alt="Travelski"
                         >
                           Travelski
                         </a>
@@ -240,7 +231,6 @@ export default function Footer() {
                           href="https://mmv.fr"
                           rel="noopener noreferrer"
                           target="_blank"
-                          alt="MMV"
                         >
                           MMV
                         </a>
@@ -261,7 +251,6 @@ export default function Footer() {
                 href="https://media.mountaincollection.com/upload/mentions-legales.pdf"
                 rel="noopener noreferrer"
                 target="_blank"
-                alt="Mentions légales"
               >
                 <button
                   type="button"
@@ -272,7 +261,7 @@ export default function Footer() {
               </a>
             </div>
             <div>
-              <Link href="/fr/cgv" alt="Conditions générales de ventes">
+              <Link href="/fr/cgv">
                 <button
                   type="button"
                   className="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors ring-neutral justify-center px-2.5 text-sm gap-1.5 text-default active:bg-elevated focus:outline-none focus-visible:bg-elevated hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent hover:bg-transparent py-0"
@@ -284,7 +273,7 @@ export default function Footer() {
               </Link>
             </div>
             <div>
-              <Link href="/fr/confidentialite" alt="Confidentialité">
+              <Link href="/fr/confidentialite">
                 <button
                   type="button"
                   className="rounded-md font-medium inline-flex items-center disabled:cursor-not-allowed aria-disabled:cursor-not-allowed disabled:opacity-75 aria-disabled:opacity-75 transition-colors ring-neutral justify-center px-2.5 text-sm gap-1.5 text-default active:bg-elevated focus:outline-none focus-visible:bg-elevated hover:disabled:bg-transparent dark:hover:disabled:bg-transparent hover:aria-disabled:bg-transparent dark:hover:aria-disabled:bg-transparent hover:bg-transparent py-0"
@@ -294,11 +283,10 @@ export default function Footer() {
               </Link>
             </div>
             <div>
-              <a
+              <Link
                 href="javascript:Didomi.preferences.show();"
                 rel="noopener noreferrer"
                 target="_self"
-                alt="Gestion des cookies"
               >
                 <button
                   type="button"

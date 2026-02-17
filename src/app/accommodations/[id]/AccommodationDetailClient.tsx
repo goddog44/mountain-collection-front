@@ -307,7 +307,7 @@ export default function AccommodationDetailClient({
                     {amenities.slice(0, 6).map((eq) => (
                       <div key={eq.id} className="flex items-center gap-3 text-sm text-gray-700">
                         <Trees className="h-5 w-5 text-gray-400 shrink-0" />
-                        {eq.label ?? eq.id}
+                        {eq.name ?? eq.id}
                       </div>
                     ))}
                   </div>

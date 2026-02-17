@@ -11,10 +11,11 @@ import SearchBarMode, { ViewMode } from "../components/ui/searchBarMode";
 import HomeContentSections from "../components/HomeSections";
 
 
+
 export default function Home() {
   const featured = accommodations.slice(0, 6);
 
-  const [viewMode, setViewMode] = useState<ViewMode>("liste");
+  const [viewMode, setViewMode] = useState<ViewMode>("Séjourner");
 
   return (
     <div className="flex min-h-screen flex-col">
