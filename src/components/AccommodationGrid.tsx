@@ -116,7 +116,7 @@ export default function AccommodationGrid({
   accommodations,
 }: AccommodationGridProps) {
   const { filters, sort, setSort } = useFilters();
-  const [viewMode, setViewMode] = useState<ViewMode>("liste");
+  const [viewMode, setViewMode] = useState<ViewMode>("mosaique");
 
   const filtered = useMemo(
     () => filterAccommodations(accommodations, filters),
