@@ -50,7 +50,7 @@ export default function ImageCarousel({
       />
       {images.length > 1 && (
         <>
-          <button
+          {/* <button
             type="button"
             onClick={goPrev}
             className="absolute left-2 top-1/2 z-10 -translate-y-1/2 rounded-full bg-white/90 p-2 shadow-md transition-opacity hover:bg-white"
@@ -65,9 +65,9 @@ export default function ImageCarousel({
             aria-label="Image suivante"
           >
             <ChevronRight className="h-5 w-5" />
-          </button>
+          </button> */}
           <div className="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5">
-            {images.map((_, i) => (
+            {/* {images.map((_, i) => (
               <button
                 key={i}
                 type="button"
@@ -81,7 +81,7 @@ export default function ImageCarousel({
                 }`}
                 aria-label={`Aller à l'image ${i + 1}`}
               />
-            ))}
+            ))} */}
           </div>
         </>
       )}

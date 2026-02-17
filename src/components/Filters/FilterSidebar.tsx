@@ -1,7 +1,7 @@
 "use client";
 
 import { useFilters } from "@/store/useFilters";
-import { X, ChevronDown, Euro } from "lucide-react";
+import { ChevronDown, Euro, X } from "lucide-react";
 import { useState } from "react";
 
 function FilterCheckboxRow({
@@ -34,7 +34,7 @@ function FilterCheckboxRow({
             aria-label={label}
             disabled={disabled}
             onClick={() => !disabled && onChange(!checked)}
-            className={`size-4 overflow-hidden rounded-sm ring-2 ring-inset focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ts-mid-blue)] ${checked ? "bg-[var(--ts-mid-blue)] ring-[var(--ts-mid-blue)]" : "ring-gray-300"} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
+            className={`size-4 overflow-hidden rounded-sm ring-1 ring-inset focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--ts-mid-dark)] ${checked ? "bg-[var(--ts-mid-blue)] ring-[var(--ts-mid-blue)]" : "ring-[var(--ts-mid-dark)]"} ${disabled ? "cursor-not-allowed" : "cursor-pointer"}`}
           />
         </div>
         <div className="ms-2 w-full text-sm">
@@ -46,7 +46,7 @@ function FilterCheckboxRow({
             {label}
           </label>
           {desc && (
-            <p className="font-medium text-[var(--ts-mid-grey)]">{desc}</p>
+            <p className="font-medium text-[var(--ts-mid-blue-dark)]">{desc}</p>
           )}
         </div>
       </div>
@@ -193,7 +193,7 @@ export default function FilterSidebar() {
   return (
     <aside
       id="facets"
-      className="max-md:mb-24 w-full rounded-t-lg bg-white md:w-[250px] md:shrink-0"
+      className="max-md:mb-24 w-full rounded-t-lg bg-white md:w-[220px] md:shrink-0"
     >
       <div className="mb-4 flex flex-wrap gap-2">
         {filters.stations.map((s) => (
@@ -213,10 +213,10 @@ export default function FilterSidebar() {
         ))}
       </div>
 
-      <div className="max-md:px-4">
+      <div className="max-md:mb-24 w-[200px]">
         {/* Top critères */}
-        <div className="mb-4">
-          <p className="mb-4 text-base font-semibold">Top critères</p>
+        <div className="mb-4 max-md:px-4">
+          <p className="h3 mb-4 mt-[-15] font-bold tracking-tight">Top critères</p>
           <div className="mb-4">
             {TOP_CRITERIA.map(({ id, label, desc, count }) => (
               <FilterCheckboxRow
@@ -240,8 +240,8 @@ export default function FilterSidebar() {
         </div>
 
         {/* Chambres et lits */}
-        <div className="mb-4">
-          <p className="mb-4 text-base font-semibold">Chambres et lits</p>
+        <div className="mb-4 max-md:px-4">
+          <p className="h3 mb-4 font-bold tracking-tight">Chambres et lits</p>
           <div className="mb-4">
             <RadioGroup
               label="Chambre"
@@ -277,7 +277,7 @@ export default function FilterSidebar() {
 
         {/* Emplacement */}
         <div className="mb-4">
-          <p className="mb-4 text-base font-semibold">Emplacement</p>
+          <p className="h3 mb-4 font-bold tracking-tight">Emplacement</p>
           <div className="mb-4">
             {EMPLACEMENT.map(({ id, label, desc, count }) => (
               <FilterCheckboxRow
@@ -295,8 +295,8 @@ export default function FilterSidebar() {
         </div>
 
         {/* Types d'hébergement */}
-        <div className="mb-4">
-          <p className="mb-4 text-base font-semibold">Types d&apos;hébergement</p>
+        <div className="mb-4 max-md:px-4">
+          <p className="h3 mb-4 font-bold tracking-tight">Types d&apos;hébergement</p>
           <div className="mb-4">
             {TYPES_HEBERGEMENT.map(({ id, label, count }) => (
               <FilterCheckboxRow
@@ -319,8 +319,8 @@ export default function FilterSidebar() {
         </div>
 
         {/* Niveau de confort */}
-        <div className="mb-4">
-          <p className="mb-4 text-base font-semibold">Niveau de confort</p>
+        <div className="mb-4 max-md:px-4">
+          <p className="h3 mb-4 font-bold tracking-tight">Niveau de confort</p>
           <div className="mb-4">
             {NIVEAU_CONFORT.map(({ id, label, count, disabled }) => (
               <FilterCheckboxRow
@@ -344,8 +344,8 @@ export default function FilterSidebar() {
         </div>
 
         {/* Type de station */}
-        <div className="mb-4">
-          <p className="mb-4 text-base font-semibold">Type de station</p>
+        <div className="mb-4 max-md:px-4">
+          <p className="h3 mb-4 font-bold tracking-tight">Type de station</p>
           <div className="mb-4">
             {TYPE_STATION.map(({ id, label, count }) => (
               <FilterCheckboxRow
@@ -368,8 +368,8 @@ export default function FilterSidebar() {
         </div>
 
         {/* Altitude */}
-        <div className="mb-4">
-          <p className="mb-4 text-base font-semibold">Altitude</p>
+        <div className="mb-4 max-md:px-4">
+          <p className="h3 mb-4 font-bold tracking-tight">Altitude</p>
           <div className="mb-4">
             {ALTITUDE_OPTIONS.map(({ id, label, desc, count }) => (
               <FilterCheckboxRow
@@ -393,8 +393,8 @@ export default function FilterSidebar() {
         </div>
 
         {/* Stations, quartiers */}
-        <div className="mb-4">
-          <p className="mb-4 text-base font-semibold">Stations, quartiers</p>
+        <div className="mb-4 max-md:px-4">
+          <p className="h3 mb-4 font-bold tracking-tight">Stations, quartiers</p>
           <div className="mb-4">
             {(stationsExpanded ? STATIONS : STATIONS.slice(0, 5)).map(
               (station) => (
@@ -429,8 +429,8 @@ export default function FilterSidebar() {
         </div>
 
         {/* Intérieur */}
-        <div className="mb-4">
-          <p className="mb-4 text-base font-semibold">Intérieur</p>
+        <div className="mb-4 max-md:px-4">
+          <p className="h3 mb-4 font-bold tracking-tight">Intérieur</p>
           <div className="mb-4">
             {(interieurExpanded ? INTERIEUR : INTERIEUR.slice(0, 5)).map(
               ({ id, label, count }) => (
@@ -465,8 +465,8 @@ export default function FilterSidebar() {
         </div>
 
         {/* Extérieur */}
-        <div className="mb-4">
-          <p className="mb-4 text-base font-semibold">Extérieur</p>
+        <div className="mb-4 max-md:px-4">
+          <p className="h3 mb-4 font-bold tracking-tight">Extérieur</p>
           <div className="mb-4">
             {EXTERIEUR.map(({ id, label, count }) => (
               <FilterCheckboxRow
@@ -489,8 +489,8 @@ export default function FilterSidebar() {
         </div>
 
         {/* Service */}
-        <div className="mb-4">
-          <p className="mb-4 text-base font-semibold">Service</p>
+        <div className="mb-4 max-md:px-4">
+          <p className="h3 mb-4 font-bold tracking-tight">Service</p>
           <div className="mb-4">
             {SERVICE.map(({ id, label, count }) => (
               <FilterCheckboxRow
@@ -513,8 +513,8 @@ export default function FilterSidebar() {
         </div>
 
         {/* Très demandés */}
-        <div className="mb-4">
-          <p className="mb-4 text-base font-semibold">Très demandés</p>
+        <div className="mb-4 max-md:px-4">
+          <p className="h3 mb-4 font-bold tracking-tight">Très demandés</p>
           <div className="mb-4">
             {TRES_DEMANDES.map(({ id, label, count }) => (
               <FilterCheckboxRow

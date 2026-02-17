@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import AccommodationCard from "./AccommodationCard";
 import { useFilters } from "@/store/useFilters";
 import type { Accommodation } from "@/lib/types";
@@ -103,17 +103,20 @@ function filterAccommodations(
 }
 
 const SORT_OPTIONS: { value: SortOption; label: string }[] = [
-  { value: "rating_desc", label: "Meilleure note" },
+  { value: "rating_desc", label: "Les plus populaires" },
   { value: "price_asc", label: "Prix croissant" },
   { value: "price_desc", label: "Prix décroissant" },
-  { value: "capacity", label: "Capacité" },
-  { value: "surface", label: "Superficie" },
+  // { value: "capacity", label: "Capacité" },
+  // { value: "surface", label: "Superficie" },
 ];
+
+type ViewMode = "liste" | "mosaique";
 
 export default function AccommodationGrid({
   accommodations,
 }: AccommodationGridProps) {
   const { filters, sort, setSort } = useFilters();
+  const [viewMode, setViewMode] = useState<ViewMode>("mosaique");
 
   const filtered = useMemo(
     () => filterAccommodations(accommodations, filters),
@@ -126,37 +129,66 @@ export default function AccommodationGrid({
 
   return (
     <div className="flex flex-1 flex-col">
-      <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
-        <p className="text-sm text-[var(--ts-mid-grey)]">
-          <span className="font-semibold text-gray-900">{sorted.length}</span>{" "}
-          hébergement{sorted.length !== 1 ? "s" : ""} trouvé
+      <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <p className="font-bold flex-grow">
+          <span className="font-bold flex-grow">{sorted.length}</span>{" "}
+          résultat{sorted.length !== 1 ? "s" : ""} trouvé
           {sorted.length !== 1 ? "s" : ""}
         </p>
-        <div className="flex items-center gap-2">
-          <label htmlFor="sort" className="text-sm text-[var(--ts-mid-grey)]">
-            Trier par
-          </label>
-          <div className="relative">
-            <select
-              id="sort"
-              value={sort}
-              onChange={(e) => setSort(e.target.value as SortOption)}
-              className="appearance-none rounded-lg border border-gray-300 bg-white py-2 pl-3 pr-8 text-sm focus:border-[var(--ts-mid-blue)] focus:outline-none focus:ring-1 focus:ring-[var(--ts-mid-blue)]"
+        <div className="flex items-center gap-2 ">
+          <div className="flex items-center gap-2">
+           
+            <div className="relative">
+              <select
+                id="sort"
+                value={sort}
+                onChange={(e) => setSort(e.target.value as SortOption)}
+                className="appearance-none font-semibold rounded-md border border-grey-300 bg-white py-2 pl-3 pr-8 text-sm focus:border-[var(--ts-mid-blue)] focus:outline-none focus:ring-1 focus:ring-[var(--ts-mid-blue)]"
+              >
+                {SORT_OPTIONS.map((opt) => (
+                  <option key={opt.value} value={opt.value}><span>Trier par : </span>
+                    {opt.label}
+                  </option>
+                ))}
+              </select>
+              <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+            </div>
+          </div>
+
+          <div className="px-0.5 py-0.5 rounded-md bg-[#C5D5E4] border border-gray-300 overflow-hidden">
+            <button
+              onClick={() => setViewMode("liste")}
+              className={`px-8 py-2 rounded-md text-sm font-medium transition-colors ${
+                viewMode === "liste"
+                 ? "bg-white text-gray-700 hover:bg-gray-50"
+                  : "bg-[#C5D5E4] text-gray-900"
+              }`}
             >
-              {SORT_OPTIONS.map((opt) => (
-                <option key={opt.value} value={opt.value}>
-                  {opt.label}
-                </option>
-              ))}
-            </select>
-            <ChevronDown className="pointer-events-none absolute right-2 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-500" />
+              Liste
+            </button>
+            <button
+              onClick={() => setViewMode("mosaique")}
+              className={`px-4 py-2 rounded-md text-sm font-medium transition-colors border-l border-gray-300 ${
+                viewMode === "mosaique"
+                ? "bg-white text-gray-700 hover:bg-gray-50"
+                : "bg-[#C5D5E4] text-gray-900"
+              }`}
+            >
+              Mosaïque
+            </button>
           </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+      <div
+        className={`grid gap-6 mb-8 ${
+          viewMode === "mosaique"
+            ? "grid-cols-1 md:grid-cols-2 xl:grid-cols-3"
+            : "grid-cols-1"
+        }`}
+      >
         {sorted.map((acc) => (
-          <AccommodationCard key={acc.id} accommodation={acc} />
+          <AccommodationCard key={acc.id} accommodation={acc} viewMode={viewMode} />
         ))}
       </div>
 
