@@ -294,7 +294,7 @@ export default function Footer() {
                 >
                   <span className="truncate mid-grey font-medium text-xs">Gestion des cookies</span>
                 </button>
-              </a>
+              </Link>
             </div>
           </div>
         </div>
