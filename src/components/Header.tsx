@@ -80,7 +80,7 @@ export default function Header() {
 
           {/* Homepage not-scrolled: show MainNav */}
           {isHomePage && !isScrolled && (
-            <MainNav variant="transparent" />
+            <MainNav />
           )}
 
           {/* Homepage scrolled: show compact SearchBar */}
@@ -105,7 +105,6 @@ export default function Header() {
           </button>
 
           <UserMenu
-            variant={isHomePage && !isScrolled ? "transparent" : "default"}
           />
         </div>
 
