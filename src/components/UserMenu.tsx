@@ -331,7 +331,7 @@ export default function UserMenu() {
         <button
           type="button"
           onClick={() => setDropdownOpen((o) => !o)}
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-[var(--ts-mid-blue)]/30 text-white transition-colors hover:opacity-90"
+          className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black transition-colors hover:opacity-90"
           aria-label="Mon compte"
           aria-expanded={dropdownOpen}
           aria-haspopup="true"

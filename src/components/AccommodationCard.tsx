@@ -25,7 +25,6 @@ const amenityLabels: Record<string, string> = {
   evasion: "Evasion",
 };
 
-
 function getAmenityLabel(id: string): string {
   return amenityLabels[id] ?? id;
 }
@@ -75,7 +74,7 @@ export default function AccommodationCard({
   if (viewMode === "liste") {
     return (
       <Link
-        href={`/search?id=${id}`}
+        href={`/accommodations/${id}`}
         className="group flex flex-col md:flex-row overflow-hidden rounded-[12px] border-0 bg-[var(--ts-white)] shadow-[0_0_12px_rgba(0,0,0,0.08)] transition-all duration-200 hover:shadow-[0_0_16px_rgba(0,0,0,0.12)]"
       >
         <div className="relative md:w-[280px] lg:w-[320px] flex-shrink-0">
@@ -152,10 +151,10 @@ export default function AccommodationCard({
     );
   }
 
-  // Mode Mosaïque - Layout vertical (original)
+  // Mode Mosaïque - Layout vertical
   return (
     <Link
-      href={`/search?id=${id}`}
+      href={`/accommodations/${id}`}
       className="group flex flex-col overflow-hidden rounded-[12px] border-0 bg-[var(--ts-white)] shadow-[0_0_12px_rgba(0,0,0,0.08)] transition-all duration-200 hover:shadow-[0_0_16px_rgba(0,0,0,0.12)]"
     >
       <div className="relative">

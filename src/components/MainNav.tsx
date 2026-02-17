@@ -217,17 +217,18 @@ export default function MainNav() {
         className={[
           "flex items-center gap-1 rounded-md px-1 py-1 text-sm font-medium transition-colors",
           isOpen
-            ? "text-gray-900 underline underline-offset-4"
-            : "text-gray-600 hover:text-gray-900",
+            ? "text-white underline underline-offset-4"
+            : "text-white/90 hover:text-white",
         ].join(" ")}
       >
         {label}
         {isOpen
-          ? <ChevronUp className="h-4 w-4 shrink-0" />
-          : <ChevronDown className="h-4 w-4 shrink-0" />}
+          ? <ChevronUp className="h-4 w-4 shrink-0 text-white" />
+          : <ChevronDown className="h-4 w-4 shrink-0 text-white" />}
       </button>
     );
   };
+  
 
   // Mega panel position — destinations aligns left of nav, agences & offres too
   const megaPositions: Record<string, string> = {
