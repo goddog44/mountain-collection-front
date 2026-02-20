@@ -6,6 +6,9 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import type { Accommodation } from "@/lib/types";
 import { formatPrice } from "@/lib/utils";
+import { useAuthStore } from "@/store/useAuthStore";
+import { fetchApi } from "@/lib/api";
+import PaymentModal from "@/components/PaymentModal";
 import {
   Heart,
   Camera,
@@ -20,6 +23,8 @@ import {
   Building2,
   Trees,
   ArrowLeft,
+  X,
+  CreditCard,
 } from "lucide-react";
 
 // ─── Calendar Modal ────────────────────────────────────────────────────────────
@@ -89,8 +94,8 @@ function CalendarModal({ onClose }: { onClose: () => void }) {
                           start || end
                             ? "rounded-full bg-[#1a2e4a] text-white"
                             : inRange
-                            ? "bg-[#1a2e4a]/15 text-gray-800"
-                            : "rounded-full text-gray-700 hover:bg-gray-100",
+                              ? "bg-[#1a2e4a]/15 text-gray-800"
+                              : "rounded-full text-gray-700 hover:bg-gray-100",
                         ].join(" ")}
                       >
                         {day}
@@ -180,6 +185,15 @@ export default function AccommodationDetailClient({
   const [showParticipants, setShowParticipants] = useState(false);
   const [showFullDesc, setShowFullDesc] = useState(false);
   const [isFavorite, setIsFavorite] = useState(accommodation.isFavorite);
+  const [showAlbum, setShowAlbum] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+  const [selectedServices, setSelectedServices] = useState<string[]>([]);
+  const [selectedPackage, setSelectedPackage] = useState<"hebergement" | "ski" | "all">("hebergement");
+  const [isBooking, setIsBooking] = useState(false);
+  const [bookingStatus, setBookingStatus] = useState<"idle" | "success" | "error">("idle");
+  const [bookingErrorMessage, setBookingErrorMessage] = useState("");
+
+  const { isAuthenticated } = useAuthStore();
 
   const {
     id,
@@ -206,13 +220,150 @@ export default function AccommodationDetailClient({
     accommodation.type === "studio"
       ? "Studio"
       : accommodation.type === "chalet"
-      ? "Chalet"
-      : "Appartement";
+        ? "Chalet"
+        : "Appartement";
+
+  const PACKAGE_PRICES = {
+    hebergement: 0,
+    ski: 160,
+    all: 290
+  };
+
+  const AVAILABLE_SERVICES = [
+    { id: "cat1", category: "Parking", items: [{ id: "srv1", label: "Emplacement parking couvert", price: 95 }] },
+    { id: "cat2", category: "Entretien et propreté", items: [{ id: "srv2", label: "Ménage fin de séjour", price: 56 }] },
+    { id: "cat3", category: "Linge de maison", items: [{ id: "srv3", label: "Kit linge de lit 1 pers", price: 17 }, { id: "srv4", label: "Kit linge de lit 2 pers", price: 20 }, { id: "srv5", label: "Kit toilette", price: 9 }] },
+    { id: "cat4", category: "Équipements supplémentaires", items: [{ id: "srv6", label: "Chaise haute bébé", price: 22 }, { id: "srv7", label: "Lit parapluie pour bébé", price: 22 }] },
+    { id: "cat5", category: "Autres services", items: [{ id: "srv8", label: "Supplément animal", price: 36 }] },
+  ];
+
+  const calculateServicesTotal = () => {
+    let total = 0;
+    AVAILABLE_SERVICES.forEach(cat => {
+      cat.items.forEach(item => {
+        if (selectedServices.includes(item.id)) total += item.price;
+      });
+    });
+    return total;
+  };
+
+  const finalTotalPrice = price.amount + 24 + calculateServicesTotal() + PACKAGE_PRICES[selectedPackage];
+
+  const toggleService = (id: string) => {
+    if (selectedServices.includes(id)) {
+      setSelectedServices(prev => prev.filter(s => s !== id));
+    } else {
+      setSelectedServices(prev => [...prev, id]);
+    }
+  };
+
+  const handleBookingClick = () => {
+    if (!isAuthenticated) {
+      alert("Veuillez vous connecter via le menu en haut à droite pour réserver.");
+      return;
+    }
+    setShowPayment(true);
+  };
+
+  const handleConfirmPayment = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsBooking(true);
+    setBookingStatus("idle");
+    setBookingErrorMessage("");
+
+    try {
+      await fetchApi("/bookings/", {
+        method: "POST",
+        requireAuth: true,
+        body: JSON.stringify({
+          accommodation_id: id,
+          check_in: "2026-04-11",
+          check_out: "2026-04-18",
+          adults: 2,
+          children: 0,
+          total_price: finalTotalPrice,
+        })
+      });
+
+      setBookingStatus("success");
+    } catch (e: any) {
+      setBookingStatus("error");
+      setBookingErrorMessage(e.message || "Une erreur est survenue lors de la réservation.");
+    } finally {
+      setIsBooking(false);
+    }
+  };
 
   return (
     <>
       {showCalendar && <CalendarModal onClose={() => setShowCalendar(false)} />}
       {showParticipants && <ParticipantsModal onClose={() => setShowParticipants(false)} />}
+
+      {/* Success/Error Booking Modals */}
+      {bookingStatus === "success" && (
+        <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-[#dce8f5]/80 backdrop-blur-sm">
+          <div className="w-full max-w-sm rounded-2xl bg-white p-8 shadow-xl text-center">
+            <CheckCircle className="mx-auto mb-4 h-12 w-12 text-green-500" />
+            <h2 className="mb-2 text-xl font-bold text-gray-900">Réservation confirmée !</h2>
+            <p className="mb-6 text-sm text-gray-600">
+              Votre séjour au ski est bien enregistré. Retrouvez toutes les informations dans votre espace compte.
+            </p>
+            <button
+              onClick={() => setBookingStatus("idle")}
+              className="w-full rounded-xl bg-[#1a2e4a] py-3 text-sm font-bold text-white transition-opacity hover:opacity-90"
+            >
+              Voir ma réservation
+            </button>
+          </div>
+        </div>
+      )}
+
+      {bookingStatus === "error" && (
+        <div className="fixed inset-0 z-[2000] flex items-center justify-center bg-black/40 backdrop-blur-sm">
+          <div className="w-1/2 max-w-sm rounded-md bg-white p-8 shadow-xl text-center">
+            <XCircle className="mx-auto mb-4 h-12 w-12 text-red-500" />
+            <h2 className="mb-2 text-xl font-bold text-gray-900">Oops !</h2>
+            <p className="mb-6 text-sm text-gray-600">
+              {bookingErrorMessage}
+            </p>
+            <button
+              onClick={() => setBookingStatus("idle")}
+              className="w-full rounded-xl border border-gray-300 py-3 text-sm font-bold text-gray-700 hover:bg-gray-50 transition"
+            >
+              Fermer
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* Album Modal */}
+      {showAlbum && (
+        <div className="fixed inset-0 z-[2000] flex flex-col bg-black/95 backdrop-blur-md">
+          <div className="flex items-center justify-between p-4 flex-shrink-0">
+            <span className="text-white font-medium pl-2">{name} - Galerie Photos</span>
+            <button onClick={() => setShowAlbum(false)} className="rounded-full p-2 text-white hover:bg-white/20 transition">
+              <X className="h-6 w-6" />
+            </button>
+          </div>
+          <div className="flex-1 overflow-y-auto p-4 flex flex-col items-center gap-6 pb-20">
+            {images.map((img, idx) => (
+              <img key={idx} src={img} alt={`${name} ${idx + 1}`} className="max-w-[900px] w-full rounded-lg shadow-xl" />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {showPayment && !["success", "error"].includes(bookingStatus) && (
+        <PaymentModal
+          finalTotalPrice={finalTotalPrice}
+          price={price}
+          selectedPackage={selectedPackage}
+          calculateServicesTotal={calculateServicesTotal}
+          isBooking={isBooking}
+          onClose={() => setShowPayment(false)}
+          onConfirm={handleConfirmPayment}
+        />
+      )}
 
       <div className="flex min-h-screen flex-col">
         <Header />
@@ -245,7 +396,7 @@ export default function AccommodationDetailClient({
             <div className="mb-8 grid h-[340px] grid-cols-3 gap-2 overflow-hidden rounded-2xl">
               <div className="col-span-1 row-span-2 overflow-hidden bg-gray-200">
                 {images[0] ? (
-                  <img src={images[0]} alt={name} className="h-full w-full object-cover" />
+                  <img src={images[0]} onClick={() => setShowAlbum(true)} alt={name} className="h-full w-full object-cover cursor-pointer hover:opacity-90 transition" />
                 ) : (
                   <div className="h-full w-full bg-gradient-to-br from-gray-300 to-gray-400" />
                 )}
@@ -253,12 +404,12 @@ export default function AccommodationDetailClient({
               {[1, 2, 3, 4].map((i) => (
                 <div key={i} className="relative overflow-hidden bg-gray-200">
                   {images[i] ? (
-                    <img src={images[i]} alt={`${name} ${i + 1}`} className="h-full w-full object-cover" />
+                    <img src={images[i]} onClick={() => setShowAlbum(true)} alt={`${name} ${i + 1}`} className="h-full w-full object-cover cursor-pointer hover:opacity-90 transition" />
                   ) : (
                     <div className="h-full w-full bg-gradient-to-br from-gray-200 to-gray-300" />
                   )}
                   {i === 4 && (
-                    <button className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-xs font-semibold text-gray-800 shadow hover:bg-gray-50 transition">
+                    <button onClick={() => setShowAlbum(true)} className="absolute bottom-3 right-3 flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-xs font-semibold text-gray-800 shadow hover:bg-gray-50 transition">
                       <Camera className="h-4 w-4" />
                       Voir toutes les photos
                     </button>
@@ -321,19 +472,21 @@ export default function AccommodationDetailClient({
                 <div>
                   <h3 className="mb-5 text-lg font-bold text-gray-900">Services disponibles</h3>
                   <div className="space-y-3">
-                    {[
-                      { category: "Parking", items: [{ label: "Emplacement parking couvert", price: "95 €" }, { label: "Garage-Box-Parking", price: "95 €" }] },
-                      { category: "Entretien et propreté", items: [{ label: "Ménage fin de séjour", price: "56 €" }] },
-                      { category: "Linge de maison", items: [{ label: "Kit linge de lit 1 personne", price: "17 €" }, { label: "Kit linge de lit 2 personnes", price: "20 €" }, { label: "Kit toilette (drap de bain+serviette)", price: "9 €" }] },
-                      { category: "Équipements supplémentaires", items: [{ label: "Chaise haute bébé", price: "22 €" }, { label: "Lit parapluie pour bébé", price: "22 €" }] },
-                      { category: "Autres services", items: [{ label: "Supplément animal", price: "36 €" }] },
-                    ].map((group) => (
+                    {AVAILABLE_SERVICES.map((group) => (
                       <div key={group.category} className="rounded-xl border border-gray-200 p-4">
                         <p className="mb-2 text-sm font-bold text-gray-900">{group.category}</p>
                         {group.items.map((item) => (
-                          <div key={item.label} className="flex justify-between py-1.5 text-sm text-gray-600">
-                            <span>{item.label}</span>
-                            <span className="font-medium text-gray-800">{item.price}</span>
+                          <div key={item.id} className="flex items-center justify-between py-1.5 text-sm text-gray-600">
+                            <label className="flex items-center gap-2 cursor-pointer">
+                              <input
+                                type="checkbox"
+                                checked={selectedServices.includes(item.id)}
+                                onChange={() => toggleService(item.id)}
+                                className="h-4 w-4 rounded border-gray-300 text-[#1a2e4a] focus:ring-[#1a2e4a]"
+                              />
+                              <span className="select-none">{item.label}</span>
+                            </label>
+                            <span className="font-medium text-gray-800">{item.price} €</span>
                           </div>
                         ))}
                       </div>
@@ -355,56 +508,44 @@ export default function AccommodationDetailClient({
                   </p>
                   <p className="mb-3 flex items-center gap-2 text-sm font-semibold text-gray-800">⛷ Choisissez votre formule</p>
                   <div className="space-y-3">
-                    <div className="rounded-xl border border-[#1a2e4a] bg-gray-50 p-4">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <p className="text-sm font-bold text-gray-900">Formule hébergement</p>
-                          <div className="mt-1.5 space-y-0.5">
-                            {["Hébergement 7 nuits", "Forfait 6 jours", "Matériel de ski 6 jours"].map((d, i) => (
-                              <div key={d} className="flex items-center gap-2 text-xs">
-                                {i === 0 ? <CheckCircle className="h-3.5 w-3.5 text-gray-500" /> : <XCircle className="h-3.5 w-3.5 text-gray-300" />}
-                                <span className={i === 0 ? "text-gray-600" : "text-gray-400 line-through"}>{d}</span>
+                    {[
+                      { id: "hebergement", title: "Formule hébergement", desc: ["Hébergement 7 nuits", "Forfait 6 jours", "Matériel de ski 6 jours"], activeChecks: [0], price: 0 },
+                      { id: "ski", title: "Formule ski", desc: ["Hébergement 7 nuits", "Forfait 6 jours", "Matériel de ski 6 jours"], activeChecks: [0, 1], price: PACKAGE_PRICES.ski },
+                      { id: "all", title: "Formule tout compris", desc: ["Hébergement 7 nuits", "Forfait 6 jours", "Matériel de ski 6 jours"], activeChecks: [0, 1, 2], price: PACKAGE_PRICES.all },
+                    ].map((pkg) => {
+                      const isActive = selectedPackage === pkg.id;
+                      return (
+                        <div
+                          key={pkg.id}
+                          onClick={() => setSelectedPackage(pkg.id as any)}
+                          className={`cursor-pointer rounded-xl border relative p-4 transition ${isActive ? "border-[#1a2e4a] bg-blue-50/50" : "border-gray-200 bg-gray-50 hover:border-[#1a2e4a] hover:bg-white"}`}
+                        >
+                          <div className="flex items-start justify-between">
+                            <div>
+                              <p className="text-sm font-bold text-gray-900">{pkg.title}</p>
+                              <div className="mt-1.5 space-y-0.5">
+                                {pkg.desc.map((d, i) => (
+                                  <div key={d} className="flex items-center gap-2 text-xs">
+                                    {pkg.activeChecks.includes(i) ? <CheckCircle className="h-3.5 w-3.5 text-blue-600" /> : <XCircle className="h-3.5 w-3.5 text-gray-300" />}
+                                    <span className={pkg.activeChecks.includes(i) ? "text-gray-700 font-medium" : "text-gray-400 line-through"}>{d}</span>
+                                  </div>
+                                ))}
                               </div>
-                            ))}
-                          </div>
-                        </div>
-                        <div className="text-right">
-                          {price.originalAmount && (
-                            <div className="flex items-baseline gap-1.5 justify-end">
-                              <span className="text-sm text-gray-400 line-through">{formatPrice(price.originalAmount)}</span>
-                              <span className="text-lg font-bold text-gray-900">{formatPrice(price.amount)}</span>
                             </div>
-                          )}
-                          {discountValue?.value && (
-                            <p className="text-xs font-semibold text-green-600">Vous économisez {discountValue.value}</p>
-                          )}
-                          <button className="mt-2 rounded-lg bg-[#1a2e4a] px-4 py-1.5 text-xs font-semibold text-white hover:opacity-90 transition">
-                            Sélectionné
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                    {["Formule ski", "Formule tout compris"].map((label) => (
-                      <div key={label} className="rounded-xl border border-gray-200 bg-gray-50 p-4 opacity-70">
-                        <div className="flex items-start justify-between">
-                          <div>
-                            <p className="text-sm font-semibold text-gray-400">{label}</p>
-                            <div className="mt-1.5 space-y-0.5">
-                              {["Hébergement 7 nuits", "Forfait 6 jours", "Matériel de ski 6 jours"].map((d) => (
-                                <div key={d} className="flex items-center gap-2 text-xs">
-                                  <XCircle className="h-3.5 w-3.5 text-gray-300" />
-                                  <span className="text-gray-400 line-through">{d}</span>
-                                </div>
-                              ))}
+                            <div className="text-right">
+                              {pkg.price > 0 && (
+                                <p className="text-sm font-bold text-gray-900">+{pkg.price} €</p>
+                              )}
+                              {isActive && (
+                                <button className="mt-2 rounded-lg bg-[#1a2e4a] px-4 py-1.5 text-xs font-semibold text-white transition pointer-events-none">
+                                  Sélectionné
+                                </button>
+                              )}
                             </div>
                           </div>
-                          <div className="text-right">
-                            <p className="text-xs font-semibold text-red-500">non disponible</p>
-                            <p className="text-xs text-red-500">pour ces dates</p>
-                          </div>
                         </div>
-                      </div>
-                    ))}
+                      );
+                    })}
                   </div>
                   <hr className="mt-6 border-gray-200" />
                 </div>
@@ -444,14 +585,16 @@ export default function AccommodationDetailClient({
                 {/* Localisation */}
                 <div>
                   <h3 className="mb-4 text-lg font-bold text-gray-900">Localisation</h3>
-                  <div className="relative mb-5 h-[300px] overflow-hidden rounded-xl bg-gray-200">
-                    <div className="flex h-full items-center justify-center text-gray-400 text-sm">
-                      Carte OpenStreetMap — {location.station}
-                    </div>
-                    <label className="absolute bottom-3 left-3 flex items-center gap-1.5 rounded-lg bg-white px-3 py-2 text-xs font-medium text-gray-700 shadow cursor-pointer hover:bg-gray-50 transition">
-                      <input type="checkbox" className="h-3 w-3" />
-                      Afficher les pistes
-                    </label>
+                  <div className="relative mb-5 h-[300px] overflow-hidden rounded-xl bg-gray-200 group">
+                    <iframe
+                      width="100%"
+                      height="100%"
+                      style={{ border: 0 }}
+                      loading="lazy"
+                      allowFullScreen
+                      src={`https://maps.google.com/maps?q=${encodeURIComponent(location.station + " , France")}&t=&z=13&ie=UTF8&iwloc=&output=embed`}
+                    ></iframe>
+                    <div className="absolute inset-0 bg-transparent group-hover:pointer-events-none transition" />
                   </div>
                   <div className="flex items-center gap-2 mb-3">
                     <MapPin className="h-5 w-5 text-gray-700" />
@@ -561,7 +704,7 @@ export default function AccommodationDetailClient({
 
               {/* Colonne droite — sticky sidebar */}
               <div className="hidden lg:block">
-                <div className="sticky top-6 rounded-2xl border border-gray-200 bg-white p-6 shadow-lg">
+                <div className="top-6 rounded-md border border-gray-200 bg-white p-6 shadow-lg">
 
                   {/* Dates */}
                   <div className="mb-4 flex items-start justify-between">
@@ -600,30 +743,27 @@ export default function AccommodationDetailClient({
                   {/* Formules */}
                   <p className="mb-3 flex items-center gap-2 text-sm font-bold text-gray-900">⛷ Choisissez votre formule</p>
                   <div className="space-y-2">
-                    <div className="rounded-xl border border-[#1a2e4a] bg-gray-50 p-4">
-                      <div className="flex items-start justify-between">
-                        <div>
-                          <p className="text-sm font-bold text-gray-900">Formule hébergement</p>
-                          <p className="text-xs text-gray-500 mt-0.5">Hébergement</p>
-                        </div>
-                        <div className="text-right">
-                          <p className="text-lg font-bold text-gray-900">{formatPrice(price.amount)}</p>
-                          {price.originalAmount && (
-                            <p className="text-xs text-gray-400 line-through">{formatPrice(price.originalAmount)}</p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                    {["Formule ski", "Formule tout compris"].map((label) => (
-                      <div key={label} className="rounded-xl border border-gray-200 bg-gray-50 p-4 opacity-70">
+                    {[
+                      { id: "hebergement", title: "Formule hébergement" },
+                      { id: "ski", title: "Formule ski", price: PACKAGE_PRICES.ski },
+                      { id: "all", title: "Formule tout compris", price: PACKAGE_PRICES.all },
+                    ].map((pkg) => (
+                      <div
+                        key={pkg.id}
+                        onClick={() => setSelectedPackage(pkg.id as any)}
+                        className={`cursor-pointer rounded-xl border p-4 transition ${selectedPackage === pkg.id ? "border-[#1a2e4a] bg-blue-50/50" : "border-gray-200 bg-gray-50 hover:bg-white"}`}
+                      >
                         <div className="flex items-start justify-between">
                           <div>
-                            <p className="text-sm font-semibold text-gray-400">{label}</p>
-                            <p className="text-xs text-gray-400 mt-0.5">Hébergement</p>
+                            <p className="text-sm font-bold text-gray-900">{pkg.title}</p>
+                            {pkg.price && <p className="text-xs text-gray-500 mt-0.5">+{pkg.price} €</p>}
                           </div>
                           <div className="text-right">
-                            <p className="text-xs font-semibold text-red-500">non disponible</p>
-                            <p className="text-xs text-red-500">pour ces dates</p>
+                            {selectedPackage === pkg.id ? (
+                              <CheckCircle className="h-5 w-5 text-[#1a2e4a] inline" />
+                            ) : (
+                              <span className="text-sm text-gray-500 font-medium hover:text-[#1a2e4a]">Sélectionner</span>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -631,12 +771,27 @@ export default function AccommodationDetailClient({
                   </div>
 
                   {/* Réserver */}
-                  <button className="mt-5 w-full rounded-xl bg-[#1a2e4a] py-3.5 text-sm font-bold text-white hover:opacity-90 transition">
+                  <button
+                    onClick={handleBookingClick}
+                    className="mt-5 w-full flex items-center justify-center rounded-xl bg-[#1a2e4a] py-3.5 text-sm font-bold text-white hover:opacity-90 transition"
+                  >
                     Réserver
                   </button>
 
                   {/* Total */}
                   <div className="mt-4 space-y-2 border-t pt-4">
+                    {calculateServicesTotal() > 0 && (
+                      <div className="flex justify-between text-sm text-gray-600">
+                        <span>Services</span>
+                        <span className="font-medium text-gray-800">+{calculateServicesTotal()} €</span>
+                      </div>
+                    )}
+                    {selectedPackage !== "hebergement" && (
+                      <div className="flex justify-between text-sm text-gray-600">
+                        <span>Package</span>
+                        <span className="font-medium text-gray-800">+{PACKAGE_PRICES[selectedPackage]} €</span>
+                      </div>
+                    )}
                     <div className="flex justify-between text-sm text-gray-600">
                       <span>Frais de dossier</span>
                       <span className="font-medium text-gray-800">24 €</span>
@@ -652,7 +807,7 @@ export default function AccommodationDetailClient({
                             {discountValue.value}
                           </span>
                         )}
-                        <span className="text-xl font-bold text-gray-900">{formatPrice(price.amount)}</span>
+                        <span className="text-xl font-bold text-gray-900">{formatPrice(finalTotalPrice)}</span>
                       </div>
                     </div>
                     <div className="flex items-center justify-center gap-1.5 pt-1 text-xs text-gray-500">

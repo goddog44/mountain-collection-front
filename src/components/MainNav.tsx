@@ -116,8 +116,14 @@ function DestinationsMega() {
               {col.map((item) => (
                 <Link
                   key={item}
-                  href={`/${tab === "stations" ? "stations" : "domaines"}/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="border-b border-gray-100 py-2.5 text-sm text-gray-900 transition-colors last:border-0 hover:text-gray-90"
+                  href={`/${tab === "stations" ? "stations" : "domaines"}/${item
+                    .toLowerCase()
+                    .normalize("NFD")
+                    .replace(/[\u0300-\u036f]/g, "")
+                    .replace(/['']/g, "")
+                    .replace(/\s+/g, "-")
+                    .replace(/[^a-z0-9-]/g, "")}`}
+                  className="border-b border-gray-100 py-2.5 text-sm text-gray-900 transition-colors last:border-0 hover:text-[#1B3D6B]"
                 >
                   {item}
                 </Link>
