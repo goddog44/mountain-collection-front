@@ -1,7 +1,8 @@
 "use client";
 
-import { HelpCircle, User, X } from "lucide-react";
+import { HelpCircle, User, X, LogOut, ChevronDown } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useAuthStore } from "@/store/useAuthStore";
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -47,7 +48,14 @@ function AuthModal({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const { login, register: signup, isLoading, error, clearError } = useAuthStore();
+
   const isSignup = view === "signup";
+
+  // Reset errors on mount or view switch
+  useEffect(() => {
+    clearError();
+  }, [view, clearError]);
 
   // Close on backdrop click
   const backdropRef = useRef<HTMLDivElement>(null);
@@ -61,6 +69,22 @@ function AuthModal({
     document.addEventListener("keydown", handler);
     return () => document.removeEventListener("keydown", handler);
   }, [onClose]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !password) return;
+
+    try {
+      if (isSignup) {
+        await signup({ email, password });
+      } else {
+        await login({ email, password });
+      }
+      onClose(); // Close modal on success
+    } catch (err: any) {
+      // Error is handled in the store
+    }
+  };
 
   return (
     <div
@@ -134,7 +158,12 @@ function AuthModal({
         </div>
 
         {/* Form */}
-        <div className="flex flex-col gap-3">
+        <form className="flex flex-col gap-3" onSubmit={handleSubmit}>
+          {error && (
+            <div className="rounded border border-red-200 bg-red-50 p-3 text-sm text-red-600">
+              {typeof error === 'string' ? error : "Une erreur s'est produite"}
+            </div>
+          )}
           <input
             type="email"
             placeholder="Adresse e-mail"
@@ -142,6 +171,8 @@ function AuthModal({
             onChange={(e) => setEmail(e.target.value)}
             className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none placeholder:text-gray-400 focus:border-[var(--ts-mid-blue)] focus:ring-2 focus:ring-[var(--ts-mid-blue)]/20 transition-all"
             autoComplete="email"
+            required
+            disabled={isLoading}
           />
           <input
             type="password"
@@ -150,16 +181,21 @@ function AuthModal({
             onChange={(e) => setPassword(e.target.value)}
             className="w-full rounded-xl border border-gray-200 px-4 py-3 text-sm outline-none placeholder:text-gray-400 focus:border-[var(--ts-mid-blue)] focus:ring-2 focus:ring-[var(--ts-mid-blue)]/20 transition-all"
             autoComplete={isSignup ? "new-password" : "current-password"}
+            required
+            disabled={isLoading}
           />
-        </div>
 
-        {/* CTA */}
-        <button
-          type="button"
-          className="mt-4 w-full rounded-xl bg-[var(--ts-mid-blue)] py-3.5 text-sm font-bold text-white transition-opacity hover:opacity-90"
-        >
-          {isSignup ? "Inscription" : "Connexion"}
-        </button>
+          {/* CTA */}
+          <button
+            type="submit"
+            disabled={isLoading}
+            className="mt-4 w-full flex items-center justify-center rounded-xl bg-[var(--ts-mid-blue)] py-3.5 text-sm font-bold text-white transition-opacity hover:opacity-90 disabled:opacity-50"
+          >
+            {isLoading ? (
+              <span className="h-5 w-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></span>
+            ) : isSignup ? "Inscription" : "Connexion"}
+          </button>
+        </form>
 
         {/* Footer link */}
         {isSignup ? (
@@ -221,37 +257,71 @@ function UserDropdown({
   onOpenModal: (v: "signup" | "login") => void;
   onClose: () => void;
 }) {
+  const { isAuthenticated, user, logout } = useAuthStore();
+
   return (
-    <div className="absolute right-0 top-full z-[1500] mt-2 w-72 rounded-2xl bg-white shadow-[0px_4px_24px_0px_rgba(0,0,0,0.14)] overflow-hidden">
+    <div className="absolute right-0 top-full z-[1500] mt-2 w-72 rounded-md bg-white shadow-[0px_4px_24px_0px_rgba(0,0,0,0.14)] overflow-hidden">
       {/* Account section */}
       <div className="bg-[#f0f4fa] px-5 py-5">
-        <p className="mb-1 text-base font-bold text-gray-900">Mon compte</p>
-        <p className="mb-4 text-sm leading-snug text-gray-500">
-          En vous connectant, conservez vos favoris, suivez vos recherches et construisez votre prochain séjour.
-        </p>
-        <div className="flex flex-col gap-2">
-          <button
-            type="button"
-            onClick={() => { onOpenModal("signup"); onClose(); }}
-            className="w-full rounded-xl border border-gray-300 bg-white py-2.5 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
-          >
-            Créez votre compte
-          </button>
-          <button
-            type="button"
-            onClick={() => { onOpenModal("login"); onClose(); }}
-            className="w-full rounded-xl border border-gray-300 bg-white py-2.5 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
-          >
-            Se connecter
-          </button>
-        </div>
+        {isAuthenticated ? (
+          <>
+            <p className="mb-1 text-base font-bold text-gray-900">
+              Bonjour, {user?.first_name || user?.username || "Voyageur"}
+            </p>
+            <p className="mb-4 text-sm leading-snug text-gray-500">
+              Gérez vos réservations et vos informations personnelles.
+            </p>
+            <div className="flex flex-col gap-2">
+              <button
+                type="button"
+                className="w-full rounded-xl border border-[var(--ts-mid-blue)] bg-[var(--ts-mid-blue)] py-2.5 text-sm font-semibold text-white transition-colors hover:brightness-110"
+              >
+                Mon Profil
+              </button>
+              <button
+                type="button"
+                onClick={() => {
+                  logout();
+                  onClose();
+                }}
+                className="flex w-full items-center justify-center gap-2 rounded-xl border border-gray-300 bg-white py-2.5 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
+              >
+                <LogOut className="h-4 w-4" />
+                Se déconnecter
+              </button>
+            </div>
+          </>
+        ) : (
+          <>
+            <p className="mb-1 text-base font-bold text-gray-900">Mon compte</p>
+            <p className="mb-4 text-sm leading-snug text-gray-500">
+              En vous connectant, conservez vos favoris, suivez vos recherches et construisez votre prochain séjour.
+            </p>
+            <div className="flex flex-col gap-2">
+              <button
+                type="button"
+                onClick={() => { onOpenModal("signup"); onClose(); }}
+                className="w-full rounded-xl border border-gray-300 bg-white py-2.5 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
+              >
+                Créez votre compte
+              </button>
+              <button
+                type="button"
+                onClick={() => { onOpenModal("login"); onClose(); }}
+                className="w-full rounded-xl border border-gray-300 bg-white py-2.5 text-sm font-semibold text-gray-900 transition-colors hover:bg-gray-50"
+              >
+                Se connecter
+              </button>
+            </div>
+          </>
+        )}
       </div>
 
       {/* Divider */}
       <div className="border-t border-gray-100" />
 
       {/* Preferences section */}
-      <div className="px-5 py-4">
+      <div className="px-5 py-2">
         <p className="mb-3 text-sm font-bold text-gray-900">Préférences</p>
         <button
           type="button"
@@ -312,6 +382,12 @@ export default function UserMenu() {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [modalView, setModalView] = useState<ModalView>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+  const { isAuthenticated, user, fetchProfile } = useAuthStore();
+
+  // Try to load user profile on mount (if tokens persist)
+  useEffect(() => {
+    fetchProfile();
+  }, [fetchProfile]);
 
   // Close dropdown on outside click
   useEffect(() => {
@@ -331,12 +407,21 @@ export default function UserMenu() {
         <button
           type="button"
           onClick={() => setDropdownOpen((o) => !o)}
-          className="flex h-8 w-8 items-center justify-center rounded-full bg-white text-black transition-colors hover:opacity-90"
+          className={`flex items-center justify-center gap-2 rounded-full transition-colors hover:opacity-90 ${isAuthenticated ? "px-3 py-1.5 bg-[var(--ts-mid-blue)]/10 text-[var(--ts-mid-blue)] border border-[var(--ts-mid-blue)]/20" : "h-8 w-8 bg-white text-black"}`}
           aria-label="Mon compte"
           aria-expanded={dropdownOpen}
           aria-haspopup="true"
         >
-          <User className="h-5 w-5 text-black" />
+          {isAuthenticated ? (
+            <>
+              <span className="text-sm font-semibold block min-w-[50px] truncate max-w-[120px]">
+                {user?.first_name || user?.username?.split("@")[0] || "Profil"}
+              </span>
+              <ChevronDown className="h-4 w-4" />
+            </>
+          ) : (
+            <User className="h-5 w-5 text-black" />
+          )}
         </button>
 
         {/* Dropdown */}
