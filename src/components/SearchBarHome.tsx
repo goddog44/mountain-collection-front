@@ -4,7 +4,7 @@ import {
   Search, MapPin, Home, X, ChevronLeft, ChevronRight,
   Minus, Plus, Mountain, Wrench, TicketCheck, ChevronDown, Info
 } from "lucide-react";
-
+import Image from "next/image";
 // ─── Types / Constants ────────────────────────────────────────────────────────
 
 interface DateRange {
@@ -111,8 +111,22 @@ const FormulaIcons = ({ formula }: FormulaIconsProps) => {
   return (
     <>
       <Home size={14} />
-      {level >= 2 && (<><span>+</span><TicketCheck size={14} /></>)}
-      {level >= 3 && (<><span>+</span><Wrench size={14} /></>)}
+      {level >= 2 && (<><span>+</span>
+        <Image
+          src="/images/tools.png"
+          alt="ski"
+          width={20}
+          height={20}
+          className="shrink-0"
+        />
+      </>)}
+      {level >= 3 && (<><span>+</span><Image
+        src="/images/tools.png"
+        alt="tools"
+        width={20}
+        height={20}
+        className="shrink-0"
+      /></>)}
     </>
   );
 };
@@ -313,7 +327,7 @@ function GuestsPanel({ guests, onSave }: GuestsPanelProps) {
   };
 
   return (
-    <div className="flex flex-col gap-5 p-5 min-w-[380px]">
+    <div className="flex flex-col gap-5 p-5 min-w-[300px]">
       {/* Adults */}
       <div className="flex items-center justify-between">
         <div>
@@ -356,7 +370,7 @@ function GuestsPanel({ guests, onSave }: GuestsPanelProps) {
 
       {/* Age dropdowns per child — appears when children > 0 */}
       {temp.children > 0 && (
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-3 ">
           {Array.from({ length: temp.children }, (_, i) => (
             <div key={i} className="relative">
               <select
@@ -419,8 +433,22 @@ function FormulaPanel({ formula, onSelect }: FormulaPanelProps) {
           className={["flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm transition-colors hover:bg-[#1B3D6B]/5",
             formula === f.value ? "bg-[#1B3D6B]/10 font-semibold text-[#1B3D6B]" : "text-gray-800"].join(" ")}>
           <Home size={14} />
-          {f.level >= 2 && (<><span className="text-gray-400">+</span><TicketCheck size={14} /></>)}
-          {f.level >= 3 && (<><span className="text-gray-400">+</span><Wrench size={14} /></>)}
+          {f.level >= 2 && (<><span className="text-gray-400">+</span>
+            <Image
+              src="/images/alpine.png"
+              alt="ski"
+              width={20}
+              height={20}
+              className="shrink-0"
+            />
+          </>)}
+          {f.level >= 3 && (<><span className="text-gray-400">+</span><Image
+            src="/images/tools.png"
+            alt="tools"
+            width={20}
+            height={20}
+            className="shrink-0"
+          /></>)}
           <span className="ml-1">{f.label}</span>
         </button>
       ))}
@@ -465,7 +493,14 @@ function DestinationPanelSejourner({ value, onSelect }: DestinationPanelSejourne
             <button key={d.name} onClick={() => onSelect(d.isAll ? "" : d.name)}
               className={["flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-gray-50",
                 (d.isAll ? value === "" : value === d.name) ? "bg-[#1B3D6B]/8" : ""].join(" ")}>
-              <Mountain size={15} className="shrink-0 text-gray-400" />
+              {/* <img src={d.image} alt={d.name} className="shrink-0 text-gray-400" /> */}
+              <Image
+                src="/images/mountain.png"
+                alt={d.name}
+                width={20}
+                height={20}
+                className="shrink-0"
+              />
               <div>
                 <div className="text-sm font-medium text-gray-900">{d.name}</div>
                 {d.subtitle && <div className="text-xs text-gray-400">{d.subtitle}</div>}

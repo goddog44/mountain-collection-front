@@ -1,8 +1,9 @@
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { ChevronDown, ChevronUp, ChevronRight } from "lucide-react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -46,7 +47,7 @@ const OFFRES = [
 type NavKey = "destinations" | "agences" | "offres" | null;
 type DestTab = "stations" | "domaines";
 
-// ─── Chunk helper ─────────────────────────────────────────────────────────────
+// ─── Chunk helpers ────────────────────────────────────────────────────────────
 
 function chunkBy3<T>(arr: T[]): T[][] {
   const cols: T[][] = [[], [], []];
@@ -70,7 +71,7 @@ function DestinationsMega() {
   return (
     <div className="flex min-h-[300px]">
       {/* Left sidebar */}
-      <div className="w-48 shrink-0 border-r border-gray-100 py-4 pr-2">
+      <div className="w-52 shrink-0 border-r border-gray-100 py-4 pr-2">
         {(["stations", "domaines"] as DestTab[]).map((t) => (
           <button
             key={t}
@@ -80,7 +81,7 @@ function DestinationsMega() {
             className={[
               "flex w-full items-center justify-between rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
               tab === t
-                ? "bg-[var(--ts-light-grey)] text-gray-900 font-semibold"
+                ? "bg-gray-100 text-gray-900 font-semibold"
                 : "text-gray-700 hover:bg-gray-50",
             ].join(" ")}
           >
@@ -92,7 +93,7 @@ function DestinationsMega() {
 
       {/* Right content */}
       <div className="flex-1 px-8 py-5">
-        <p className="mb-5 text-sm font-bold text-[var(--ts-mid-blue)]">
+        <p className="mb-5 text-sm font-bold text-[#1B3D6B]">
           {tab === "stations"
             ? "Découvrez nos destinations de ski"
             : "Découvrez nos domaines skiables"}
@@ -104,7 +105,7 @@ function DestinationsMega() {
                 <Link
                   key={item}
                   href={`/${tab === "stations" ? "stations" : "domaines"}/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="py-2.5 text-sm text-gray-700 hover:text-[var(--ts-mid-blue)] transition-colors border-b border-gray-100 last:border-0"
+                  className="border-b border-gray-100 py-2.5 text-sm text-gray-700 transition-colors last:border-0 hover:text-[#1B3D6B]"
                 >
                   {item}
                 </Link>
@@ -117,7 +118,7 @@ function DestinationsMega() {
           <div className="mt-6">
             <Link
               href="/domaines-skiables"
-              className="inline-flex items-center rounded-lg bg-[var(--ts-mid-blue)] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+              className="inline-flex items-center rounded-lg bg-[#1B3D6B] px-5 py-2.5 text-sm font-semibold text-white transition-opacity hover:opacity-90"
             >
               Tous les domaines skiables
             </Link>
@@ -132,7 +133,6 @@ function DestinationsMega() {
 
 function AgencesMega() {
   const cols = chunkBy2(AGENCES);
-
   return (
     <div className="px-8 py-5">
       <div className="grid grid-cols-2 gap-x-16 gap-y-0">
@@ -142,7 +142,7 @@ function AgencesMega() {
               <Link
                 key={item}
                 href={`/agences/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                className="py-2.5 text-sm text-gray-700 hover:text-[var(--ts-mid-blue)] transition-colors border-b border-gray-100 last:border-0"
+                className="border-b border-gray-100 py-2.5 text-sm text-gray-700 transition-colors last:border-0 hover:text-[#1B3D6B]"
               >
                 {item}
               </Link>
@@ -157,18 +157,17 @@ function AgencesMega() {
 // ─── Offres mega ──────────────────────────────────────────────────────────────
 
 function OffresMega() {
-  const rows = chunkBy2(OFFRES);
-
+  const cols = chunkBy2(OFFRES);
   return (
     <div className="px-8 py-5">
       <div className="grid grid-cols-2 gap-x-16 gap-y-0">
-        {rows.map((col, ci) => (
+        {cols.map((col, ci) => (
           <div key={ci} className="flex flex-col">
             {col.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
-                className="py-2.5 text-sm text-gray-700 hover:text-[var(--ts-mid-blue)] transition-colors border-b border-gray-100 last:border-0"
+                className="border-b border-gray-100 py-2.5 text-sm text-gray-700 transition-colors last:border-0 hover:text-[#1B3D6B]"
               >
                 {item.label}
               </Link>
@@ -185,6 +184,22 @@ function OffresMega() {
 export default function MainNav() {
   const [open, setOpen] = useState<NavKey>(null);
   const navRef = useRef<HTMLElement>(null);
+  const pathname = usePathname();
+
+  // Replicate exactly the same scroll logic as Header.tsx
+  const isHomePage = pathname === "/";
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    if (!isHomePage) return;
+    const onScroll = () => setIsScrolled(window.scrollY > 480);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [isHomePage]);
+
+  // On homepage before scroll → links are white (on dark hero bg)
+  // On homepage after scroll, or on any other page → links are dark
+  const isTransparent = isHomePage && !isScrolled;
 
   // Close on outside click
   useEffect(() => {
@@ -206,8 +221,17 @@ export default function MainNav() {
 
   const toggle = (key: NavKey) => setOpen((prev) => (prev === key ? null : key));
 
+  // ── Nav item button ──
+  // Matches screenshots exactly:
+  //   - Active: underlined
+  //   - Inactive: slightly muted, hover → full color
+  //   - Color: white on transparent hero, dark on white header
   const navItem = (key: NavKey, label: string) => {
     const isOpen = open === key;
+    const baseText = isTransparent
+      ? isOpen ? "text-white underline underline-offset-4" : "text-white/90 hover:text-white"
+      : isOpen ? "text-gray-900 underline underline-offset-4" : "text-gray-700 hover:text-gray-900";
+
     return (
       <button
         key={key}
@@ -216,46 +240,50 @@ export default function MainNav() {
         aria-expanded={isOpen}
         className={[
           "flex items-center gap-1 rounded-md px-1 py-1 text-sm font-medium transition-colors",
-          isOpen
-            ? "text-white underline underline-offset-4"
-            : "text-white/90 hover:text-white",
+          baseText,
         ].join(" ")}
       >
         {label}
         {isOpen
-          ? <ChevronUp className="h-4 w-4 shrink-0 text-white" />
-          : <ChevronDown className="h-4 w-4 shrink-0 text-white" />}
+          ? <ChevronUp className="h-4 w-4 shrink-0" />
+          : <ChevronDown className="h-4 w-4 shrink-0" />}
       </button>
     );
   };
-  
-
-  // Mega panel position — destinations aligns left of nav, agences & offres too
-  const megaPositions: Record<string, string> = {
-    destinations: "left-0",
-    agences: "left-0",
-    offres: "left-0",
-  };
 
   return (
-    <nav ref={navRef} className="relative flex items-center gap-1" aria-label="Navigation principale">
+    <nav
+      ref={navRef}
+      className="relative flex items-center justify-start gap-4"
+      aria-label="Navigation principale"
+    >
       {navItem("destinations", "Nos destinations")}
       {navItem("agences", "Nos agences")}
       {navItem("offres", "Nos offres")}
 
-      {/* Mega panel */}
+      {/* Mega panel + overlay */}
       {open && (
         <>
-          {/* Overlay to blur background */}
+          {/*
+            Overlay — same blueish tint as in the original code.
+            fixed so it covers the full page below the header.
+            onClick closes the panel.
+          */}
           <div
-            className="fixed inset-0 top-[var(--header-height,64px)] z-[999] bg-[#dce8f5]/40 backdrop-blur-[2px]"
+            className="fixed inset-0 top-[64px] z-[999]"
             onClick={() => setOpen(null)}
           />
 
+          {/*
+            Mega panel — positioned absolute relative to the nav element,
+            just below it. z-[1000] so it's above the overlay.
+            min-w ensures it doesn't collapse on small content (Offres).
+          */}
           <div
             className={[
-              "absolute top-[calc(100%+12px)] z-[1000] min-w-[820px] rounded-2xl bg-white shadow-[0px_8px_32px_0px_rgba(0,0,0,0.12)]",
-              megaPositions[open ?? "destinations"],
+              "absolute left-0 top-[calc(100%+12px)] z-[1000] rounded-2xl bg-white shadow-[0px_8px_32px_0px_rgba(0,0,0,0.12)]",
+              // Adapt width per panel
+              open === "offres" ? "min-w-[520px]" : "min-w-[820px]",
             ].join(" ")}
           >
             {open === "destinations" && <DestinationsMega />}
