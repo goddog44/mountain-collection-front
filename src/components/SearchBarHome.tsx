@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import {
   Search, MapPin, Home, X, ChevronLeft, ChevronRight,
   Minus, Plus, Mountain, Wrench, TicketCheck, ChevronDown, Info
@@ -601,6 +602,7 @@ function BudgetPanel({ budget, onSave }: BudgetPanelProps) {
 // ─── Main SearchBar ───────────────────────────────────────────────────────────
 
 export default function SearchBar() {
+  const router = useRouter();
   const [viewMode, setViewMode] = useState<ViewMode>("Séjourner");
   const [activePanel, setActivePanel] = useState<string | null>(null);
 
@@ -753,7 +755,27 @@ export default function SearchBar() {
         )}
 
         {/* Search button */}
-        <button onClick={() => setActivePanel(null)}
+        <button
+          onClick={() => {
+            const params = new URLSearchParams();
+            if (viewMode === "Séjourner") {
+              params.set("mode", "stay");
+              if (destination) params.set("destination", destination);
+              if (dateRange.start) params.set("start", dateRange.start.toISOString().split("T")[0]);
+              if (dateRange.end) params.set("end", dateRange.end.toISOString().split("T")[0]);
+              params.set("pax", String(guests.adults + guests.children));
+              if (formula) params.set("formula", formula);
+            } else {
+              params.set("mode", "buy");
+              if (locality) params.set("destination", locality);
+              if (propertyTypes.length) params.set("types", propertyTypes.join(","));
+              if (budget) params.set("maxPrice", String(budget));
+            }
+            // Use window.location.href or router.push
+            // Since we are in a client component, we use router (defined above)
+            router.push(`/search?${params.toString()}`);
+            setActivePanel(null);
+          }}
           className="ml-2 flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-[#1B3D6B] text-white hover:opacity-90"
           aria-label="Rechercher">
           <Search size={17} />

@@ -23,25 +23,37 @@ const DOMAINES = [
 ];
 
 const AGENCES = [
-  "Belle Plagne", "Bourg Saint Maurice",
-  "Chalet Time Immobilier", "Flaine Forum",
-  "La Plagne Bellecôte", "La Plagne Centre",
-  "La Plagne Montalbert", "La Plagne Montchavin",
-  "La Rosière", "La Toussuire",
-  "Le Corbier", "Les 2 Alpes",
-  "Les Arcs 2000", "Les Arcs Le Charvet",
-  "Les Arcs Les Villards", "Les Menuires La Croisette",
-  "Les Menuires Les Bruyères", "Les Menuires Reberty 2000",
-  "Monetier", "Méribel",
-  "Saint Martin de Belleville", "Serre Chevalier La Salle-les-Alpes",
-  "Tignes Le Lac", "Tignes Val Claret",
-  "Val d'Isère", "Val Thorens",
+  { name: "Belle Plagne", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-belle-plagne" },
+  { name: "Bourg Saint Maurice", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-bourg-saint-maurice" },
+  { name: "Chalet Time Immobilier", url: "https://www.mountaincollection.com/fr/agence/chalet-time-immobilier" },
+  { name: "Flaine Forum", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-flaine-forum" },
+  { name: "La Plagne Bellecôte", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-la-plagne-bellecote" },
+  { name: "La Plagne Centre", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-la-plagne-centre" },
+  { name: "La Plagne Montalbert", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-la-plagne-montalbert" },
+  { name: "La Plagne Montchavin", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-la-plagne-montchavin" },
+  { name: "La Rosière", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-la-rosiere" },
+  { name: "La Toussuire", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-la-toussuire" },
+  { name: "Le Corbier", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-le-corbier" },
+  { name: "Les 2 Alpes", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-les-2-alpes" },
+  { name: "Les Arcs 2000", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-les-arcs-2000" },
+  { name: "Les Arcs Le Charvet", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-les-arcs-le-charvet" },
+  { name: "Les Arcs Les Villards", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-les-arcs-les-villards" },
+  { name: "Les Menuires La Croisette", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-les-menuires-la-croisette" },
+  { name: "Les Menuires Les Bruyères", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-les-menuires-les-bruyeres" },
+  { name: "Les Menuires Reberty 2000", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-les-menuires-reberty-2000" },
+  { name: "Monetier", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-monetier" },
+  { name: "Saint Martin de Belleville", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-saint-martin-de-belleville" },
+  { name: "Serre Chevalier La Salle-les-Alpes", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-serre-chevalier-la-salle-les-alpes" },
+  { name: "Tignes Le Lac", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-tignes-le-lac" },
+  { name: "Tignes Val Claret", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-tignes-val-claret" },
+  { name: "Val d'Isère", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-val-d-isere" },
+  { name: "Val Thorens", url: "https://www.mountaincollection.com/fr/agence/mountain-collection-val-thorens" },
 ];
 
 const OFFRES = [
   { label: "Court séjour", href: "/offres/court-sejour" },
   { label: "Dernière minute", href: "/offres/derniere-minute" },
-  { label: "Nos Promotions", href: "/offres/promotions" },
+  { label: "Nos Promotions", href: "/search?promo=vacances-fevrier" },
 ];
 
 type NavKey = "destinations" | "agences" | "offres" | null;
@@ -82,18 +94,18 @@ function DestinationsMega() {
               "flex w-full items-center justify-between rounded-lg px-4 py-2.5 text-sm font-medium transition-colors",
               tab === t
                 ? "bg-gray-100 text-gray-900 font-semibold"
-                : "text-gray-700 hover:bg-gray-50",
+                : "text-gray-900 hover:bg-gray-50",
             ].join(" ")}
           >
             {t === "stations" ? "Stations" : "Domaines skiables"}
-            <ChevronRight className="h-3.5 w-3.5 shrink-0 text-gray-400" />
+            <ChevronRight className="h-5 w-3.5 shrink-0 text-gray-400" />
           </button>
         ))}
       </div>
 
       {/* Right content */}
-      <div className="flex-1 px-8 py-5">
-        <p className="mb-5 text-sm font-bold text-[#1B3D6B]">
+      <div className="flex-1 px-5 py-5">
+        <p className="mb-2 text-sm font-bold text-gray-90">
           {tab === "stations"
             ? "Découvrez nos destinations de ski"
             : "Découvrez nos domaines skiables"}
@@ -105,7 +117,7 @@ function DestinationsMega() {
                 <Link
                   key={item}
                   href={`/${tab === "stations" ? "stations" : "domaines"}/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                  className="border-b border-gray-100 py-2.5 text-sm text-gray-700 transition-colors last:border-0 hover:text-[#1B3D6B]"
+                  className="border-b border-gray-100 py-2.5 text-sm text-gray-900 transition-colors last:border-0 hover:text-gray-90"
                 >
                   {item}
                 </Link>
@@ -134,18 +146,20 @@ function DestinationsMega() {
 function AgencesMega() {
   const cols = chunkBy2(AGENCES);
   return (
-    <div className="px-8 py-5">
-      <div className="grid grid-cols-2 gap-x-16 gap-y-0">
+    <div className="px-4 py-5">
+      <div className="grid grid-cols-2 gap-y-0">
         {cols.map((col, ci) => (
-          <div key={ci} className="flex flex-col">
+          <div key={ci} className="flex flex-col items-left pl-8">
             {col.map((item) => (
-              <Link
-                key={item}
-                href={`/agences/${item.toLowerCase().replace(/\s+/g, "-")}`}
-                className="border-b border-gray-100 py-2.5 text-sm text-gray-700 transition-colors last:border-0 hover:text-[#1B3D6B]"
+              <a
+                key={item.name}
+                href={item.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2.5 text-sm text-gray-900 transition-colors last:border-0 hover:text-[#1B3D6B]"
               >
-                {item}
-              </Link>
+                {item.name}
+              </a>
             ))}
           </div>
         ))}
@@ -167,7 +181,7 @@ function OffresMega() {
               <Link
                 key={item.label}
                 href={item.href}
-                className="border-b border-gray-100 py-2.5 text-sm text-gray-700 transition-colors last:border-0 hover:text-[#1B3D6B]"
+                className="border-b border-gray-100 py-2.5 text-sm text-gray-900 transition-colors last:border-0 hover:text-[#1B3D6B]"
               >
                 {item.label}
               </Link>
@@ -230,7 +244,7 @@ export default function MainNav() {
     const isOpen = open === key;
     const baseText = isTransparent
       ? isOpen ? "text-white underline underline-offset-4" : "text-white/90 hover:text-white"
-      : isOpen ? "text-gray-900 underline underline-offset-4" : "text-gray-700 hover:text-gray-900";
+      : isOpen ? "text-gray-900 underline underline-offset-4" : "text-gray-300 hover:text-gray-900";
 
     return (
       <button
@@ -281,9 +295,9 @@ export default function MainNav() {
           */}
           <div
             className={[
-              "absolute left-0 top-[calc(100%+12px)] z-[1000] rounded-2xl bg-white shadow-[0px_8px_32px_0px_rgba(0,0,0,0.12)]",
+              "absolute left-0 top-[calc(100%+12px)] z-[1000] rounded-md bg-white shadow-[0px_8px_32px_0px_rgba(0,0,0,0.12)]",
               // Adapt width per panel
-              open === "offres" ? "min-w-[520px]" : "min-w-[820px]",
+              open === "offres" || open === "agences" ? "min-w-[450px]" : "min-w-[820px]",
             ].join(" ")}
           >
             {open === "destinations" && <DestinationsMega />}
