@@ -189,7 +189,7 @@ function CalendarPanel({
 
   return (
     <div className="p-6 min-w-[680px]">
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-1 flex items-center justify-between">
         <button onClick={prevMonth} className="rounded-full p-2 hover:bg-gray-100">
           <ChevronLeft size={18} />
         </button>
@@ -247,22 +247,22 @@ function GuestsPanel({ guests, onSave }: { guests: Guests; onSave: (g: Guests) =
   };
 
   return (
-    <div className="flex flex-col gap-5 p-5 min-w-[300px]">
+    <div className="flex flex-col gap-4 p-6 w-[380px] border border-gray-200 rounded-md ">
       {/* Adults */}
       <div className="flex items-center justify-between">
         <div>
           <div className="text-sm font-bold text-gray-900">Adulte</div>
-          <div className="text-xs text-gray-500">18 ans et plus</div>
+          <div className="text-xs text-gray-900">18 ans et plus</div>
         </div>
         <div className="flex items-center gap-4">
           <button disabled={temp.adults <= 1}
             onClick={() => setTemp((t) => ({ ...t, adults: t.adults - 1 }))}
-            className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gray-300 text-gray-600 disabled:opacity-30 hover:border-gray-500 transition-colors">
+            className="flex h-9 w-9 items-center justify-center rounded-full border text-gray-900 text-gray-900 disabled:opacity-30 hover:border-gray-500 transition-colors">
             <Minus size={14} />
           </button>
           <span className="w-4 text-center text-sm font-semibold">{temp.adults}</span>
           <button onClick={() => setTemp((t) => ({ ...t, adults: t.adults + 1 }))}
-            className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gray-300 text-gray-600 hover:border-gray-500 transition-colors">
+            className="flex h-9 w-9 items-center justify-center rounded-full border text-gray-900 text-gray-900 hover:border-gray-500 transition-colors">
             <Plus size={14} />
           </button>
         </div>
@@ -271,24 +271,24 @@ function GuestsPanel({ guests, onSave }: { guests: Guests; onSave: (g: Guests) =
       <div className="flex items-center justify-between">
         <div>
           <div className="text-sm font-bold text-gray-900">Enfants</div>
-          <div className="text-xs text-gray-500">Moins de 18 ans</div>
+          <div className="text-xs text-gray-900">Moins de 18 ans</div>
         </div>
         <div className="flex items-center gap-4">
           <button disabled={temp.children <= 0}
             onClick={() => updateChildCount(temp.children - 1)}
-            className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gray-300 text-gray-600 disabled:opacity-30 hover:border-gray-500 transition-colors">
+            className="flex h-9 w-9 items-center justify-center rounded-full border text-gray-900 text-gray-900 disabled:opacity-30 hover:border-gray-500 transition-colors">
             <Minus size={14} />
           </button>
           <span className="w-4 text-center text-sm font-semibold">{temp.children}</span>
           <button onClick={() => updateChildCount(temp.children + 1)}
-            className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gray-300 text-gray-600 hover:border-gray-500 transition-colors">
+            className="flex h-9 w-9 items-center justify-center rounded-full border text-gray-900 text-gray-900 hover:border-gray-500 transition-colors">
             <Plus size={14} />
           </button>
         </div>
       </div>
       {/* Child ages */}
       {temp.children > 0 && (
-        <div className="flex flex-col gap-3">
+        <div className="grid grid-cols-2 gap-3">
           {Array.from({ length: temp.children }, (_, i) => (
             <div key={i} className="relative">
               <select
@@ -298,7 +298,7 @@ function GuestsPanel({ guests, onSave }: { guests: Guests; onSave: (g: Guests) =
                   ages[i] = Number(e.target.value);
                   setTemp((t) => ({ ...t, childrenAges: ages }));
                 }}
-                className="w-full appearance-none rounded-xl border border-gray-300 px-4 pt-5 pb-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1B3D6B]/30 bg-white">
+                className="w-[160px] appearance-none rounded-lg border border-black px-4 pt-5 pb-2 text-sm text-black focus:outline-none focus:ring-2 focus:ring-[#1B3D6B]/30 bg-white">
                 {CHILD_AGES.map((age) => (
                   <option key={age} value={age}>{age} an{age !== 1 ? "s" : ""}</option>
                 ))}
@@ -311,7 +311,7 @@ function GuestsPanel({ guests, onSave }: { guests: Guests; onSave: (g: Guests) =
               </label>
             </div>
           ))}
-          <div className="flex items-start gap-2 text-xs text-gray-500">
+          <div className="col-span-2 flex items-start gap-2 text-xs text-gray-700 mt-2">
             <Info size={13} className="shrink-0 mt-0.5 text-gray-400" />
             <span>Renseigner l&apos;âge des enfants au début du séjour vous permet de bénéficier du tarif exact des séjours</span>
           </div>
@@ -322,10 +322,10 @@ function GuestsPanel({ guests, onSave }: { guests: Guests; onSave: (g: Guests) =
         <div className="text-sm font-bold text-gray-900">Animaux de compagnie</div>
         <input type="checkbox" checked={temp.pets}
           onChange={(e) => setTemp((t) => ({ ...t, pets: e.target.checked }))}
-          className="h-5 w-5 rounded border-2 border-gray-300 accent-[#1B3D6B] cursor-pointer" />
+          className="h-5 w-5 rounded border border-gray-300 accent-[#1B3D6B] cursor-pointer" />
       </div>
       <button onClick={() => onSave(temp)}
-        className="w-full rounded-xl bg-[#1B3D6B] py-3 text-sm font-semibold text-white hover:opacity-90">
+        className="w-full rounded-md bg-[#1B3D6B] py-3 text-sm font-semibold text-white hover:opacity-90">
         Enregistrer
       </button>
     </div>
@@ -531,7 +531,7 @@ export default function SearchBar() {
       {/* Dates panel */}
       {isActive("dates") && (
         <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 z-[9999]">
-          <div className="rounded-2xl bg-white shadow-2xl">
+          <div className="rounded-2xl bg-white shadow-[0px_8px_32px_rgba(0,0,0,0.12)] border border-gray-100">
             <CalendarPanel dateRange={dateRange}
               onSave={(r) => { setDateRange(r); setActivePanel("guests"); }}
               onClear={() => setDateRange({ start: null, end: null })} />
@@ -542,7 +542,7 @@ export default function SearchBar() {
       {/* Guests panel */}
       {isActive("guests") && (
         <div className="absolute right-16 top-full mt-2 z-[9999]">
-          <div className="rounded-2xl bg-white shadow-2xl">
+          <div className="rounded-2xl bg-white shadow-[0px_8px_32px_rgba(0,0,0,0.12)] border border-gray-100">
             <GuestsPanel guests={guests}
               onSave={(g) => { setGuests(g); setActivePanel("formula"); }} />
           </div>
@@ -552,7 +552,7 @@ export default function SearchBar() {
       {/* Formula panel */}
       {isActive("formula") && (
         <div className="absolute right-10 top-full mt-2 z-[9999]">
-          <div className="rounded-2xl bg-white shadow-2xl">
+          <div className="rounded-2xl bg-white shadow-[0px_8px_32px_rgba(0,0,0,0.12)] border border-gray-100">
             <FormulaPanel formula={formula}
               onSelect={(f) => { setFormula(f); setActivePanel(null); }} />
           </div>
