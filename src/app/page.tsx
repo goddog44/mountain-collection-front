@@ -64,19 +64,19 @@ export default function Home() {
         {/* ── PROMO ── */}
         <section className="bg-[var(--ts-white)] py-6 mt-4 mb-[-10]">
           <div className="mx-auto max-w-[1216px] px-4 md:px-8">
-            <div className="text-primary flex flex-col items-start justify-between gap-4 rounded-md bg-[var(--bg-water-blue)] p-6 shadow-sm md:flex-row md:items-center">
+            <div className="flex flex-col items-start justify-between gap-4 rounded-md bg-[#EDF0F5] px-8 py-4 shadow-sm md:flex-row md:items-center">
               <div>
-                <h3 className="text-[var(--ts-water-blue)] font-semibold">
+                <h3 className="text-base font-bold text-[#1B3D6B]">
                   Vacances de Février
                 </h3>
-                <p className="text-sm text-[var(--ts-water-blue)] text-gray-600">
+                <p className="text-sm text-gray-600 mt-1">
                   Semaine du 28/02 dès 430€{" "}
-                  <span className="line-through">(au lieu de 670€)</span>
+                  <span className="line-through decoration-gray-400 text-gray-400">(au lieu de 670€)</span>
                 </p>
               </div>
               <Link
-                href="/search"
-                className="rounded-md bg-[var(--ts-mid-blue)] px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
+                href="/search?promo=vacances-fevrier"
+                className="rounded-md bg-[#1B3D6B] px-6 py-2 text-sm font-semibold text-white transition hover:opacity-90"
               >
                 J&apos;en profite
               </Link>

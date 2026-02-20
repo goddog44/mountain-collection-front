@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import FilterSidebar from "@/components/Filters/FilterSidebar";
@@ -10,18 +10,58 @@ import { accommodations } from "@/data/accommodations";
 import { useFilters } from "@/store/useFilters";
 import { SlidersHorizontal, X } from "lucide-react";
 
+import PropertyGrid from "@/components/PropertyGrid";
+import { properties } from "@/data/properties";
+
 export default function SearchPageClient() {
   const searchParams = useSearchParams();
   const setFilters = useFilters((s) => s.setFilters);
   const [mobileFiltersOpen, setMobileFiltersOpen] = useState(false);
 
+  const mode = searchParams.get("mode") || "stay"; // 'stay' or 'buy'
+
   useEffect(() => {
     const destination = searchParams.get("destination");
     const pax = searchParams.get("pax");
+    const modeParam = searchParams.get("mode");
+    const maxPrice = searchParams.get("maxPrice");
+    const types = searchParams.get("types");
+
     if (destination) setFilters({ destination });
-    if (pax)
-      setFilters({ guests: { adults: Number(pax) || 2, children: 0 } });
+
+    if (modeParam === "buy") {
+      if (maxPrice) setFilters({ priceRange: { min: 0, max: Number(maxPrice) } });
+      if (types) setFilters({ accommodationTypes: types.split(",") });
+    } else {
+      // Stay mode
+      if (pax) setFilters({ guests: { adults: Number(pax) || 2, children: 0 } });
+    }
   }, [searchParams, setFilters]);
+
+  // Handle promo mode
+  const promo = searchParams.get("promo");
+
+  const displayedAccommodations = useMemo(() => {
+    if (promo === "vacances-fevrier") {
+      return accommodations.map((acc) => {
+        // Calculate price discount -37%
+        const originalPrice = acc.price.amount / (1 - 0.37);
+        return {
+          ...acc,
+          price: {
+            ...acc.price,
+            originalAmount: Math.round(originalPrice),
+            amount: acc.price.amount,
+          },
+          badges: [
+            { type: "discount", label: "Nos Promotions" },
+            { type: "discount", value: "-37 %" },
+          ],
+        } as typeof acc;
+      });
+    }
+    return accommodations;
+  }, [promo]);
 
   return (
     <div className="flex min-h-screen flex-col">
@@ -68,7 +108,12 @@ export default function SearchPageClient() {
                   Filtres
                 </button>
               </div>
-              <AccommodationGrid accommodations={accommodations} />
+
+              {mode === "buy" ? (
+                <PropertyGrid properties={properties} />
+              ) : (
+                <AccommodationGrid accommodations={displayedAccommodations} />
+              )}
             </div>
           </div>
         </div>

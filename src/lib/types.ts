@@ -87,10 +87,40 @@ export type SortOption =
   | "capacity"
   | "surface";
 
+// ... existing types ...
+
+export type PropertyType = "apartment" | "chalet" | "commercial";
+
+export interface Property {
+  id: string;
+  name: string;
+  type: PropertyType;
+  location: {
+    city: string;
+    station: string;
+    altitude: number;
+  };
+  images: string[];
+  bedrooms: number;
+  bathrooms: number;
+  surface: number;
+  price: number; // Total price
+  description: string;
+  amenities: Amenity[];
+  badges: Badge[];
+  isFavorite: boolean;
+}
+
 export const ACCOMMODATION_TYPE_LABELS: Record<AccommodationType, string> = {
   studio: "Studio",
   apartment_2: "Appartement 2 pièces",
   apartment_3: "Appartement 3 pièces",
   apartment_4_plus: "Appartement 4+ pièces",
   chalet: "Chalet",
+};
+
+export const PROPERTY_TYPE_LABELS: Record<PropertyType, string> = {
+  apartment: "Appartement",
+  chalet: "Chalet",
+  commercial: "Local commercial",
 };

@@ -504,6 +504,7 @@ export default function SearchBar() {
             params.set("children", String(guests.children));
             if (guests.pets) params.set("pets", "1");
             params.set("formula", formula);
+            params.set("mode", "stay");
             router.push(`/search?${params.toString()}`);
             setActivePanel(null);
           }}
