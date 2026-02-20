@@ -5,27 +5,28 @@ import Link from "next/link";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { accommodations } from "@/data/accommodations";
-import AccommodationGrid from "@/components/AccommodationGrid";
 import SearchBar from "@/components/SearchBarHome";
-import SearchBarMode, { ViewMode } from "../components/ui/searchBarMode";
 import HomeContentSections from "../components/HomeSections";
-
-
 
 export default function Home() {
   const featured = accommodations.slice(0, 6);
-
-  const [viewMode, setViewMode] = useState<ViewMode>("Séjourner");
 
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
 
       <main className="flex-1">
-        {/* HERO SECTION */}
-        <section className="relative h-[70vh] min-h-[600px] overflow-hidden">
-          
-          {/* Vidéo background */}
+
+        {/* ── HERO SECTION ──
+            KEY FIX: No more overflow-hidden on the section.
+            Instead the video is clipped by its own absolute+inset-0,
+            and we let the section overflow so SearchBar dropdowns
+            can escape the hero and appear on top of content below.
+        */}
+        <section className="relative h-[70vh] min-h-[600px]">
+
+          {/* Video background — clipped by the section's height naturally
+              since it's absolute inset-0, no overflow-hidden needed */}
           <video
             className="absolute inset-0 h-full w-full object-cover"
             autoPlay
@@ -33,41 +34,37 @@ export default function Home() {
             muted
             playsInline
           >
-            <source
-              src="/videos/mountain-collection-bg.mp4"
-              type="video/mp4"
-            />
+            <source src="/videos/mountain-collection-bg.mp4" type="video/mp4" />
           </video>
 
-          {/* Overlay */}
+          {/* Dark overlay */}
           <div className="absolute inset-0 bg-black/45" />
 
-          {/* Content */}
+          {/* Hero content — z-10 so it sits above video+overlay
+              overflow-visible (default) so dropdowns escape the section */}
           <div className="relative z-10 flex h-full items-center justify-center">
             <div className="mx-auto w-full max-w-[1216px] px-4 md:px-8 text-center">
 
               <h1 className="mx-auto mb-6 max-w-2xl text-4xl font-bold leading-tight text-white md:text-5xl">
-                Vivez l'expérience montagne avec ceux qui la connaissent
+                Vivez l&apos;expérience montagne avec ceux qui la connaissent
               </h1>
 
-              {/* 🔥 View Toggle */}
-              {/* <div className="mb-6 flex justify-center">
-                <SearchBarMode
-                  defaultMode={viewMode}
-                  onChange={setViewMode}
-                />
-              </div> */}
-
+              {/*
+                SearchBar dropdowns use z-[9999] and position:absolute
+                relative to the SearchBar container.
+                Since the section no longer has overflow-hidden, they
+                will render on top of everything below the hero.
+              */}
               <SearchBar />
 
             </div>
           </div>
         </section>
 
-        {/* PROMO */}
+        {/* ── PROMO ── */}
         <section className="bg-[var(--ts-white)] py-6 mt-4 mb-[-10]">
           <div className="mx-auto max-w-[1216px] px-4 md:px-8">
-            <div className="text-primary flex flex-col items-start justify-between gap-4 rounded-md  bg-[var(--bg-water-blue)]  p-6 shadow-sm md:flex-row md:items-center">
+            <div className="text-primary flex flex-col items-start justify-between gap-4 rounded-md bg-[var(--bg-water-blue)] p-6 shadow-sm md:flex-row md:items-center">
               <div>
                 <h3 className="text-[var(--ts-water-blue)] font-semibold">
                   Vacances de Février
@@ -77,26 +74,23 @@ export default function Home() {
                   <span className="line-through">(au lieu de 670€)</span>
                 </p>
               </div>
-
               <Link
                 href="/search"
                 className="rounded-md bg-[var(--ts-mid-blue)] px-6 py-3 text-sm font-medium text-white transition hover:opacity-90"
               >
-                J'en profite
+                J&apos;en profite
               </Link>
             </div>
           </div>
         </section>
 
-        {/* HÉBERGEMENTS */}
-        <section className="">
+        {/* ── HÉBERGEMENTS ── */}
+        <section>
           <div className="mx-auto max-w-[1280px] px-4 md:px-8">
-
-            {/* 🔥 On passe le viewMode ici */}
-            <HomeContentSections
-            />
+            <HomeContentSections />
           </div>
         </section>
+
       </main>
 
       <Footer />

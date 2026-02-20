@@ -38,7 +38,7 @@ export default function Header() {
     <header
       role="banner"
       className={[
-        "top-0 z-[1001] w-full pb-2 transition-all duration-300",
+        "top-0 z-[1001] w-full pb- transition-all duration-25",
         // Homepage not-scrolled: absolute transparent
         isHomePage && !isScrolled
           ? "absolute bg-transparent border-none"
@@ -66,15 +66,15 @@ export default function Header() {
                 : "/images/mountain-collection-logo.svg"
             }
             alt="Mountain Collection"
-            width={150}
-            height={65}
+            width={100}
+            height={30}
             priority
-            className="h-10 w-auto md:h-20"
+            className="h-16 w-auto md:h-"
           />
         </Link>
 
         {/* Center */}
-        <div className="min-w-0 flex-1 flex justify-center">
+        <div className="min-w-0 flex-1 flex justify-left">
           {/* Non-homepage: always show SearchBar */}
           {showSearchBar && <SearchBar />}
 

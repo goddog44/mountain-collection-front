@@ -2,36 +2,27 @@
 
 import { useRouter } from "next/navigation";
 import {
-  Search,
-  MapPin,
-  Home,
-  X,
-  ChevronLeft,
-  ChevronRight,
-  Minus,
-  Plus,
-  Mountain,
+  Search, MapPin, Home, X, ChevronLeft, ChevronRight,
+  Minus, Plus, Mountain, Wrench, TicketCheck, ChevronDown, Info,
 } from "lucide-react";
-import { useState, useRef, useEffect, JSX } from "react";
+import { useState, useRef, useEffect } from "react";
+import Image from "next/image";
 
-// ─── Types ────────────────────────────────────────────────────────────────────
-
-type Panel = "destination" | "dates" | "guests" | "formula" | null;
-
-interface GuestCounts {
-  adults: number;
-  children: number;
-  pets: boolean;
-}
-
-type Formula = "hebergement" | "hebergement+forfait" | "hebergement+forfait+materiel";
+// ─── Types / Constants ────────────────────────────────────────────────────────
 
 interface DateRange {
   start: Date | null;
   end: Date | null;
 }
 
-// ─── Constants ────────────────────────────────────────────────────────────────
+interface Guests {
+  adults: number;
+  children: number;
+  childrenAges: number[];
+  pets: boolean;
+}
+
+type Formula = "hebergement" | "hebergement+forfait" | "hebergement+forfait+materiel";
 
 const DESTINATIONS = [
   { name: "Toutes les destinations", subtitle: "Laissez-vous inspirer par nos offres", isAll: true },
@@ -49,87 +40,75 @@ const DESTINATIONS = [
 ];
 
 const STATION_TYPES = [
-  { label: "Station Village", icon: Mountain },
-  { label: "Haute altitude", icon: Mountain },
-  { label: "Station familiale", icon: Mountain },
-  { label: "Station de charme", icon: Mountain },
+  { label: "Station Village" },
+  { label: "Haute altitude" },
+  { label: "Station familiale" },
+  { label: "Station de charme" },
 ];
 
-const FORMULAS: { value: Formula; label: string; icons: string[] }[] = [
-  { value: "hebergement", label: "Hébergement", icons: ["home"] },
-  { value: "hebergement+forfait", label: "Hébergement + Forfait", icons: ["home", "skipback"] },
-  { value: "hebergement+forfait+materiel", label: "Hébergement + Forfait + Matériel", icons: ["home", "skipback", "tools"] },
+const FORMULAS: { value: Formula; label: string; level: number }[] = [
+  { value: "hebergement", label: "Hébergement", level: 1 },
+  { value: "hebergement+forfait", label: "Hébergement + Forfait", level: 2 },
+  { value: "hebergement+forfait+materiel", label: "Hébergement + Forfait + Matériel", level: 3 },
 ];
 
 const DAYS = ["L", "M", "M", "J", "V", "S", "D"];
+const CHILD_AGES = Array.from({ length: 18 }, (_, i) => i);
 
 // ─── Helpers ──────────────────────────────────────────────────────────────────
 
-function formatDate(d: Date): string {
-  return d.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
+function formatDate(date: Date): string {
+  return date.toLocaleDateString("fr-FR", { day: "numeric", month: "short" });
 }
 
-function isSameDay(a: Date, b: Date) {
+function isSameDay(a: Date, b: Date): boolean {
   return a.getFullYear() === b.getFullYear() &&
     a.getMonth() === b.getMonth() &&
     a.getDate() === b.getDate();
 }
 
-function isInRange(d: Date, start: Date | null, end: Date | null) {
+function isInRange(d: Date, start: Date | null, end: Date | null): boolean {
   if (!start || !end) return false;
   return d > start && d < end;
 }
 
-function getDaysInMonth(year: number, month: number) {
+function getDaysInMonth(year: number, month: number): number {
   return new Date(year, month + 1, 0).getDate();
 }
 
-function getFirstDayOfMonth(year: number, month: number) {
-  // Returns 0=Monday ... 6=Sunday (ISO week)
+function getFirstDayOfMonth(year: number, month: number): number {
   const day = new Date(year, month, 1).getDay();
   return day === 0 ? 6 : day - 1;
 }
 
-function countNights(start: Date, end: Date) {
+function countNights(start: Date, end: Date): number {
   return Math.round((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
 }
 
-function formulaLabel(f: Formula): string {
-  return FORMULAS.find((x) => x.value === f)?.label ?? "";
-}
-
-// ─── FormulaIcon component ─────────────────────────────────────────────────
+// ─── FormulaIcons ─────────────────────────────────────────────────────────────
 
 function FormulaIcons({ formula }: { formula: Formula }) {
   const f = FORMULAS.find((x) => x.value === formula);
-  if (!formula || !f) return <Home className="h-4 w-4 " />;
-
+  const level = f?.level ?? 1;
   return (
-    <span className="flex items-center gap-1 text-[var(--ts-black)]">
-      <Home className="h-4 w-4" />
-      {f.icons.length >= 2 && (
-        <>
-          <span className="text-xs font-bold">+</span>
-          <img src="/images/skipback.png" alt="Skip back" className="h-6 w-6" />
-
-        </>
+    <span className="flex items-center gap-1 text-sm font-semibold search-cell ml-8">
+      <Home size={14} />
+      {level >= 2 && (
+        <><span className="text-xs">+</span>
+          <Image src="/images/alpine.png" alt="ski" width={16} height={16} /></>
       )}
-      {f.icons.length >= 3 && (
-        <>
-          <span className="text-xs font-bold">+</span>
-          <img src="/images/tools.png" alt="Tools icon" className="h-6 w-6" />
-        </>
+      {level >= 3 && (
+        <><span className="text-xs">+</span>
+          <Image src="/images/tools.png" alt="tools" width={16} height={16} /></>
       )}
     </span>
   );
 }
 
-// ─── Calendar component ────────────────────────────────────────────────────
+// ─── CalendarPanel ────────────────────────────────────────────────────────────
 
 function CalendarPanel({
-  dateRange,
-  onSave,
-  onClear,
+  dateRange, onSave, onClear,
 }: {
   dateRange: DateRange;
   onSave: (range: DateRange) => void;
@@ -137,7 +116,7 @@ function CalendarPanel({
 }) {
   const today = new Date();
   const [viewYear, setViewYear] = useState(today.getFullYear());
-  const [viewMonth, setViewMonth] = useState(today.getMonth()); // left month
+  const [viewMonth, setViewMonth] = useState(today.getMonth());
   const [tempRange, setTempRange] = useState<DateRange>(dateRange);
   const [hoveredDate, setHoveredDate] = useState<Date | null>(null);
 
@@ -145,148 +124,110 @@ function CalendarPanel({
   const rightYear = viewMonth === 11 ? viewYear + 1 : viewYear;
 
   const prevMonth = () => {
-    if (viewMonth === 0) { setViewMonth(11); setViewYear(y => y - 1); }
-    else setViewMonth(m => m - 1);
+    if (viewMonth === 0) { setViewMonth(11); setViewYear((y) => y - 1); }
+    else setViewMonth((m) => m - 1);
   };
-
   const nextMonth = () => {
-    if (viewMonth === 11) { setViewMonth(0); setViewYear(y => y + 1); }
-    else setViewMonth(m => m + 1);
+    if (viewMonth === 11) { setViewMonth(0); setViewYear((y) => y + 1); }
+    else setViewMonth((m) => m + 1);
   };
 
   const handleDayClick = (d: Date) => {
     if (!tempRange.start || (tempRange.start && tempRange.end)) {
       setTempRange({ start: d, end: null });
     } else {
-      if (d < tempRange.start) {
-        setTempRange({ start: d, end: tempRange.start });
-      } else {
-        setTempRange({ start: tempRange.start, end: d });
-      }
+      if (d < tempRange.start) setTempRange({ start: d, end: tempRange.start });
+      else setTempRange({ start: tempRange.start, end: d });
     }
   };
 
-  const renderMonth = (year: number, month: number) => {
+  const renderMonth = (year: number, month: number): React.ReactNode[] => {
     const daysInMonth = getDaysInMonth(year, month);
     const firstDay = getFirstDayOfMonth(year, month);
-    const cells: JSX.Element[] = [];
+    const cells: React.ReactNode[] = [];
+    const todayMidnight = new Date(today.getFullYear(), today.getMonth(), today.getDate());
 
-    for (let i = 0; i < firstDay; i++) {
-      cells.push(<div key={`empty-${i}`} />);
-    }
+    for (let i = 0; i < firstDay; i++) cells.push(<div key={`e-${i}`} />);
 
     for (let day = 1; day <= daysInMonth; day++) {
       const d = new Date(year, month, day);
-      const isPast = d < new Date(today.getFullYear(), today.getMonth(), today.getDate());
-      const isStart = tempRange.start && isSameDay(d, tempRange.start);
-      const isEnd = tempRange.end && isSameDay(d, tempRange.end);
+      const isPast = d < todayMidnight;
+      const isStart = tempRange.start ? isSameDay(d, tempRange.start) : false;
+      const isEnd = tempRange.end ? isSameDay(d, tempRange.end) : false;
       const inRange = isInRange(d, tempRange.start, tempRange.end);
-      const isHoverRange = tempRange.start && !tempRange.end && hoveredDate &&
-        isInRange(d, tempRange.start, hoveredDate);
-      const isHoverEnd = tempRange.start && !tempRange.end && hoveredDate &&
-        isSameDay(d, hoveredDate);
+      const isHoverRange = tempRange.start && !tempRange.end && hoveredDate
+        ? isInRange(d, tempRange.start, hoveredDate) : false;
+      const isHoverEnd = tempRange.start && !tempRange.end && hoveredDate
+        ? isSameDay(d, hoveredDate) : false;
+      const isSelected = isStart || isEnd || inRange;
 
       cells.push(
-        <button
-          key={day}
-          type="button"
-          disabled={isPast}
-          onClick={() => handleDayClick(d)}
+        <div key={day}
+          onClick={() => !isPast && handleDayClick(d)}
           onMouseEnter={() => setHoveredDate(d)}
           onMouseLeave={() => setHoveredDate(null)}
           className={[
-            "relative flex h-9 w-9 items-center justify-center text-sm transition-colors",
-            isPast ? "cursor-not-allowed text-gray-300" : "cursor-pointer hover:font-medium",
-            isStart || isEnd
-              ? "z-10 rounded-full bg-[var(--ts-mid-blue)] font-semibold text-white"
-              : "",
-            inRange || isHoverRange
-              ? "bg-[var(--ts-mid-blue)]/10 text-[var(--ts-mid-blue)]"
-              : !isStart && !isEnd ? "text-gray-800" : "",
-            isHoverEnd && !isEnd && !isStart
-              ? "rounded-full bg-[var(--ts-mid-blue)]/20 text-[var(--ts-mid-blue)]"
-              : "",
-          ].filter(Boolean).join(" ")}
-        >
+            "relative flex h-9 w-9 items-center justify-center rounded-full text-sm transition-colors select-none",
+            isPast ? "cursor-not-allowed text-gray-300" : "cursor-pointer",
+            isSelected ? "bg-[#1B3D6B] font-semibold text-white" : "",
+            !isSelected && (isHoverRange || isHoverEnd) ? "bg-[#1B3D6B]/15 text-[#1B3D6B]" : "",
+            !isSelected && !isHoverRange && !isHoverEnd && !isPast ? "text-gray-800 hover:bg-gray-100" : "",
+          ].filter(Boolean).join(" ")}>
           {day}
-        </button>
+        </div>
       );
     }
-
     return cells;
   };
 
   const nightCount = tempRange.start && tempRange.end
-    ? countNights(tempRange.start, tempRange.end)
-    : null;
+    ? countNights(tempRange.start, tempRange.end) : null;
 
-  const monthName = (y: number, m: number) =>
-    new Date(y, m, 1).toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
+  const leftName = new Date(viewYear, viewMonth, 1).toLocaleDateString("fr-FR", { month: "long" });
+  const rightName = new Date(rightYear, rightMonth, 1).toLocaleDateString("fr-FR", { month: "long" });
+  const headerLabel = `${leftName} - ${rightName} ${rightYear}`;
 
   return (
-    <div className="w-full rounded-2xl bg-white p-5 shadow-[0px_4px_24px_0px_rgba(0,0,0,0.12)]">
-      <div className="flex gap-8">
-        {/* Left month */}
-        <div className="flex-1">
-          <div className="mb-4 flex items-center justify-between">
-            <button type="button" onClick={prevMonth} className="rounded-full p-1 hover:bg-gray-100">
-              <ChevronLeft className="h-4 w-4 text-gray-500" />
-            </button>
-            <span className="text-sm font-medium capitalize">{monthName(viewYear, viewMonth)}</span>
-            <div className="w-6" />
-          </div>
-          <div className="grid grid-cols-7 gap-1 text-center">
-            {DAYS.map((d, i) => (
-              <div key={i} className="flex h-9 items-center justify-center text-xs font-medium text-gray-400">{d}</div>
-            ))}
-            {renderMonth(viewYear, viewMonth)}
-          </div>
-        </div>
-
-        {/* Right month */}
-        <div className="flex-1">
-          <div className="mb-4 flex items-center justify-between">
-            <div className="w-6" />
-            <span className="text-sm font-medium capitalize">{monthName(rightYear, rightMonth)}</span>
-            <button type="button" onClick={nextMonth} className="rounded-full p-1 hover:bg-gray-100">
-              <ChevronRight className="h-4 w-4 text-gray-500" />
-            </button>
-          </div>
-          <div className="grid grid-cols-7 gap-1 text-center">
-            {DAYS.map((d, i) => (
-              <div key={i} className="flex h-9 items-center justify-center text-xs font-medium text-gray-400">{d}</div>
-            ))}
-            {renderMonth(rightYear, rightMonth)}
-          </div>
-        </div>
+    <div className="p-6 min-w-[680px]">
+      <div className="mb-4 flex items-center justify-between">
+        <button onClick={prevMonth} className="rounded-full p-2 hover:bg-gray-100">
+          <ChevronLeft size={18} />
+        </button>
+        <span className="text-base font-semibold text-gray-900 capitalize">{headerLabel}</span>
+        <button onClick={nextMonth} className="rounded-full p-2 hover:bg-gray-100">
+          <ChevronRight size={18} />
+        </button>
       </div>
-
-      {/* Footer */}
-      <div className="mt-5 flex items-center justify-between border-t border-gray-100 pt-4">
-        <div className="text-sm text-gray-600">
-          {tempRange.start && tempRange.end ? (
-            <span>
-              <span className="font-semibold">{nightCount} nuit{nightCount !== 1 ? "s" : ""}</span>
-              {" · "}
-              {formatDate(tempRange.start)} – {formatDate(tempRange.end)}
+      <div className="flex gap-10">
+        {[{ year: viewYear, month: viewMonth }, { year: rightYear, month: rightMonth }].map((m, mi) => (
+          <div key={mi} className="flex-1">
+            <div className="grid grid-cols-7 mb-1">
+              {DAYS.map((d, i) => (
+                <div key={i} className="flex h-9 items-center justify-center text-xs font-semibold text-[#1B3D6B]">{d}</div>
+              ))}
+            </div>
+            <div className="grid grid-cols-7 gap-y-1">
+              {renderMonth(m.year, m.month)}
+            </div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-5 flex items-center justify-between border-t pt-4">
+        {tempRange.start && tempRange.end ? (
+          <span className="text-sm font-semibold text-gray-800">
+            {nightCount} nuit{nightCount !== 1 ? "s" : ""}
+            <span className="font-normal text-gray-500 ml-2">
+              {formatDate(tempRange.start)} - {formatDate(tempRange.end)}
             </span>
-          ) : (
-            <span className="text-gray-400">Sélectionnez vos dates</span>
-          )}
-        </div>
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            onClick={() => { setTempRange({ start: null, end: null }); onClear(); }}
-            className="text-sm underline text-gray-500 hover:text-gray-800"
-          >
+          </span>
+        ) : <span className="text-sm text-gray-400" />}
+        <div className="flex items-center gap-4">
+          <button onClick={() => { setTempRange({ start: null, end: null }); onClear(); }}
+            className="text-sm underline text-gray-600 hover:text-gray-900">
             Effacer les dates
           </button>
-          <button
-            type="button"
-            onClick={() => onSave(tempRange)}
-            className="rounded-lg bg-[var(--ts-mid-blue)] px-5 py-2 text-sm font-medium text-white hover:opacity-90"
-          >
+          <button onClick={() => onSave(tempRange)}
+            className="rounded-xl bg-[#1B3D6B] px-8 py-2.5 text-sm font-semibold text-white hover:opacity-90">
             Enregistrer
           </button>
         </div>
@@ -295,221 +236,186 @@ function CalendarPanel({
   );
 }
 
-// ─── GuestsPanel component ─────────────────────────────────────────────────
+// ─── GuestsPanel ──────────────────────────────────────────────────────────────
 
-function GuestsPanel({
-  guests,
-  onSave,
-}: {
-  guests: GuestCounts;
-  onSave: (g: GuestCounts) => void;
-}) {
-  const [temp, setTemp] = useState<GuestCounts>(guests);
+function GuestsPanel({ guests, onSave }: { guests: Guests; onSave: (g: Guests) => void }) {
+  const [temp, setTemp] = useState<Guests>(guests);
+
+  const updateChildCount = (count: number) => {
+    const newAges = Array.from({ length: count }, (_, i) => temp.childrenAges[i] ?? 8);
+    setTemp((t) => ({ ...t, children: count, childrenAges: newAges }));
+  };
 
   return (
-    <div className="w-72 rounded-2xl bg-white p-5 shadow-[0px_4px_24px_0px_rgba(0,0,0,0.12)]">
+    <div className="flex flex-col gap-5 p-5 min-w-[300px]">
       {/* Adults */}
-      <div className="flex items-center justify-between py-3">
+      <div className="flex items-center justify-between">
         <div>
-          <div className="text-sm font-medium text-gray-900">Adulte</div>
-          <div className="text-xs text-gray-400">18 ans et plus</div>
+          <div className="text-sm font-bold text-gray-900">Adulte</div>
+          <div className="text-xs text-gray-500">18 ans et plus</div>
         </div>
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            disabled={temp.adults <= 1}
-            onClick={() => setTemp(t => ({ ...t, adults: t.adults - 1 }))}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 disabled:opacity-30 hover:border-gray-600"
-          >
-            <Minus className="h-3.5 w-3.5" />
+        <div className="flex items-center gap-4">
+          <button disabled={temp.adults <= 1}
+            onClick={() => setTemp((t) => ({ ...t, adults: t.adults - 1 }))}
+            className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gray-300 text-gray-600 disabled:opacity-30 hover:border-gray-500 transition-colors">
+            <Minus size={14} />
           </button>
-          <span className="w-4 text-center text-sm font-medium">{temp.adults}</span>
-          <button
-            type="button"
-            onClick={() => setTemp(t => ({ ...t, adults: t.adults + 1 }))}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:border-gray-600"
-          >
-            <Plus className="h-3.5 w-3.5" />
+          <span className="w-4 text-center text-sm font-semibold">{temp.adults}</span>
+          <button onClick={() => setTemp((t) => ({ ...t, adults: t.adults + 1 }))}
+            className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gray-300 text-gray-600 hover:border-gray-500 transition-colors">
+            <Plus size={14} />
           </button>
         </div>
       </div>
-
-      <div className="border-t border-gray-100" />
-
       {/* Children */}
-      <div className="flex items-center justify-between py-3">
+      <div className="flex items-center justify-between">
         <div>
-          <div className="text-sm font-medium text-gray-900">Enfants</div>
-          <div className="text-xs text-gray-400">Moins de 18 ans</div>
+          <div className="text-sm font-bold text-gray-900">Enfants</div>
+          <div className="text-xs text-gray-500">Moins de 18 ans</div>
         </div>
-        <div className="flex items-center gap-3">
-          <button
-            type="button"
-            disabled={temp.children <= 0}
-            onClick={() => setTemp(t => ({ ...t, children: t.children - 1 }))}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 disabled:opacity-30 hover:border-gray-600"
-          >
-            <Minus className="h-3.5 w-3.5" />
+        <div className="flex items-center gap-4">
+          <button disabled={temp.children <= 0}
+            onClick={() => updateChildCount(temp.children - 1)}
+            className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gray-300 text-gray-600 disabled:opacity-30 hover:border-gray-500 transition-colors">
+            <Minus size={14} />
           </button>
-          <span className="w-4 text-center text-sm font-medium">{temp.children}</span>
-          <button
-            type="button"
-            onClick={() => setTemp(t => ({ ...t, children: t.children + 1 }))}
-            className="flex h-8 w-8 items-center justify-center rounded-full border border-gray-300 text-gray-600 hover:border-gray-600"
-          >
-            <Plus className="h-3.5 w-3.5" />
+          <span className="w-4 text-center text-sm font-semibold">{temp.children}</span>
+          <button onClick={() => updateChildCount(temp.children + 1)}
+            className="flex h-9 w-9 items-center justify-center rounded-full border-2 border-gray-300 text-gray-600 hover:border-gray-500 transition-colors">
+            <Plus size={14} />
           </button>
         </div>
       </div>
-
-      <div className="border-t border-gray-100" />
-
+      {/* Child ages */}
+      {temp.children > 0 && (
+        <div className="flex flex-col gap-3">
+          {Array.from({ length: temp.children }, (_, i) => (
+            <div key={i} className="relative">
+              <select
+                value={temp.childrenAges[i] ?? 8}
+                onChange={(e) => {
+                  const ages = [...temp.childrenAges];
+                  ages[i] = Number(e.target.value);
+                  setTemp((t) => ({ ...t, childrenAges: ages }));
+                }}
+                className="w-full appearance-none rounded-xl border border-gray-300 px-4 pt-5 pb-2 text-sm text-gray-900 focus:outline-none focus:ring-2 focus:ring-[#1B3D6B]/30 bg-white">
+                {CHILD_AGES.map((age) => (
+                  <option key={age} value={age}>{age} an{age !== 1 ? "s" : ""}</option>
+                ))}
+              </select>
+              <div className="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2">
+                <ChevronDown size={14} className="text-gray-500" />
+              </div>
+              <label className="absolute left-4 top-1.5 text-[10px] font-medium text-gray-400">
+                Age de l&apos;enfant {i + 1}
+              </label>
+            </div>
+          ))}
+          <div className="flex items-start gap-2 text-xs text-gray-500">
+            <Info size={13} className="shrink-0 mt-0.5 text-gray-400" />
+            <span>Renseigner l&apos;âge des enfants au début du séjour vous permet de bénéficier du tarif exact des séjours</span>
+          </div>
+        </div>
+      )}
       {/* Pets */}
-      <div className="flex items-center justify-between py-3">
-        <div className="text-sm font-medium text-gray-900">Animaux de compagnie</div>
-        <input
-          type="checkbox"
-          checked={temp.pets}
-          onChange={(e) => setTemp(t => ({ ...t, pets: e.target.checked }))}
-          className="h-4 w-4 accent-[var(--ts-mid-blue)]"
-        />
+      <div className="flex items-center justify-between">
+        <div className="text-sm font-bold text-gray-900">Animaux de compagnie</div>
+        <input type="checkbox" checked={temp.pets}
+          onChange={(e) => setTemp((t) => ({ ...t, pets: e.target.checked }))}
+          className="h-5 w-5 rounded border-2 border-gray-300 accent-[#1B3D6B] cursor-pointer" />
       </div>
-
-      <button
-        type="button"
-        onClick={() => onSave(temp)}
-        className="mt-2 w-full rounded-lg bg-[var(--ts-mid-blue)] py-2.5 text-sm font-medium text-white hover:opacity-90"
-      >
+      <button onClick={() => onSave(temp)}
+        className="w-full rounded-xl bg-[#1B3D6B] py-3 text-sm font-semibold text-white hover:opacity-90">
         Enregistrer
       </button>
     </div>
   );
 }
 
-// ─── FormulaPanel component ────────────────────────────────────────────────
+// ─── FormulaPanel ─────────────────────────────────────────────────────────────
 
-function FormulaPanel({
-  formula,
-  onSelect,
-}: {
-  formula: Formula;
-  onSelect: (f: Formula) => void;
-}) {
+function FormulaPanel({ formula, onSelect }: { formula: Formula; onSelect: (f: Formula) => void }) {
   return (
-    <div className="w-90 rounded-2xl bg-white p-2 shadow-[0px_4px_24px_0px_rgba(0,0,0,0.12)]">
+    <div className="flex flex-col gap-1 p-3 min-w-[320px]">
       {FORMULAS.map((f) => (
-        <button
-        key={f.value}
-        type="button"
-        onClick={() => onSelect(f.value)}
-        className={[
-          "flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm transition-colors hover:bg-[var(--ts-mid-blue)]/5",
-          formula === f.value
-            ? "bg-[var(--ts-mid-blue)]/7 font-medium"
-            : "text-gray-800",
-        ].join(" ")}
-      >
-        {/* Icons */}
-        <span className="flex items-center gap-1 text-[var(--ts-black)] shrink-0">
-          <Home className="h-4 w-4" />
-
-          {f.icons.length >= 2 && (
-            <>
-              <span className="text-md text-[var(--ts-black)]">+</span>
-              <img src="/images/skipback.png" alt="Skip back" className="h-6 w-6" />
-            </>
+        <button key={f.value} onClick={() => onSelect(f.value)}
+          className={["flex w-full items-center gap-3 rounded-xl px-4 py-3 text-left text-sm transition-colors hover:bg-[#1B3D6B]/5",
+            formula === f.value ? "bg-[#1B3D6B]/10 font-semibold text-[#1B3D6B]" : "text-gray-800"].join(" ")}>
+          <Home size={14} />
+          {f.level >= 2 && (
+            <><span className="text-gray-400">+</span>
+              <Image src="/images/alpine.png" alt="ski" width={20} height={20} className="shrink-0" /></>
           )}
-
-          {f.icons.length >= 3 && (
-            <>
-              <span className="text-md text-[var(--ts-black)]">+</span>
-              <img src="/images/tools.png" alt="Tools icon" className="h-6 w-6" />
-            </>
+          {f.level >= 3 && (
+            <><span className="text-gray-400">+</span>
+              <Image src="/images/tools.png" alt="tools" width={20} height={20} className="shrink-0" /></>
           )}
-        </span>
-
-        {/* Label */}
-        <span className="truncate">{f.label}</span>
-      </button>
+          <span className="ml-1">{f.label}</span>
+        </button>
       ))}
     </div>
   );
 }
 
-// ─── DestinationPanel component ───────────────────────────────────────────
+// ─── DestinationPanel ─────────────────────────────────────────────────────────
 
-function DestinationPanel({
-  value,
-  onSelect,
-}: {
-  value: string;
-  onSelect: (dest: string) => void;
-}) {
+function DestinationPanel({ value, onSelect }: { value: string; onSelect: (v: string) => void }) {
   return (
-    <div className="w-[480px] rounded-2xl bg-white p-5 shadow-[0px_4px_24px_0px_rgba(0,0,0,0.12)]">
-      {/* Station types */}
-      <div className="mb-4">
-        <p className="mb-3 text-sm font-semibold text-gray-800">Choisir un type de station</p>
-        <div className="grid grid-cols-2 gap-2">
+    <div className="flex flex-col gap-5 p-5">
+      <div>
+        <div className="mb-3 text-sm font-bold text-gray-900">Choisir un type de station</div>
+        <div className="flex flex-wrap gap-2">
           {STATION_TYPES.map((t) => (
-            <button
-              key={t.label}
-              type="button"
-              onClick={() => onSelect(t.label)}
-              className="flex items-center gap-2 rounded-full border border-gray-200 px-4 py-2 text-sm text-gray-700 transition-colors hover:border-[var(--ts-mid-blue)] hover:text-[var(--ts-mid-blue)]"
-            >
-              <Mountain className="h-4 w-4 shrink-0 text-gray-400" />
+            <button key={t.label} onClick={() => onSelect(t.label)}
+              className={[
+                "flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-colors",
+                value === t.label
+                  ? "border-[#1B3D6B] bg-[#1B3D6B]/5 text-[#1B3D6B]"
+                  : "border-gray-300 text-gray-700 hover:border-[#1B3D6B] hover:text-[#1B3D6B]"
+              ].join(" ")}>
+              <Mountain size={14} />
               {t.label}
             </button>
           ))}
         </div>
       </div>
-
-      <div className="border-t border-gray-100 mb-3" />
-
-      <p className="mb-3 text-sm font-semibold text-gray-800">Ou une destination populaire</p>
-      <div className="max-h-64 overflow-y-auto -mx-1 px-1">
-        {DESTINATIONS.map((d) => (
-          <button
-            key={d.name}
-            type="button"
-            onClick={() => onSelect(d.isAll ? "" : d.name)}
-            className={[
-              "flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-gray-50",
-              (d.isAll ? value === "" : value === d.name)
-                ? "bg-[var(--ts-mid-blue)]/10"
-                : "",
-            ].join(" ")}
-          >
-            <MapPin className="h-4 w-4 shrink-0 text-gray-400" />
-            <div>
-              <div className="text-sm font-medium text-gray-900">{d.name}</div>
-              {d.subtitle && (
-                <div className="text-xs text-gray-400">{d.subtitle}</div>
-              )}
-            </div>
-          </button>
-        ))}
+      <div>
+        <div className="mb-2 text-sm font-bold text-gray-900">Ou une destination populaire</div>
+        <div className="flex flex-col">
+          {DESTINATIONS.map((d) => (
+            <button key={d.name} onClick={() => onSelect(d.isAll ? "" : d.name)}
+              className={["flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-left transition-colors hover:bg-gray-50",
+                (d.isAll ? value === "" : value === d.name) ? "bg-[#1B3D6B]/10" : ""].join(" ")}>
+              <Image src="/images/mountain.png" alt={d.name} width={20} height={20} className="shrink-0" />
+              <div>
+                <div className="text-sm font-medium text-gray-900">{d.name}</div>
+                {d.subtitle && <div className="text-xs text-gray-400">{d.subtitle}</div>}
+              </div>
+            </button>
+          ))}
+        </div>
       </div>
     </div>
   );
 }
 
-// ─── Main SearchBar ────────────────────────────────────────────────────────
+// ─── Main SearchBar (Header version) ─────────────────────────────────────────
+// Same design as SearchBarHome but:
+// - No Séjourner/Acheter toggle
+// - Compact pill bar (bg-white, shadow-lg, rounded-full)
+// - Same dropdowns with same z-index behavior
 
 export default function SearchBar() {
   const router = useRouter();
 
-  // State
-  const [activePanel, setActivePanel] = useState<Panel>(null);
+  const [activePanel, setActivePanel] = useState<string | null>(null);
   const [destination, setDestination] = useState("");
   const [dateRange, setDateRange] = useState<DateRange>({ start: null, end: null });
-  const [guests, setGuests] = useState<GuestCounts>({ adults: 3, children: 0, pets: false });
-  const [formula, setFormula] = useState<Formula>("hebergement+forfait+materiel");
+  const [guests, setGuests] = useState<Guests>({ adults: 2, children: 0, childrenAges: [], pets: false });
+  const [formula, setFormula] = useState<Formula>("hebergement");
 
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Close on outside click
   useEffect(() => {
     const handler = (e: MouseEvent) => {
       if (containerRef.current && !containerRef.current.contains(e.target as Node)) {
@@ -520,184 +426,136 @@ export default function SearchBar() {
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
-  const togglePanel = (panel: Panel) => {
+  const togglePanel = (panel: string) =>
     setActivePanel((prev) => (prev === panel ? null : panel));
-  };
 
-  const handleSearch = () => {
-    const params = new URLSearchParams();
-    if (destination) params.set("destination", destination);
-    if (dateRange.start) params.set("start", dateRange.start.toISOString().split("T")[0]);
-    if (dateRange.end) params.set("end", dateRange.end.toISOString().split("T")[0]);
-    params.set("adults", String(guests.adults));
-    params.set("children", String(guests.children));
-    if (guests.pets) params.set("pets", "1");
-    params.set("formula", formula);
-    router.push(`/search?${params.toString()}`);
-    setActivePanel(null);
-  };
-
-  // Display values
-  const destLabel = destination || "Toutes les destinations";
-  const destTruncated = destLabel.length > 18 ? destLabel.slice(0, 17) + "…" : destLabel;
-
+  // Display labels — same as SearchBarHome
+  const destLabel = destination || "Station, région...";
   const dateLabel = dateRange.start && dateRange.end
-    ? `${formatDate(dateRange.start)} – ${formatDate(dateRange.end)}`
+    ? `${formatDate(dateRange.start)} - ${formatDate(dateRange.end)}`
     : "Sélectionner des dates";
+  const totalGuests = guests.adults + guests.children;
+  const guestLabel = `${totalGuests} participant${totalGuests > 1 ? "s" : ""}`;
 
-  const guestLabel = `${guests.adults + guests.children} participant${(guests.adults + guests.children) > 1 ? "s" : ""}`;
+  const isActive = (p: string) => activePanel === p;
 
-  const isActive = (p: Panel) => activePanel === p;
-
-  // Shared pill button styles
-  const pillarBase =
-    "relative flex flex-col justify-center cursor-pointer select-none px-4 py-1.5 transition-colors rounded-full hover:bg-[var(--ts-light-grey)]";
-  const pillarActive = "bg-white shadow-sm";
+  // Same pillar style as SearchBarHome
+  const pillarBase = "relative flex flex-col justify-center cursor-pointer select-none px-5 py-2 transition-colors rounded-full hover:bg-gray-100";
+  const pillarActive = "bg-gray-100";
 
   return (
-    <div ref={containerRef} className="relative">
-      {/* ── Compact bar (inline in header) ── */}
-      <div
-        role="search"
-        aria-label="Recherche d'hébergement à la montagne"
-        className="
-        grid grid-cols-2 max-lg:gap-x-2 max-lg:gap-y-2 
-        lg:flex lg:flex-row 
-        mt-2
-        rounded-xl lg:rounded-4xl 
-        w-50 lg:w-[700px] 
-        h-10 lg:h-10
-        p-6
-        lg:p-0 
-        bg-white lg:bg-[var(--ts-light-grey)] 
-        lg:shadow-[0px_2px_12px_0px_rgba(0,0,0,0.2)] 
-        mx-auto
-        ">
-                {/* Destination */}
-        <button
-          type="button"
-          onClick={() => togglePanel("destination")}
-          aria-expanded={isActive("destination")}
-          className={[pillarBase, isActive("destination") ? pillarActive : "", "min-w-0 flex-1 text-center"].join(" ")}
-        >
-          <span className="text-[13px] font-semibold tracking-wide text-black-500">
-            Nos Promotions
-          </span>
-          <span className={["truncate text-sm font-medium", !destination ? "text-gray-400" : "text-gray-900"].join(" ")}>
-            {/* {destTruncated} */}
-          </span>
+    <div ref={containerRef} className="relative flex items-center w-full max-w-2xl">
+
+      {/* ── Compact Search Bar — same white pill as SearchBarHome ── */}
+      <div className="flex w-full items-center rounded-full bg-white shadow-md px-2 py-1 gap-0">
+
+        {/* Destination */}
+        <div onClick={() => togglePanel("destination")}
+          className={[pillarBase, isActive("destination") ? pillarActive : "", "flex-1 min-w-0 text-left"].join(" ")}>
+          <p className="truncate text-sm text-gray-500">{destLabel}</p>
           {destination && (
-            <button
-              type="button"
-              onClick={(e) => { e.stopPropagation(); setDestination(""); }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-0.5 hover:bg-gray-200"
-              aria-label="Effacer destination"
-            >
-              <X className="h-3.5 w-3.5 text-gray-500" />
+            <button onClick={(e) => { e.stopPropagation(); setDestination(""); }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-0.5 hover:bg-gray-200">
+              <X size={12} />
             </button>
           )}
-        </button>
+        </div>
 
-        <div className="h-6 mt-2 w-px shrink-0 bg-gray-300" />
+        <div className="h-7 w-px bg-gray-300 shrink-0" />
 
         {/* Dates */}
-        <button
-          type="button"
-          onClick={() => togglePanel("dates")}
-          aria-expanded={isActive("dates")}
-          className={[pillarBase, isActive("dates") ? pillarActive : "", "min-w-[160px] text-center"].join(" ")}
-        >
-          <span className="text-[10px] font-semibold uppercase tracking-wide text-gray-500"></span>
-          <span className={["text-sm font-medium", !dateRange.start ? "text-black-400" : "text-blalc-900"].join(" ")}>
+        <div onClick={() => togglePanel("dates")}
+          className={[pillarBase, isActive("dates") ? pillarActive : "", "min-w-[170px] text-center"].join(" ")}>
+          <p className={["text-sm font-semibold search-cell ml-8", dateRange.start ? "text-gray-900" : "text-gray-500"].join(" ")}>
             {dateLabel}
-          </span>
+          </p>
           {dateRange.start && (
-            <button
-              type="button"
-              onClick={(e) => { e.stopPropagation(); setDateRange({ start: null, end: null }); }}
-              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-0.5 hover:bg-gray-200"
-              aria-label="Effacer les dates"
-            >
-              <X className="h-3.5 w-3.5 text-gray-500" />
+            <button onClick={(e) => { e.stopPropagation(); setDateRange({ start: null, end: null }); }}
+              className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-0.5 hover:bg-gray-200">
+              <X size={12} />
             </button>
           )}
-        </button>
+        </div>
 
-         <div className="h-6 mt-2 w-px shrink-0 bg-gray-300" />
+        <div className="h-7 w-px bg-gray-300 shrink-0" />
 
         {/* Guests */}
-        <button
-          type="button"
-          onClick={() => togglePanel("guests")}
-          aria-expanded={isActive("guests")}
-          className={[pillarBase, isActive("guests") ? pillarActive : "", "min-w-[130px] text-center"].join(" ")}
-        >          <span className="text-sm font-medium text-gray-900">{guestLabel}</span>
-        </button>
+        <div onClick={() => togglePanel("guests")}
+          className={[pillarBase, isActive("guests") ? pillarActive : "", "min-w-[130px] text-center"].join(" ")}>
+          <p className="text-sm font-semibold text-gray-900 search-cell ml-8">{guestLabel}</p>
+        </div>
 
-         <div className="h-6 mt-2 w-px shrink-0 bg-gray-300" />
+        <div className="h-7 w-px bg-gray-300 shrink-0" />
 
         {/* Formula */}
-        <button
-          type="button"
-          onClick={() => togglePanel("formula")}
-          aria-expanded={isActive("formula")}
-          className={[pillarBase, isActive("formula") ? pillarActive : "", "pr-14 text-left"].join(" ")}
-        >
+        <div onClick={() => togglePanel("formula")}
+          className={[pillarBase, isActive("formula") ? pillarActive : "", "px-4 text-center"].join(" ")}>
           <FormulaIcons formula={formula} />
-        </button>
+        </div>
 
         {/* Search button */}
         <button
-          type="button"
-          onClick={handleSearch}
-          className="mx-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[var(--ts-mid-blue)] text-white transition-colors hover:opacity-90"
-          aria-label="Rechercher des hébergements"
-        >
-          <Search className="h-4 w-4" />
+          onClick={() => {
+            const params = new URLSearchParams();
+            if (destination) params.set("destination", destination);
+            if (dateRange.start) params.set("start", dateRange.start.toISOString().split("T")[0]);
+            if (dateRange.end) params.set("end", dateRange.end.toISOString().split("T")[0]);
+            params.set("adults", String(guests.adults));
+            params.set("children", String(guests.children));
+            if (guests.pets) params.set("pets", "1");
+            params.set("formula", formula);
+            router.push(`/search?${params.toString()}`);
+            setActivePanel(null);
+          }}
+          className="ml-2 flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-[#1B3D6B] text-white hover:opacity-90"
+          aria-label="Rechercher">
+          <Search size={16} />
         </button>
       </div>
 
-      {/* ── Dropdowns ── */}
-      {activePanel && (
-        <div className="absolute left-0 top-full z-50 mt-2">
-          {/* Destination panel */}
-          {activePanel === "destination" && (
-            <DestinationPanel
-              value={destination}
-              onSelect={(d) => { setDestination(d); setActivePanel("dates"); }}
-            />
-          )}
+      {/* ══════════════════════════════════════════════════════
+          DROPDOWNS — same z-[9999] absolute behavior as SearchBarHome
+          so they appear above all page content
+      ══════════════════════════════════════════════════════ */}
 
-          {/* Date panel — centered */}
-          {activePanel === "dates" && (
-            <div style={{ transform: "translateX(-25%)" }}>
-              <CalendarPanel
-                dateRange={dateRange}
-                onSave={(r) => { setDateRange(r); setActivePanel(null); }}
-                onClear={() => setDateRange({ start: null, end: null })}
-              />
-            </div>
-          )}
+      {/* Destination panel */}
+      {isActive("destination") && (
+        <div className="absolute left-0 top-full mt-2 z-[9999]">
+          <div className="rounded-2xl bg-white shadow-2xl overflow-auto max-h-[80vh]">
+            <DestinationPanel value={destination}
+              onSelect={(d) => { setDestination(d); setActivePanel("dates"); }} />
+          </div>
         </div>
       )}
 
-      {/* Guests panel — right-anchored */}
-      {activePanel === "guests" && (
-        <div className=" right-10  top-full z-50 mt-2">
-          <GuestsPanel
-            guests={guests}
-            onSave={(g) => { setGuests(g); setActivePanel(null); }}
-          />
+      {/* Dates panel */}
+      {isActive("dates") && (
+        <div className="absolute left-1/2 -translate-x-1/2 top-full mt-2 z-[9999]">
+          <div className="rounded-2xl bg-white shadow-2xl">
+            <CalendarPanel dateRange={dateRange}
+              onSave={(r) => { setDateRange(r); setActivePanel("guests"); }}
+              onClear={() => setDateRange({ start: null, end: null })} />
+          </div>
         </div>
       )}
 
-      {/* Formula panel — right-anchored */}
-      {activePanel === "formula" && (
-        <div className="absolute right-12 top-full z-50 mt-2">
-          <FormulaPanel
-            formula={formula}
-            onSelect={(f) => { setFormula(f); setActivePanel(null); }}
-          />
+      {/* Guests panel */}
+      {isActive("guests") && (
+        <div className="absolute right-16 top-full mt-2 z-[9999]">
+          <div className="rounded-2xl bg-white shadow-2xl">
+            <GuestsPanel guests={guests}
+              onSave={(g) => { setGuests(g); setActivePanel("formula"); }} />
+          </div>
+        </div>
+      )}
+
+      {/* Formula panel */}
+      {isActive("formula") && (
+        <div className="absolute right-10 top-full mt-2 z-[9999]">
+          <div className="rounded-2xl bg-white shadow-2xl">
+            <FormulaPanel formula={formula}
+              onSelect={(f) => { setFormula(f); setActivePanel(null); }} />
+          </div>
         </div>
       )}
     </div>
