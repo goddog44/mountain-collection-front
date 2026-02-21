@@ -1,16 +1,22 @@
 import type { Accommodation } from "@/lib/types";
+import { LOCAL_FOLDERS } from "./localFolders";
 
 const stations = [
   "Les Arcs",
   "Arc 1800",
   "Arc 2000",
+  "Arc 1600",
+  "Arc 1950",
   "Tignes",
   "Val Thorens",
   "Méribel",
-  "Courchevel",
+  "Courchevel 1850",
+  "Courchevel Moriond",
   "La Plagne",
   "Val d'Isère",
   "Les Menuires",
+  "Flaine",
+  "Avoriaz"
 ];
 
 const amenityIds = [
@@ -45,12 +51,15 @@ const types: Accommodation["type"][] = [
 const places = [
   "Proche centre station",
   "Pied des pistes",
-  "Balcon",
-  "Vue montagne",
-  "Résidence",
-  "Appartement rénové",
-  "Proche école de ski",
-  "Départ à ski",
+  "Grand balcon exposé plein sud",
+  "Vue imprenable sur la vallée",
+  "Dans résidence de standing",
+  "Totalement rénové",
+  "Proche école de ski (ESF)",
+  "Départ skis aux pieds",
+  "Idéal pour familles",
+  "Casier à skis inclus",
+  "Accès direct aux commerces"
 ];
 
 export function generateMockAccommodations(count: number): Accommodation[] {
@@ -62,20 +71,40 @@ export function generateMockAccommodations(count: number): Accommodation[] {
     const bedrooms = type === "studio" ? 0 : randomBetween(1, 4);
     const surface = randomBetween(25, 120);
     const amount = randomBetween(400, 2500);
+    const namePrefixes = ["Le Refuge", "Les Sommets", "Chalet des Neiges", "Résidence Le Pic", "L'Ours Blanc", "Cristal", "Les Flocons", "Panorama", "La Trace"];
+    const prefix = namePrefixes[i % namePrefixes.length];
+
     list.push({
       id: `acc-${i + 1}`,
-      name: `${type === "studio" ? "Studio" : "Appartement"} · ${station}`,
+      name: `${prefix} - ${type === "studio" ? "Studio" : type === "chalet" ? "Chalet" : "Appartement"} · ${station}`,
       type,
       location: {
         city: station,
         station,
         altitude: randomBetween(1600, 2300),
       },
-      images: [
-        `https://picsum.photos/seed/${i + 1}a/400/280`,
-        `https://picsum.photos/seed/${i + 1}b/400/280`,
-        `https://picsum.photos/seed/${i + 1}c/400/280`,
-      ],
+      images: (() => {
+        // Collect all images into a single flat array
+        const ALL_IMAGES: string[] = [];
+        LOCAL_FOLDERS.forEach((folder) => {
+          folder.files.forEach((file) => {
+            ALL_IMAGES.push(`/images/logements/${folder.name}/${file}`);
+          });
+        });
+
+        // We use a pseudo-random deterministic index to avoid hydration issues 
+        // while guaranteeing unique thumbnails for up to ALL_IMAGES.length items
+        const numImages = ALL_IMAGES.length;
+        const index1 = (i * 13) % numImages; // Prime multiplier for primary image
+        const index2 = (index1 + 73) % numImages;
+        const index3 = (index1 + 147) % numImages;
+
+        return [
+          ALL_IMAGES[index1],
+          ALL_IMAGES[index2],
+          ALL_IMAGES[index3]
+        ];
+      })(),
       capacity: {
         adults: Math.min(capacity, 8),
         children: Math.max(0, capacity - 6),
@@ -117,6 +146,6 @@ export function generateMockAccommodations(count: number): Accommodation[] {
 }
 
 export const accommodations: Accommodation[] =
-  generateMockAccommodations(28);
+  generateMockAccommodations(200);
 
 export const STATIONS_LIST = stations;

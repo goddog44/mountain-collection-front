@@ -1,0 +1,598 @@
+export const LOCAL_FOLDERS = [
+  {
+    "name": "A",
+    "files": [
+      "A1.jpg",
+      "A2.jpg",
+      "A3.jpg",
+      "A4.jpg",
+      "A5.jpg",
+      "A6.jpg",
+      "A7.jpg",
+      "A8.jpg",
+      "A9.jpg"
+    ]
+  },
+  {
+    "name": "AB",
+    "files": [
+      "AB1.jpg",
+      "AB2.jpg",
+      "AB3.jpg",
+      "AB4.jpg",
+      "AB5.jpg"
+    ]
+  },
+  {
+    "name": "AC",
+    "files": [
+      "AC1.jpg",
+      "AC2.jpg",
+      "AC3.jpg",
+      "AC4.jpg",
+      "AC5.jpg"
+    ]
+  },
+  {
+    "name": "B",
+    "files": [
+      "B1.jpg",
+      "B2.jpg",
+      "B3.jpg",
+      "B4.jpg",
+      "B5.jpg"
+    ]
+  },
+  {
+    "name": "BD",
+    "files": [
+      "BD (1).jpeg",
+      "BD (2).jpeg",
+      "BD (3).jpeg",
+      "BD (4).jpeg",
+      "BD (5).jpeg",
+      "BD (6).jpeg",
+      "BD (7).jpeg",
+      "BD (8).jpeg",
+      "BD (9).jpeg"
+    ]
+  },
+  {
+    "name": "BE",
+    "files": [
+      "BE (1).jpeg",
+      "BE (10).jpeg",
+      "BE (11).jpeg",
+      "BE (12).jpeg",
+      "BE (13).jpeg",
+      "BE (14).jpeg",
+      "BE (15).jpeg",
+      "BE (2).jpeg",
+      "BE (3).jpeg",
+      "BE (4).jpeg",
+      "BE (5).jpeg",
+      "BE (6).jpeg",
+      "BE (7).jpeg",
+      "BE (8).jpeg",
+      "BE (9).jpeg"
+    ]
+  },
+  {
+    "name": "BF",
+    "files": [
+      "BF (1).jpeg",
+      "BF (2).jpeg",
+      "BF (3).jpeg",
+      "BF (4).jpeg",
+      "BF (5).jpeg",
+      "BF (6).jpeg",
+      "BF (7).jpeg",
+      "BF (8).jpeg"
+    ]
+  },
+  {
+    "name": "BG",
+    "files": [
+      "BG (1).jpeg",
+      "BG (2).jpeg",
+      "BG (3).jpeg",
+      "BG (4).jpeg",
+      "BG (5).jpeg"
+    ]
+  },
+  {
+    "name": "BH",
+    "files": [
+      "BH (1).jpeg",
+      "BH (10).jpeg",
+      "BH (11).jpeg",
+      "BH (12).jpeg",
+      "BH (13).jpeg",
+      "BH (14).jpeg",
+      "BH (15).jpeg",
+      "BH (16).jpeg",
+      "BH (17).jpeg",
+      "BH (18).jpeg",
+      "BH (19).jpeg",
+      "BH (2).jpeg",
+      "BH (20).jpeg",
+      "BH (21).jpeg",
+      "BH (22).jpeg",
+      "BH (23).jpeg",
+      "BH (24).jpeg",
+      "BH (25).jpeg",
+      "BH (26).jpeg",
+      "BH (3).jpeg",
+      "BH (4).jpeg",
+      "BH (5).jpeg",
+      "BH (6).jpeg",
+      "BH (7).jpeg",
+      "BH (8).jpeg",
+      "BH (9).jpeg"
+    ]
+  },
+  {
+    "name": "BI",
+    "files": [
+      "BI (1).jpeg",
+      "BI (10).jpeg",
+      "BI (11).jpeg",
+      "BI (12).jpeg",
+      "BI (2).jpeg",
+      "BI (3).jpeg",
+      "BI (4).jpeg",
+      "BI (5).jpeg",
+      "BI (6).jpeg",
+      "BI (7).jpeg",
+      "BI (8).jpeg",
+      "BI (9).jpeg"
+    ]
+  },
+  {
+    "name": "BJ",
+    "files": [
+      "BJ (1).jpeg",
+      "BJ (10).jpeg",
+      "BJ (11).jpeg",
+      "BJ (12).jpeg",
+      "BJ (2).jpeg",
+      "BJ (3).jpeg",
+      "BJ (4).jpeg",
+      "BJ (5).jpeg",
+      "BJ (6).jpeg",
+      "BJ (7).jpeg",
+      "BJ (8).jpeg",
+      "BJ (9).jpeg"
+    ]
+  },
+  {
+    "name": "BK",
+    "files": [
+      "BK (1).jpeg",
+      "BK (2).jpeg",
+      "BK (3).jpeg",
+      "BK (4).jpeg",
+      "BK (5).jpeg",
+      "BK (6).jpeg"
+    ]
+  },
+  {
+    "name": "BL",
+    "files": [
+      "BL (1).jpeg",
+      "BL (10).jpeg",
+      "BL (11).jpeg",
+      "BL (12).jpeg",
+      "BL (2).jpeg",
+      "BL (3).jpeg",
+      "BL (4).jpeg",
+      "BL (5).jpeg",
+      "BL (6).jpeg",
+      "BL (7).jpeg",
+      "BL (8).jpeg",
+      "BL (9).jpeg"
+    ]
+  },
+  {
+    "name": "BM",
+    "files": [
+      "ALL (118).jpeg",
+      "ALL (120).jpeg",
+      "ALL (121).jpeg",
+      "ALL (122).jpeg",
+      "ALL (123).jpeg",
+      "ALL (124).jpeg",
+      "ALL (126).jpeg",
+      "ALL (127).jpeg",
+      "ALL (128).jpeg",
+      "ALL (129).jpeg",
+      "ALL (131).jpeg"
+    ]
+  },
+  {
+    "name": "BN",
+    "files": [
+      "BN (1).jpeg",
+      "BN (10).jpeg",
+      "BN (11).jpeg",
+      "BN (12).jpeg",
+      "BN (2).jpeg",
+      "BN (3).jpeg",
+      "BN (4).jpeg",
+      "BN (5).jpeg",
+      "BN (6).jpeg",
+      "BN (7).jpeg",
+      "BN (8).jpeg",
+      "BN (9).jpeg"
+    ]
+  },
+  {
+    "name": "BO",
+    "files": [
+      "BO (1).jpeg",
+      "BO (10).jpeg",
+      "BO (2).jpeg",
+      "BO (3).jpeg",
+      "BO (4).jpeg",
+      "BO (5).jpeg",
+      "BO (6).jpeg",
+      "BO (7).jpeg",
+      "BO (8).jpeg",
+      "BO (9).jpeg"
+    ]
+  },
+  {
+    "name": "BP",
+    "files": [
+      "BP (1).jpeg",
+      "BP (10).jpeg",
+      "BP (2).jpeg",
+      "BP (3).jpeg",
+      "BP (4).jpeg",
+      "BP (5).jpeg",
+      "BP (6).jpeg",
+      "BP (7).jpeg",
+      "BP (8).jpeg",
+      "BP (9).jpeg"
+    ]
+  },
+  {
+    "name": "BR",
+    "files": [
+      "BR (1).jpeg",
+      "BR (2).jpeg",
+      "BR (3).jpeg",
+      "BR (4).jpeg",
+      "BR (5).jpeg",
+      "BR (6).jpeg",
+      "BR (7).jpeg",
+      "BR (8).jpeg",
+      "BR (9).jpeg"
+    ]
+  },
+  {
+    "name": "BS",
+    "files": [
+      "BS (1).jpeg",
+      "BS (10).jpeg",
+      "BS (11).jpeg",
+      "BS (12).jpeg",
+      "BS (2).jpeg",
+      "BS (3).jpeg",
+      "BS (4).jpeg",
+      "BS (5).jpeg",
+      "BS (6).jpeg",
+      "BS (7).jpeg",
+      "BS (8).jpeg",
+      "BS (9).jpeg"
+    ]
+  },
+  {
+    "name": "BT",
+    "files": [
+      "BT (1).jpeg",
+      "BT (10).jpeg",
+      "BT (11).jpeg",
+      "BT (2).jpeg",
+      "BT (3).jpeg",
+      "BT (4).jpeg",
+      "BT (5).jpeg",
+      "BT (6).jpeg",
+      "BT (7).jpeg",
+      "BT (8).jpeg",
+      "BT (9).jpeg"
+    ]
+  },
+  {
+    "name": "BU",
+    "files": [
+      "BU (1).jpeg",
+      "BU (10).jpeg",
+      "BU (11).jpeg",
+      "BU (12).jpeg",
+      "BU (2).jpeg",
+      "BU (3).jpeg",
+      "BU (4).jpeg",
+      "BU (5).jpeg",
+      "BU (6).jpeg",
+      "BU (7).jpeg",
+      "BU (8).jpeg",
+      "BU (9).jpeg"
+    ]
+  },
+  {
+    "name": "BV",
+    "files": [
+      "BV (1).jpeg",
+      "BV (2).jpeg",
+      "BV (3).jpeg",
+      "BV (4).jpeg",
+      "BV (5).jpeg",
+      "BV (6).jpeg",
+      "BV (7).jpeg",
+      "BV (8).jpeg",
+      "BV (9).jpeg"
+    ]
+  },
+  {
+    "name": "BW",
+    "files": [
+      "BW (1).jpeg",
+      "BW (10).jpeg",
+      "BW (11).jpeg",
+      "BW (12).jpeg",
+      "BW (13).jpeg",
+      "BW (14).jpeg",
+      "BW (15).jpeg",
+      "BW (16).jpeg",
+      "BW (17).jpeg",
+      "BW (18).jpeg",
+      "BW (19).jpeg",
+      "BW (2).jpeg",
+      "BW (3).jpeg",
+      "BW (4).jpeg",
+      "BW (5).jpeg",
+      "BW (6).jpeg",
+      "BW (7).jpeg",
+      "BW (8).jpeg",
+      "BW (9).jpeg"
+    ]
+  },
+  {
+    "name": "C",
+    "files": [
+      "C1.jpg",
+      "C2.jpg",
+      "C3.jpg",
+      "C4.jpg",
+      "C5.jpg"
+    ]
+  },
+  {
+    "name": "D",
+    "files": [
+      "D1.jpg",
+      "D2.jpg",
+      "D3.jpg",
+      "D4.jpg",
+      "D5.jpg"
+    ]
+  },
+  {
+    "name": "E",
+    "files": [
+      "E1.jpg",
+      "E2.jpg",
+      "E3.jpg",
+      "E4.jpg",
+      "E5.jpg"
+    ]
+  },
+  {
+    "name": "F",
+    "files": [
+      "F1.jpg",
+      "F2.jpg",
+      "F3.jpg",
+      "F4.jpg",
+      "F5.jpg"
+    ]
+  },
+  {
+    "name": "G",
+    "files": [
+      "G1.jpg",
+      "G2.jpg",
+      "G3.jpg",
+      "G4.jpg",
+      "G5.jpg"
+    ]
+  },
+  {
+    "name": "H",
+    "files": [
+      "H1.jpg",
+      "H2.jpg",
+      "H3.jpg",
+      "H4.jpg",
+      "H5.jpg"
+    ]
+  },
+  {
+    "name": "I",
+    "files": [
+      "I1.jpg",
+      "I2.jpg",
+      "I3.jpg",
+      "I4.jpg",
+      "I5.jpg"
+    ]
+  },
+  {
+    "name": "J",
+    "files": [
+      "J1.jpg",
+      "J2.jpg",
+      "J3.jpg",
+      "J4.jpg",
+      "J5.jpg"
+    ]
+  },
+  {
+    "name": "K",
+    "files": [
+      "K1.jpg",
+      "K2.jpg",
+      "K3.jpg",
+      "K4.jpg",
+      "K5.jpg",
+      "K6.jpg",
+      "K7.jpg"
+    ]
+  },
+  {
+    "name": "L",
+    "files": [
+      "L1.jpg",
+      "L2.jpg",
+      "L3.jpg",
+      "L4.jpg",
+      "L5.jpg",
+      "L6.jpg"
+    ]
+  },
+  {
+    "name": "M",
+    "files": [
+      "M1.jpg",
+      "M2.jpg",
+      "M3.jpg",
+      "M4.jpg",
+      "M5.jpg"
+    ]
+  },
+  {
+    "name": "N",
+    "files": [
+      "N1.jpg"
+    ]
+  },
+  {
+    "name": "O",
+    "files": [
+      "O1.jpg",
+      "O2.jpg",
+      "O3.jpg",
+      "O4.jpg",
+      "O5.jpg"
+    ]
+  },
+  {
+    "name": "P",
+    "files": [
+      "P1.jpg",
+      "P2.jpg",
+      "P3.jpg",
+      "P4.jpg",
+      "P5.jpg"
+    ]
+  },
+  {
+    "name": "Q",
+    "files": [
+      "Q1.jpg",
+      "Q2.jpg",
+      "Q3.jpg",
+      "Q4.jpg",
+      "Q5.jpg"
+    ]
+  },
+  {
+    "name": "R",
+    "files": [
+      "R1.jpg",
+      "R2.jpg",
+      "R3.jpg",
+      "R4.jpg",
+      "R5.jpg"
+    ]
+  },
+  {
+    "name": "S",
+    "files": [
+      "S1.jpg",
+      "S2.jpg",
+      "S3.jpg",
+      "S4.jpg",
+      "S5.jpg"
+    ]
+  },
+  {
+    "name": "T",
+    "files": [
+      "T1.jpg",
+      "T2.jpg",
+      "T3.jpg",
+      "T4.jpg",
+      "T5.jpg"
+    ]
+  },
+  {
+    "name": "U",
+    "files": [
+      "U1.jpg",
+      "U2.jpg",
+      "U3.jpg",
+      "U4.jpg",
+      "U5.jpg"
+    ]
+  },
+  {
+    "name": "V",
+    "files": [
+      "V1.jpg",
+      "V2.jpg",
+      "V3.jpg",
+      "V4.jpg"
+    ]
+  },
+  {
+    "name": "W",
+    "files": [
+      "W1.jpg",
+      "W2.jpg",
+      "W3.jpg",
+      "W4.jpg"
+    ]
+  },
+  {
+    "name": "X",
+    "files": [
+      "X1.jpg",
+      "X2.jpg",
+      "X3.jpg",
+      "X4.jpg",
+      "X5.jpg"
+    ]
+  },
+  {
+    "name": "Y",
+    "files": [
+      "Y1.jpg",
+      "Y2.jpg",
+      "Y3.jpg",
+      "Y4.jpg",
+      "Y5.jpg"
+    ]
+  },
+  {
+    "name": "Z",
+    "files": [
+      "Z1.jpg",
+      "Z2.jpg",
+      "Z3.jpg",
+      "Z4.jpg",
+      "Z5.jpg"
+    ]
+  }
+];
